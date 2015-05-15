@@ -1,0 +1,74 @@
+<div class="book body container">
+
+<h1>Testing</h1>
+
+<p>Programming is not easy; even the best programmers are incapable of writing programs that work exactly as intended every time. Therefore an important part of the software development process is testing. Writing tests for our code is a good way to ensure quality and improve reliability.</p>
+
+<p>Go includes a special program that makes writing tests easier, so let&#39;s create some tests for the package we made in the last chapter. In the <code>math</code> folder from <code>chapter11</code> create a new file called <code>math_test.go</code> that contains this:</p>
+
+<pre>package math
+
+import &#34;testing&#34;
+
+func TestAverage(t *testing.T) {
+  var v float64
+  v = Average([]float64{1,2})
+  if v != 1.5 {
+    t.Error(&#34;Expected 1.5, got &#34;, v)
+  }
+}</pre>
+
+<p>Now run this command:</p>
+<pre>go test</pre>
+
+<p>You should see this:</p>
+<pre>$ go test
+PASS
+ok      golang-book/chapter11/math      0.032s</pre>
+
+<p>The <code>go test</code> command will look for any tests in any of the files in the current folder and run them. Tests are identified by starting a function with the word <code>Test</code> and taking one argument of type <code>*testing.T</code>. In our case since we&#39;re testing the <code>Average</code> function we name the test function <code>TestAverage</code>.</p>
+
+<p>Once we have the testing function setup we write tests that use the code we&#39;re testing. In this case we know the average of <code>[1,2]</code> should be <code>1.5</code> so that&#39;s what we check. It&#39;s probably a good idea to test many different combinations of numbers so let&#39;s change our test program a little:</p>
+<pre>package math
+
+import &#34;testing&#34;
+
+type testpair struct {
+  values []float64
+  average float64
+}
+
+var tests = []testpair{
+  { []float64{1,2}, 1.5 },
+  { []float64{1,1,1,1,1,1}, 1 },
+  { []float64{-1,1}, 0 },
+}
+
+func TestAverage(t *testing.T) {
+  for _, pair := range tests {
+    v := Average(pair.values)
+    if v != pair.average {
+      t.Error(
+        &#34;For&#34;, pair.values,
+        &#34;expected&#34;, pair.average,
+        &#34;got&#34;, v,
+      )
+    }
+  }
+}</pre><p>This is a very common way to setup tests (abundant examples can be found in the source code for the packages included with Go). We create a <code>struct</code> to represent the inputs and outputs for the function. Then we create a list of these <code>struct</code>s (pairs). Then we loop through each one and run the function.</p>
+
+
+<h3>Problems</h3>
+
+<ul>
+  <li><p>Writing a good suite of tests is not always easy, but the process of writings tests often reveals more about a problem then you may at first realize. For example, with our <code>Average</code> function what happens if you pass in an empty list (<code>[]float64{}</code>)? How could we modify the function to return <code>0</code> in this case?</p></li>
+  <li><p>Write a series of tests for the <code>Min</code> and <code>Max</code> functions you wrote in the previous chapter.</p></li>
+</ul>
+
+<table class="paging"><tr>
+  <td class="prev"><a href="/books/intro/11">&larr; Previous</a></td>
+  <td><a href="/books/intro">Index</a></td>
+  <td class="next"><a href="/books/intro/13">Next &rarr;</a></td>
+</tr></table>
+
+</div>

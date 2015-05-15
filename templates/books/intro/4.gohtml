@@ -1,0 +1,145 @@
+<div class="book body container">
+
+<h1>Variables</h1><p>Up until now we have only seen programs that use literal values (numbers, strings, etc.) but such programs aren&#39;t particularly useful. To make truly useful programs we need to learn two new concepts: variables and control flow statements. This chapter will explore variables in more detail.</p>
+<p>A variable is a storage location, with a specific type and an associated name. Let&#39;s change the program we wrote in chapter 2 so that it uses a variable:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  var x string = &#34;Hello World&#34;
+  fmt.Println(x)
+}</pre><p>Notice that the string literal from the original program still appears in this program, but rather than send it directly to the <code>Println</code> function we assign it to a variable instead. Variables in Go are created by first using the <code>var</code> keyword, then specifying the variable name (<code>x</code>), the type (<code>string</code>) and finally assigning a value to the variable (<code>Hello World</code>). The last step is optional so an alternative way of writing the program would be like this:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  var x string
+  x = &#34;Hello World&#34;
+  fmt.Println(x)
+}</pre><p>Variables in Go are similar to variables in algebra but there are some subtle differences:</p>
+<p>First when we see the <code>=</code> symbol we have a tendency to read that as “x equals the string Hello World”. There&#39;s nothing wrong with reading our program that way, but it&#39;s better to read it as “x takes the string Hello World” or “x is assigned the string Hello World”. This distinction is important because (as their name would suggest) variables can change their value throughout the lifetime of a program. Try running the following:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  var x string
+  x = &#34;first&#34;
+  fmt.Println(x)
+  x = &#34;second&#34;
+  fmt.Println(x)
+}</pre><p>In fact you can even do this:</p>
+<pre>var x string
+x = &#34;first &#34;
+fmt.Println(x)
+x = x + &#34;second&#34;
+fmt.Println(x)</pre><p>This program would be nonsense if you read it like an algebraic theorem. But it makes sense if you are careful to read the program as a list of commands. When we see <code>x = x + &#34;second&#34;</code> we should read it as “assign the concatenation of the value of the variable x and the string literal second to the variable x.” The right side of the <code>=</code> is done first and the result is then assigned to the left side of the <code>=</code>.</p>
+<p>The <code>x = x + y</code> form is so common in programming that Go has a special assignment statement: <code>+=</code>. We could have written <code>x = x + &#34;second&#34;</code> as <code>x += &#34;second&#34;</code> and it would have done the same thing. (Other operators can be used the same way)</p>
+<p>Another difference between Go and algebra is that we use a different symbol for equality: <code>==</code>. (Two equal signs next to each other) <code>==</code> is an operator like <code>+</code> and it returns a boolean. For example:</p>
+<pre>var x string = &#34;hello&#34;
+var y string = &#34;world&#34;
+fmt.Println(x == y)</pre><p>This program should print <code>false</code> because <code>hello</code> is not the same as <code>world</code>. On the other hand:</p>
+<pre>var x string = &#34;hello&#34;
+var y string = &#34;hello&#34;
+fmt.Println(x == y)</pre><p>This will print <code>true</code> because the two strings are the same.</p>
+<p>Since creating a new variable with a starting value is so common Go also supports a shorter statement:</p>
+<pre>x := &#34;Hello World&#34;</pre><p>Notice the <code>:</code> before the <code>=</code> and that no type was specified. The type is not necessary because the Go compiler is able to infer the type based on the literal value you assign the variable. (Since you are assigning a string literal, <code>x</code> is given the type <code>string</code>) The compiler can also do inference with the <code>var</code> statement:</p>
+<pre>var x = &#34;Hello World&#34;</pre><p>The same thing works for other types:</p>
+<pre>x := 5
+fmt.Println(x)</pre><p>Generally you should use this shorter form whenever possible.</p>
+<h2 id="section1">How to Name a Variable</h2><p>Naming a variable properly is an important part of software development. Names must start with a letter and may contain letters, numbers or the <code>_</code> (underscore) symbol. The Go compiler doesn&#39;t care what you name a variable so the name is meant for your (and others) benefit. Pick names which clearly describe the variable&#39;s purpose. Suppose we had the following:</p>
+<pre>x := &#34;Max&#34;
+fmt.Println(&#34;My dog&#39;s name is&#34;, x)</pre><p>In this case x is not a very good name for a variable. A better name would be:</p>
+<pre>name := &#34;Max&#34;
+fmt.Println(&#34;My dog&#39;s name is&#34;, name)</pre><p>or even:</p>
+<pre>dogsName := &#34;Max&#34;
+fmt.Println(&#34;My dog&#39;s name is&#34;, dogsName)</pre><p>In this last case we use a special way to represent multiple words in a variable name known as lower camel case (also know as mixed case, bumpy caps, camel back or hump back). The first letter of the first word is lowercase, the first letter of the subsequent words is uppercase and all the other letters are lowercase.</p>
+<h2 id="section2">Scope</h2><p>Going back to the program we saw at the beginning of the chapter:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  var x string = &#34;Hello World&#34;
+  fmt.Println(x)
+}</pre><p>Another way of writing this program would be like this:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+var x string = &#34;Hello World&#34;
+
+func main() {
+  fmt.Println(x)
+}</pre><p>Notice that we moved the variable outside of the main function. This means that other functions can access this variable:</p>
+<pre>var x string = &#34;Hello World&#34;
+
+func main() {
+  fmt.Println(x)
+}
+
+func f() {
+  fmt.Println(x)
+}</pre><p>The <code>f</code> function now has access to the <code>x</code> variable. Now suppose that we wrote this instead:</p>
+<pre>func main() {
+  var x string = &#34;Hello World&#34;
+  fmt.Println(x)
+}
+
+func f() {
+  fmt.Println(x)
+}</pre><p>If you run this program you should see an error:</p>
+<pre>.\main.go:11: undefined: x</pre><p>The compiler is telling you that the <code>x</code> variable inside of the <code>f</code> function doesn&#39;t exist. It only exists inside of the <code>main</code> function. The range of places where you are allowed to use <code>x</code> is called the scope of the variable. According to the language specification “Go is lexically scoped using blocks”. Basically this means that the variable exists within the nearest curly braces <code>{</code> <code>}</code> (a block) including any nested curly braces (blocks), but not outside of them. Scope can be a little confusing at first; as we see more Go examples it should become more clear.</p>
+<h2 id="section3">Constants</h2><p>Go also has support for constants. Constants are basically variables whose values cannot be changed later. They are created in the same way you create variables but instead of using the <code>var</code> keyword we use the <code>const</code> keyword:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  const x string = &#34;Hello World&#34;
+  fmt.Println(x)
+}</pre><p>This:</p>
+<pre>const x string = &#34;Hello World&#34;
+x = &#34;Some other string&#34;</pre><p>Results in a compile-time error:</p>
+<pre>.\main.go:7: cannot assign to x</pre><p>Constants are a good way to reuse common values in a program without writing them out each time. For example <code>Pi</code> in the <code>math</code> package is defined as a constant.</p>
+<h2 id="section4">Defining Multiple Variables</h2><p>Go also has another shorthand when you need to define multiple variables:</p>
+<pre>var (
+  a = 5
+  b = 10
+  c = 15
+)</pre><p>Use the keyword <code>var</code> (or <code>const</code>) followed by parentheses with each variable on its own line.</p>
+<h2 id="section5">An Example Program</h2><p>Here&#39;s an example program which takes in a number entered by the user and doubles it:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  fmt.Print(&#34;Enter a number: &#34;)
+  var input float64
+  fmt.Scanf(&#34;%f&#34;, &amp;input)
+
+  output := input * 2
+
+  fmt.Println(output)
+}</pre><p>We use another function from the <code>fmt</code> package to read the user input (<code>Scanf</code>). <code>&amp;input</code> will be explained in a later chapter, for now all we need to know is that <code>Scanf</code> fills input with the number we enter.</p>
+
+
+<h3>Problems</h3>
+
+<ul><li><p>What are two ways to create a new variable?</p>
+</li><li><p>What is the value of <code>x</code> after running: <br /><code>x := 5; x += 1</code>?</p>
+</li><li><p>What is scope and how do you determine the scope of a variable in Go?</p>
+</li><li><p>What is the difference between <code>var</code> and <code>const</code>?</p>
+</li><li><p>Using the example program as a starting point, write a program that converts from Fahrenheit into Celsius. (<code>C = (F - 32) * 5/9</code>)</p>
+</li><li><p>Write another program that converts from feet into meters. (<code>1 ft = 0.3048 m</code>)</p>
+</li></ul>
+
+<table class="paging"><tr>
+  <td class="prev"><a href="/books/intro/3">&larr; Previous</a></td>
+  <td><a href="/books/intro">Index</a></td>
+  <td class="next"><a href="/books/intro/5">Next &rarr;</a></td>
+</tr></table>
+
+</div>

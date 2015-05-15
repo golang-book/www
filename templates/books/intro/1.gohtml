@@ -1,0 +1,87 @@
+<div class="container body">
+<h1>Getting Started</h1><p>Computer programming is the art, craft and science of writing programs which define how computers operate. This book will teach you how to write computer programs using a programming language designed by Google named Go.</p>
+<p>Go is a general purpose programming language with advanced features and a clean syntax. Because of its wide availability on a variety of platforms, its robust well-documented common library, and its focus on good software engineering principles, Go is an ideal language to learn as your first programming language.</p>
+<p>The process we use to write software using Go (and most programming languages) is fairly straightforward: </p>
+<ul><li><p>Gather requirements</p>
+</li><li><p>Find a solution</p>
+</li><li><p>Write source code to implement the solution</p>
+</li><li><p>Compile the source code into an executable</p>
+</li><li><p>Run and test the program to make sure it works</p>
+</li></ul><p>This process is iterative (meaning its done many times) and the steps usually overlap. But before we write our first program in Go there are a few prerequisite concepts we need to understand.</p>
+<h2 id="section1">Files and Folders</h2><p>A file is a collection of data stored as a unit with a name. Modern operating systems (like Windows or Mac OSX) contain millions of files which store a large variety of different types of information – everything from text documents to executable programs to multimedia files. </p>
+<p>All files are stored in the same way on a computer: they all have a name, a definite size (measured in bytes) and an associated type. Typically the file&#39;s type is signified by the file&#39;s extension – the part of the file name that comes after the last <code>.</code>. For example a file with the name <code>hello.txt</code> has the extension <code>txt</code> which is used to represent textual data. </p>
+<p>Folders (also called directories) are used to group files together. They can also contain other folders. On Windows file and folder paths (locations) are represented with the <code>\</code> (backslash) character, for example:  <code>C:\Users\john\example.txt</code>. <code>example.txt</code> is the file name, it is contained in the folder <code>john</code>, which is itself contained in the folder <code>Users</code> which is stored on drive <code>C</code> (which represents the primary physical hard drive in Windows). On OSX (and most other operating systems) file and folder paths are represented with the <code>/</code> (forward slash) character, for example:  <code>/Users/john/example.txt</code>. Like on Windows <code>example.txt</code> is the file name, it is contained in the folder <code>john</code>, which is in the folder <code>Users</code>. Unlike Windows, OSX does not specify a drive letter where the file is stored.</p>
+
+
+<h3>Windows</h3>
+
+<p>On Windows files and folders can be browsed using Windows Explorer (accessible by double-clicking “My Computer” or typing win+e):</p>
+<p><img class="block" src="/assets/img/intro/10000201000004B0000003B4415431D2.png" /></p>
+
+
+<h3>OSX</h3>
+
+<p>On OSX files and folders can be browsed using Finder (accessible by clicking the Finder icon – the face icon in the lower left bar):</p>
+<p><img class="block" src="/assets/img/intro/10000201000004B0000002A351BA6C59.png" /></p>
+<h2 id="section2">The Terminal</h2><p>Most of the interactions we have with computers today are through sophisticated graphical user interfaces (GUIs). We use keyboards, mice and touchscreens to interact with visual buttons or other types of controls that are displayed on a screen.</p>
+<p>It wasn&#39;t always this way. Before the GUI we had the terminal – a simpler textual interface to the computer where rather than manipulating buttons on a screen we issued commands and received replies. We had a conversation with the computer.</p>
+<p>And although it might appear that most of the computing world has left behind the terminal as a relic of the past, the truth is that the terminal is still the fundamental user interface used by most programming languages on most computers. The Go programming language is no different, and so before we write a program in Go we need to have a rudimentary understanding of how a terminal works.</p>
+<h3>Windows</h3>
+
+<p>In Windows the terminal (also known as the command line) can be brought up by typing the windows key + r (hold down the windows key then press r), typing <code>cmd.exe</code> and hitting enter.  You should see a black window appear that looks like this:</p>
+<p><img class="block" src="/assets/img/intro/10000201000004B0000002474EAE2B1A.png" /><br />By default the command line starts in your home directory. (In my case this is <code>C:\Users\caleb</code>) You issue commands by typing them in and hitting enter. Try entering the command <code>dir</code>, which lists the contents of a directory. You should see something like this:</p>
+<pre>C:\Users\caleb&gt;dir
+Volume in drive C has no label.
+Volume Serial Number is B2F5-F125</pre><p>Followed by a list of the files and folders contained in your home directory. You can change directories by using the command <code>cd</code>. For example you probably have a folder called <code>Desktop</code>. You can see its contents by entering <code>cd Desktop</code> and then entering <code>dir</code>. To go back to your home directory you can use the special directory name <code>..</code> (two periods next to each other): <code>cd ..</code>. A single period represents the current folder (known as the working folder), so <code>cd .</code> doesn&#39;t do anything. There are a lot more commands you can use, but this should be enough to get you started.</p>
+<h3>OSX</h3>
+
+<p>In OSX the terminal can be reached by going to Finder → Applications → Utilities → Terminal. You should see a window like this:</p>
+<p><img class="block" src="/assets/img/intro/10000201000004B0000002F094337FAB.png" /><br />By default the terminal starts in your home directory. (In my case this is <code>/Users/caleb</code>) You issue commands by typing them in and hitting enter. Try entering the command <code>ls</code>, which lists the contents of a directory. You should see something like this:</p>
+<pre>caleb-min:~ caleb$ ls
+Desktop      Downloads      Movies     Pictures
+Documents    Library        Music      Public</pre><p>These are the files and folders contained in your home directory (in this case there are no files). You can change directories using the <code>cd</code> command. For example you probably have a folder called <code>Desktop</code>. You can see its contents by entering <code>cd Desktop</code> and then entering <code>ls</code>. To go back to your home directory you can use the special directory name <code>..</code> (two periods next to each other): <code>cd ..</code>. A single period represents the current folder (known as the working folder), so <code>cd .</code> doesn&#39;t do anything. There are a lot more commands you can use, but this should be enough to get you started.</p>
+<h2 id="section3">Text Editors</h2><p>The primary tool programmers use to write software is a text editor. Text editors are similar to word processing programs (Microsoft Word, Open Office, …) but unlike such programs they don&#39;t do any formatting, (No bold, italic, …) instead they operate only on plain text. Both OSX and Windows come with text editors but they are highly limited and I recommend installing a better one.</p>
+<p>To make the installation of this software easier an installer is available at the book&#39;s website: <a href="http://www.golang-book.com/" target="_blank">http://www.golang-book.com/</a>. This installer will install the Go tool suite, setup environmental variables and install a text editor.</p>
+<h3>Windows</h3>
+
+<p>For windows the installer will install the Scite text editor. You can open it by going to Start → All Programs → Go → Scite. You should see something like this:</p>
+<p><img class="block" src="/assets/img/intro/10000201000004B00000038773C3C446.png" /><br />The text editor contains a large white text area where text can be entered. To the left of this text area you can see the line numbers. At the bottom of the window is a status bar which displays information about the file and your current location in it (right now it says that we are on line 1, column 1, text is being inserted normally, and we are using windows-style newlines).</p>
+<p>You can open files by going to File → Open and browsing to your desired file. Files can be saved by going to File → Save or File → Save As.</p>
+<p>As you work in a text editor it is useful to learn keyboard shortcuts. The menus list the shortcuts to their right. Here are a few of the most common:</p>
+<ul><li><p>Ctrl + S – save the current file</p>
+</li><li><p>Ctrl + X – cut the currently selected text (remove it and put it in your clipboard so it can be pasted later)</p>
+</li><li><p>Ctrl + C – copy the currently selected text</p>
+</li><li><p>Ctrl  + V – paste the text currently in the clipboard</p>
+</li><li><p>Use the arrow keys to navigate, Home to go to the beginning of the line and End to go to the end of the line</p>
+</li><li><p>Hold down shift while using the arrow keys (or Home and End) to select text without using the mouse</p>
+</li><li><p>Ctrl + F – brings up a find in file dialog that you can use to search the contents of a file</p>
+</li></ul>
+<h3>OSX</h3>
+
+<p>For OSX the installer installs the Text Wrangler text editor:</p>
+<p><img class="block" src="/assets/img/intro/10000201000004B000000447FA964939.png" /></p>
+<p>Like Scite on Windows Text Wrangler contains a large white area where text is entered. Files can be opened by going to File → Open. Files can be saved by going to File → Save or File → Save As. Here are some useful keyboard shortcuts: (Command is the ⌘ key)</p>
+<ul><li><p>Command + S – save the current file</p>
+</li><li><p>Command + X – cut the currently selected text (remove it and put it in your clipboard so it can be pasted later)</p>
+</li><li><p>Command + C – copy the currently selected text</p>
+</li><li><p>Command + V – paste the text currently in the clipboard</p>
+</li><li><p>Use the arrow keys to navigate</p>
+</li><li><p>Command + F – brings up a find in file dialog that you can use to search the contents of a file<br /></p>
+</li></ul><h2 id="section4">Go Tools</h2><p>Go is a compiled programming language, which means source code (the code you write) is translated into a language that your computer can understand. Therefore before we can write a Go program, we need the Go compiler.</p>
+<p>The installer will setup Go for you automatically. We will be using version 1 of the language. (More information can be found at <a href="http://www.golang.org" target="_blank">http://www.golang.org</a>)</p>
+<p>Let&#39;s make sure everything is working. Open up a terminal and type the following:</p>
+<pre>go version</pre><p>You should see the following:</p>
+<pre>go version go1.0.2</pre><p>Your version number may be slightly different. If you get an error about the command not being recognized try restarting your computer.</p>
+<p>The Go tool suite is made up of several different commands and sub-commands. A list of those commands is available by typing:</p>
+<pre>go help</pre><p>We will see how they are used in subsequent chapters.</p>
+
+
+<table class="paging">
+  <tr>
+    <td class="prev"></td>
+    <td><a href="/books/intro">Index</a></td>
+    <td class="next"><a href="/books/intro/2">Next &rarr;</a></td>
+  </tr>
+</table>
+
+</div>

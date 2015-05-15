@@ -1,0 +1,96 @@
+<div class="book body container">
+
+<h1>Packages</h1>
+
+<p>Go was designed to be a language that encourages good software engineering practices. An important part of high quality software is code reuse – embodied in the principle “Don&#39;t Repeat Yourself.”</p>
+
+<p>As we saw in chapter 7 functions are the first layer we turn to allow code reuse. Go also provides another mechanism for code reuse: packages. Nearly every program we&#39;ve seen so far included this line:</p>
+
+<pre>import &#34;fmt&#34;</pre>
+
+<p><code>fmt</code> is the name of a package that includes a variety of functions related to formatting and output to the screen. Bundling code in this way serves 3 purposes: </p>
+
+<ul>
+  <li><p>It reduces the chance of having overlapping names. This keeps our function names short and succinct</p></li>
+  <li><p>It organizes code so that its easier to find code you want to reuse. </p></li>
+  <li><p>It speeds up the compiler by only requiring recompilation of smaller chunks of a program. Although we use the package <code>fmt</code>, we don&#39;t have to recompile it every time we change our program.</p></li>
+</ul>
+
+<h2 id="section1">Creating Packages</h2>
+<p>Packages only really make sense in the context of a separate program which uses them. Without this separate program we have no way of using the package we create. Let&#39;s create an application that will use a package we will write. Create a folder in <code>~/Go/src/golang-book</code> called <code>chapter11</code>. Inside that folder create a file called <code>main.go</code> which contains this:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+import &#34;golang-book/chapter11/math&#34;
+
+func main() {
+  xs := []float64{1,2,3,4}
+  avg := math.Average(xs)
+  fmt.Println(avg)
+}</pre>
+
+<p>Now create another folder inside of the <code>chapter11</code> folder called <code>math</code>. Inside of this folder create a file called <code>math.go</code> that contains this:</p>
+<pre>package math
+
+func Average(xs []float64) float64 {
+  total := float64(0)
+  for _, x := range xs {
+    total += x
+  }
+  return total / float64(len(xs))
+}</pre>
+
+<p>Using a terminal in the <code>math</code> folder you just created run <code>go install</code>. This will compile the <code>math.go</code> program and create a linkable object file:  <code>~/Go/pkg/os_arch/golang-book/chapter11/math.a</code>. (where <code>os</code> is something like <code>windows</code> and <code>arch</code> is something like <code>amd64</code>)</p>
+<p>Now go back to the <code>chapter11</code> folder and run <code>go run main.go</code>. You should see <code>2.5</code>. Some things to note:</p>
+<ul>
+  <li><p><code>math</code> is the name of a package that is part of Go&#39;s standard distribution, but since Go packages can be hierarchical we are safe to use the same name for our package. (The real <code>math</code> package is just <code>math</code>, ours is <code>golang-book/chapter11/math</code>)</p></li>
+  <li><p>When we import our math library we use its full name (<code>import &#34;golang-book/chapter11/math&#34;</code>), but inside of the <code>math.go</code> file we only use the last part of the name (<code>package math</code>).</p></li>
+  <li><p>We also only use the short name <code>math</code> when we reference functions from our library. If we wanted to use both libraries in the same program Go allows us to use an alias:</p>
+<pre>import m &#34;golang-book/chapter11/math&#34;
+
+func main() {
+  xs := []float64{1,2,3,4}
+  avg := m.Average(xs)
+  fmt.Println(avg)
+}</pre>
+    <p><code>m</code> is the alias.</p>
+  </li>
+  <li><p>You may have noticed that every function in the packages we&#39;ve seen start with a capital letter. In Go if something starts with a capital letter that means other packages (and programs) are able to see it. If we had named the function <code>average</code> instead of <code>Average</code> our <code>main</code> program would not have been able to see it. </p>
+    <p>It&#39;s a good practice to only expose the parts of our package that we want other packages using and hide everything else. This allows us to freely change those parts later without having to worry about breaking other programs, and it makes our package easier to use.</p>
+  </li>
+  <li>
+    <p>Package names match the folders they fall in. There are ways around this, but it&#39;s a lot easier if you stay within this pattern.</p>
+  </li>
+</ul>
+
+<h2 id="section2">Documentation</h2>
+<p>Go has the ability to automatically generate documentation for packages we write in a similar way to the standard package documentation. In a terminal run this command:</p>
+<pre>godoc golang-book/chapter11/math Average</pre>
+
+<p>You should see information displayed for the function we just wrote. We can improve this documentation by adding a comment before the function:</p>
+<pre>// Finds the average of a series of numbers
+func Average(xs []float64) float64 {</pre>
+
+<p>If you run <code>go install</code> in the <code>math</code> folder, then re-run the <code>godoc</code> command you should see our comment below the function definition. This documentation is also available in web form by running this command:</p>
+<pre>godoc -http=&#34;:6060&#34;</pre><p>and entering this URL into your browser:</p>
+<pre><a href="http://localhost:6060/pkg/" target="_blank">http://localhost:6060/pkg/</a></pre><p>You should be able to browse through all of the packages installed on your system.</p>
+
+
+<h3>Problems</h3>
+
+<ul>
+  <li><p>Why do we use packages?</p></li>
+  <li><p>What is the difference between an identifier that starts with a capital letter and one which doesn’t? (<code>Average</code> vs <code>average</code>)</p></li>
+  <li><p>What is a package alias? How do you make one?</p></li>
+  <li><p>We copied the average function from chapter 7 to our new package. Create <code>Min</code> and <code>Max</code> functions which find the minimum and maximum values in a slice of <code>float64</code>s.</p></li>
+  <li><p>How would you document the functions you created in #3?</p></li>
+</ul>
+
+<table class="paging"><tr>
+  <td class="prev"><a href="/books/intro/10">&larr; Previous</a></td>
+  <td><a href="/books/intro">Index</a></td>
+  <td class="next"><a href="/books/intro/12">Next &rarr;</a></td>
+</tr></table>
+
+
+</div>

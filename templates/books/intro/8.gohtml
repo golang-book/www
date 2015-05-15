@@ -1,0 +1,67 @@
+<div class="book body container">
+
+<h1>Pointers</h1>
+<p>When we call a function that takes an argument, that argument is copied to the function:</p>
+<pre>func zero(x int) {
+  x = 0
+}
+func main() {
+  x := 5
+  zero(x)
+  fmt.Println(x) // x is still 5
+}</pre>
+
+<p>In this program the <code>zero</code> function will not modify the original <code>x</code> variable in the <code>main</code> function. But what if we wanted to? One way to do this is to use a special data type known as a pointer:</p>
+<pre>func zero(xPtr *int) {
+  *xPtr = 0
+}
+func main() {
+  x := 5
+  zero(&amp;x)
+  fmt.Println(x) // x is 0
+}</pre>
+
+<p>Pointers reference a location in memory where a value is stored rather than the value itself. (They point to something else) By using a pointer (<code>*int</code>) the <code>zero</code> function is able to modify the original variable.</p>
+<h2 id="section1">The * and &amp; operators</h2>
+<p>In Go a pointer is represented using the <code>*</code> (asterisk) character followed by the type of the stored value. In the <code>zero</code> function <code>xPtr</code> is a pointer to an <code>int</code>. </p>
+<p><code>*</code> is also used to “dereference” pointer variables. Dereferencing a pointer gives us access to the value the pointer points to. When we write <code>*xPtr = 0</code> we are saying “store the <code>int</code> 0 in the memory location <code>xPtr</code> refers to”. If we try <code>xPtr = 0</code> instead we will get a compiler error because <code>xPtr</code> is not an <code>int</code> it&#39;s a <code>*int</code>, which can only be given another <code>*int</code>.</p>
+<p>Finally we use the <code>&amp;</code> operator to find the address of a variable. <code>&amp;x</code> returns a <code>*int</code> (pointer to an int) because <code>x</code> is an <code>int</code>. This is what allows us to modify the original variable. <code>&amp;x</code> in <code>main</code> and <code>xPtr</code> in <code>zero</code> refer to the same memory location.</p>
+<h2 id="section2">new</h2><p>Another way to get a pointer is to use the built-in <code>new</code> function:</p>
+<pre>func one(xPtr *int) {
+  *xPtr = 1
+}
+func main() {
+  xPtr := new(int)
+  one(xPtr)
+  fmt.Println(*xPtr) // x is 1
+}</pre><p><code>new</code> takes a type as an argument, allocates enough memory to fit a value of that type and returns a pointer to it.</p>
+<p>In some programming languages there is a significant difference between using <code>new</code> and <code>&amp;</code>, with great care being needed to eventually delete anything created with <code>new</code>. Go is not like this, it&#39;s a garbage collected programming language which means memory is cleaned up automatically when nothing refers to it anymore.</p>
+<p>Pointers are rarely used with Go&#39;s built-in types, but as we will see in the next chapter, they are extremely useful when paired with structs.</p>
+
+
+<h3>Problems</h3>
+
+<ul>
+  <li><p>How do you get the memory address of a variable?</p></li>
+  <li><p>How do you assign a value to a pointer?</p></li>
+  <li><p>How do you create a new pointer?</p></li>
+  <li><p>What is the value of x after running this program:</p>
+<pre>func square(x *float64) {
+  *x = *x * *x
+}
+func main() {
+  x := 1.5
+  square(&amp;x)
+}</pre></li>
+  <li><p>Write a program that can swap two integers (<code>x := 1; y := 2; swap(&amp;x, &amp;y)</code> should give you <code>x=2</code> and <code>y=1</code>).</p></li>
+</ul>
+
+<table class="paging">
+  <tr>
+    <td class="prev"><a href="/books/intro/7">&larr; Previous</a></td>
+    <td><a href="/books/intro">Index</a></td>
+    <td class="next"><a href="/books/intro/9">Next &rarr;</a></td>
+  </tr>
+</table>
+
+</div>

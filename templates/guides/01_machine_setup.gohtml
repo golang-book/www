@@ -1,0 +1,135 @@
+<div class="breadcrumbs">
+  <a href="/">Go Resources</a>
+  / <a href="/guides/machine_setup">Machine Setup</a>
+</div>
+<div class="body container">
+  <h1>Machine Setup</h1>
+  <p>
+    This guide will show you how to install all the software needed to write
+    programs in Go. Two operating systems are shown:
+    <a href="#windows">Windows</a> and
+    <a href="#osx">OSX</a>.
+  </p>
+  <h2 id="windows">Windows</h2>
+  <h3 id="windows-install-github">Install Git</h3>
+  <p>
+    On windows you should install msysgit.
+    Download the installer from
+    <a href="https://msysgit.github.io/">msysgit.github.io</a>
+    and run it. When it asks about <q>Adjusting your PATH environment</q>, make sure
+    to choose the 2nd option: <q>Use Git from the Windows Command Prompt</q>.
+  </p>
+
+  <h3 id="windows-install-go">Install Go</h3>
+  <p>
+    The go toolchain is required to build go programs. You can download an
+    installer from <a href="https://golang.org/dl/">golang.org/dl</a>. Choose
+    the latest version available for windows (eg
+    <code>go1.4.2.windows-amd64.msi</code>).
+  </p>
+
+  <h3 id="windows-setup-gopath">Setup Your GOPATH</h3>
+  <p>
+    Go looks for source code, packages and binaries in two places:
+    <code>GOROOT</code> (<code>C:\Go</code> by default)
+    and <code>GOPATH</code>. There's nothing we need to do for the
+    <code>GOROOT</code>, but for the <code>GOPATH</code> we need to create a
+    folder and a corresponding environmental variable.
+  </p>
+  <h4>Environment Variable</h4>
+  <p>
+    Unfortunately defining environment variables can be quite painful in
+    windows. Type <code>win</code>+<code>r</code> to bring up a run prompt and
+    then type:
+  </p>
+  <pre>%windir%\System32\rundll32.exe sysdm.cpl,EditEnvironmentVariables</pre>
+  <p>
+    And hit enter. You should see a window with 2 sections. In the top section
+    (User variables)
+    click New and use this information:
+  </p>
+  <pre>Variable name:  GOPATH
+Variable value: %USERPROFILE%\gocode</pre>
+  <p>
+    Click OK.
+  </p>
+  <p>
+    We also want to update the <code>PATH</code> variable so we can use programs
+    installed by <code>go get</code> directly. If a variable named
+    <code>PATH</code> (case doesn't matter) already exists then select it, click
+    edit, and add to the end of the value: (make sure to include the semicolon)
+  </p>
+  <pre>;%GOPATH%\bin</pre>
+  <p>
+    If <code>PATH</code> doesn't already exist. Then click new and use this
+    information:
+  </p>
+  <pre>Variable name:  PATH
+Variable value: %GOPATH%\bin</pre>
+  <h4>Folder</h4>
+  <p>
+    Open up a git shell (right click on your desktop and choose <q>Git Bash</q>)
+    and run:
+  </p>
+  <pre>mkdir -p ~/gocode/src</pre>
+  <p>
+    This is where we will store go programs. Let's verify that everything is
+    working properly by running this command:
+  </p>
+  <pre>go get github.com/k0kubun/tetris ; tetris</pre>
+  <p>
+    And you can play tetris. Type <code>q</code> to get back to the prompt.
+  </p>
+  <h4>Install Go Tools</h4>
+  <p>
+    There are several additional go tools which are quite useful. You can
+    install them by running:
+  </p>
+  <pre>go get golang.org/x/tools/cmd/...</pre>
+
+  <h3 id="windows-text-editor">Text Editor</h3>
+  <p>
+    Probably the easiest editor to get started with is
+    <a href="http://atom.io/">Atom</a>. Download the windows installer
+    <a href="https://atom.io/download/windows">atom.io/download/windows</a> and
+    run it.
+  </p>
+  <p>
+    For better go support we need to install the
+    <a href="https://github.com/joefitzgerald/go-plus">go-plus</a> plugin. Open
+    Atom, go to <q>File</q> -> <q>Settings</q> -> <q>Install</q>, search for
+    <q>go-plus</q> and click <q>Install</q>.
+  </p>
+
+  <h3 id="windows-create-file">Create a Program</h3>
+  <p>
+    In Atom go to <q>File</q> -> <q>Open Folder...</q> and browse to: (replace
+    USER with your username)
+  </p>
+  <pre>C:\Users\USER\gocode\src</pre>
+  <p>
+    Click <q>Select Folder</q>, right click on <code>src</code>, select
+    <q>New Folder</q>, use the name <code>example</code> and then hit enter. On
+    your new <code>example</code> folder, right click and select <q>New File</q>.
+    Give it the name <code>example\main.go</code> and enter this:
+  </p>
+  <pre>package main
+
+func main() {
+  fmt.Println("hello world")
+}</pre>
+  <p>
+    Save the file (<code>CTRL</code>+<code>s</code>) and the go plus plugin will
+    automatically add <code>import "fmt"</code>. Open a git bash
+    terminal and run the following:
+  </p>
+  <pre>go install example ; example</pre>
+  <p>
+    You should see <q>hello world</q>. If everything went well you now have
+    everything you need to start writing go programs. Have fun!
+  </p>
+
+<!-- OSX -->
+
+  <h2 id="osx">OSX</h2>
+</div>

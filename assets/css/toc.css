@@ -1,0 +1,23 @@
+.toc, .toc ol {
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+}
+.toc li {
+  padding: 6px 0;
+  margin: 0;
+  font-weight: bold;
+}
+.toc li li {
+  padding: 2px 18px;
+  font-weight: normal;
+}
+.toc li li:first-child {
+  padding-top: 6px;
+}
+.toc li li:last-child {
+  padding-bottom: 0;
+}
+.toc ol {
+  list-style-type: square;
+}

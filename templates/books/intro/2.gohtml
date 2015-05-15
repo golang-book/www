@@ -1,0 +1,47 @@
+<div class="book body container">
+  <h1>Your First Program</h1><p>Traditionally the first program you write in any programming language is called a “Hello World” program – a program that simply outputs <code>Hello World</code> to your terminal. Let&#39;s write one using Go.</p>
+<p>First create a new folder where we can store our program. The installer you used in chapter 1 created a folder in your home directory named <code>Go</code>. Create a folder named <code>~/Go/src/golang-book/chapter2</code>. (Where <code>~</code> means your home directory) From the terminal you can do this by entering the following commands:</p>
+<pre>mkdir Go/src/golang-book
+mkdir Go/src/golang-book/chapter2</pre><p>Using your text editor type in the following:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+// this is a comment
+
+func main() {
+    fmt.Println(&#34;Hello World&#34;)
+}</pre><p>Make sure your file is identical to what is shown here and save it as <code>main.go</code> in the folder we just created. Open up a new terminal and type in the following:</p>
+<pre>cd Go/src/golang-book/chapter2
+go run main.go</pre><p>You should see <code>Hello World</code> displayed in your terminal. The <code>go run</code> command takes the subsequent files   (separated by spaces), compiles them into an executable saved in a temporary directory and then runs the program. If you didn&#39;t see <code>Hello World</code> displayed you may have made a mistake when typing in the program. The Go compiler will give you hints about where the mistake lies. Like most compilers, the Go compiler is extremely pedantic and has no tolerance for mistakes. </p>
+<h2 id="section1">How to Read a Go Program</h2><p>Let&#39;s look at this program in more detail. Go programs are read top to bottom, left to right. (like a book) The first line says this:</p>
+<pre>package main</pre><p>This is known as a “package declaration”. Every Go program must start with a package declaration. Packages are Go&#39;s way of organizing and reusing code. There are two types of Go programs: executables and libraries. Executable applications are the kinds of programs that we can run directly from the terminal. (in Windows they end with <code>.exe</code>) Libraries are collections of code that we package together so that we can use them in other programs. We will explore libraries in more detail later, for now just make sure to include this line in any program you write.</p>
+<p>The next line is a blank line. Computers represent newlines with a special character (or several characters). Newlines, spaces and tabs are known as whitespace (because you can&#39;t see them). Go mostly doesn&#39;t care about whitespace, we use it to make programs easier to read. (You could remove this line and the program would behave in exactly the same way)</p>
+<p>Then we see this:</p>
+<pre>import &#34;fmt&#34;</pre><p>The <code>import</code> keyword is how we include code from other packages to use with our program. The <code>fmt</code> package (shorthand for format) implements formatting for input and output. Given what we just learned about packages what do you think the <code>fmt</code> package&#39;s files would contain at the top of them?</p>
+<p>Notice that <code>fmt</code> above is surrounded by double quotes. The use of double quotes like this is known as a “string literal” which is a type of “expression”. In Go strings represent a sequence of characters (letters, numbers, symbols, …) of a definite length. Strings are described in more detail in the next chapter, but for now the important thing to keep in mind is that an opening <code>&#34;</code> character must eventually be followed by another <code>&#34;</code> character and anything in between the two is included in the string. (The <code>&#34;</code> character itself is not part of the string)</p>
+<p>The line that starts with <code>//</code> is known as a comment. Comments are ignored by the Go compiler and are there for your own sake (or whoever picks up the source code for your program). Go supports two different styles of comments: <code>//</code> comments in which all the text between the <code>//</code> and the end of the line is part of the comment and <code>/* */</code> comments where everything between the <code>*</code>s is part of the comment. (And may include multiple lines)</p>
+<p>After this you see a function declaration:</p>
+<pre>func main() {
+    fmt.Println(&#34;Hello World&#34;)
+}</pre><p>Functions are the building blocks of a Go program. They have inputs, outputs and a series of steps called statements which are executed in order. All functions start with the keyword <code>func</code> followed by the name of the function (<code>main</code> in this case), a list of zero or more “parameters” surrounded by parentheses, an optional return type and a “body” which is surrounded by curly braces. This function has no parameters, doesn&#39;t return anything and has only one statement. The name <code>main</code> is special because it&#39;s the function that gets called when you execute the program.</p>
+<p>The final piece of our program is this line:</p>
+<pre>    fmt.Println(&#34;Hello World&#34;)</pre><p>This statement is made of three components. First we access another function inside of the <code>fmt</code> package called <code>Println</code> (that&#39;s the <code>fmt.Println</code> piece, <code>Println</code> means Print Line). Then we create a new string that contains <code>Hello World</code> and invoke (also known as call or execute) that function with the string as the first and only argument.</p>
+<p>At this point we&#39;ve already seen a lot of new terminology and you may be a bit overwhelmed. Sometimes its helpful to deliberately read your program out loud. One reading of the program we just wrote might go like this:</p>
+<p>Create a new executable program, which references the <code>fmt</code> library and contains one function called <code>main</code>. That function takes no arguments, doesn&#39;t return anything and does the following: Access the <code>Println</code> function contained inside of the <code>fmt</code> package and invoke it using one argument – the string <code>Hello World</code>.</p>
+<p>The <code>Println</code> function does the real work in this program. You can find out more about it by typing the following in your terminal:</p>
+<pre>godoc fmt Println</pre><p>Among other things you should see this:</p>
+<pre>Println formats using the default formats for its operands and writes to standard output. Spaces are always added between operands and a newline is appended. It returns the number of bytes written and any write error encountered.</pre><p>Go is a very well documented programming language but this documentation can be difficult to understand unless you are already familiar with programming languages. Nevertheless the <code>godoc</code> command is extremely useful and a good place to start whenever you have a question.</p>
+<p>Back to the function at hand, this documentation is telling you that the <code>Println</code> function will send whatever you give to it to standard output – a name for the output of the terminal you are working in. This function is what causes <code>Hello World</code> to be displayed.</p>
+<p>In the next chapter we will explore how Go stores and represents things like <code>Hello World</code> by learning about types.</p>
+
+
+<h3>Problems</h3>
+
+<ul><li><p>What is whitespace?</p>
+</li><li><p>What is a comment? What are the two ways of writing a comment?</p>
+</li><li><p>Our program began with <code>package main</code>. What would the files in the <code>fmt</code> package begin with?</p>
+</li><li><p>We used the <code>Println</code> function defined in the <code>fmt</code> package. If we wanted to use the <code>Exit</code> function from the <code>os</code> package what would we need to do?</p>
+</li><li><p>Modify the program we wrote so that instead of printing <code>Hello World</code> it prints <code>Hello, my name is</code> followed by your name.</p>
+</li></ul><table class="paging"><tr><td class="prev"><a href="/books/intro/1">&larr; Previous</a></td><td><a href="/books/intro">Index</a></td><td class="next"><a href="/books/intro/3">Next &rarr;</a></td></tr></table>
+</div>

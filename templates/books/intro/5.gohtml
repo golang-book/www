@@ -1,0 +1,162 @@
+<div class="book body container">
+
+<h1>Control Structures</h1><p>Now that we know how to use variables it&#39;s time to start writing some useful programs. First let&#39;s write a program that counts to 10, starting from 1, with each number on its own line. Using what we&#39;ve learned so far we could write this:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  fmt.Println(1)
+  fmt.Println(2)
+  fmt.Println(3)
+  fmt.Println(4)
+  fmt.Println(5)
+  fmt.Println(6)
+  fmt.Println(7)
+  fmt.Println(8)
+  fmt.Println(9)
+  fmt.Println(10)
+}</pre><p>Or this:</p>
+<pre>package main
+import &#34;fmt&#34;
+
+func main() {
+  fmt.Println(`1
+2
+3
+4
+5
+6
+7
+8
+9
+10`)
+}</pre><p>But both of these programs are pretty tedious to write. What we need is a way of doing something multiple times.</p>
+<h2 id="section1">For</h2><p>The <code>for</code> statement allows us to repeat a list of statements (a block) multiple times. Rewriting our previous program using a <code>for</code> statement looks like this:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  i := 1
+  for i &lt;= 10 {
+    fmt.Println(i)
+    i = i + 1
+  }
+}</pre><p>First we create a variable called <code>i</code> that we use to store the number we want to print. Then we create a <code>for</code> loop by using the keyword <code>for</code>, providing a conditional expression which is either <code>true</code> or <code>false</code> and finally supplying a block to execute. The for loop works like this:</p>
+<ul><li><p>We evaluate (run) the expression <code>i &lt;= 10</code> (“i less than or equal to 10”). If this evaluates to true then we run the statements inside of the block. Otherwise we jump to the next line of our program after the block. (in this case there is nothing after the for loop so we exit the program)</p>
+</li><li><p>After we run the statements inside of the block we loop back to the beginning of the for statement and repeat step 1.</p>
+</li></ul><p>The <code>i = i + 1</code> line is extremely important, because without it <code>i &lt;= 10</code> would always evaluate to <code>true</code> and our program would never stop. (When this happens this is referred to as an infinite loop)</p>
+<p>As an exercise let's walk through the program like a computer would:</p>
+<ul><li><p>Create a variable named <code>i</code> with the value 1</p>
+</li><li><p>Is <code>i &lt;= 10</code>? Yes.</p>
+</li><li><p>Print <code>i</code></p>
+</li><li><p>Set <code>i</code> to <code>i + 1</code> (<code>i</code> now equals 2)</p>
+</li><li><p>Is <code>i &lt;= 10</code>? Yes.</p>
+</li><li><p>Print <code>i</code></p>
+</li><li><p>Set <code>i</code> to <code>i + 1</code> (<code>i</code> now equals 3)</p>
+</li><li><p>…</p>
+</li><li><p>Set <code>i</code> to <code>i + 1</code> (<code>i</code> now equals 11)</p>
+</li><li><p>Is <code>i &lt;= 10</code>? No.</p>
+</li><li><p>Nothing left to do, so exit</p>
+
+</li></ul><p>Other programming languages have a lot of different types of loops (while, do, until, foreach, …) but Go only has one that can be used in a variety of different ways. The previous program could also have been written like this:</p>
+<pre>func main() {
+  for i := 1; i &lt;= 10; i++ {
+    fmt.Println(i)
+  }
+}</pre><p>Now the conditional expression also contains two other statements with semicolons between them. First we have the variable initialization, then we have the condition to check each time and finally we “increment” the variable. (adding 1 to a variable is so common that we have a special operator: <code>++</code>. Similarly subtracting 1 can be done with <code>--</code>)</p>
+<p>We will see additional ways of using the for loop in later chapters.</p>
+<h2 id="section2">If</h2><p>Let&#39;s modify the program we just wrote so that instead of just printing the numbers 1-10 on each line it also specifies whether or not the number is even or odd. Like this:</p>
+<pre>1 odd
+2 even
+3 odd
+4 even
+5 odd
+6 even
+7 odd
+8 even
+9 odd
+10 even</pre><p>First we need a way of determining whether or not a number is even or odd. An easy way to tell is to divide the number by 2. If you have nothing left over then the number is even, otherwise it&#39;s odd. So how do we find the remainder after division in Go? We use the <code>%</code> operator. <code>1 % 2</code> equals <code>1</code>, <code>2 % 2</code> equals <code>0</code>, <code>3 % 2</code> equals <code>1</code> and so on.</p>
+<p>Next we need a way of choosing to do different things based on a condition. For that we use the <code>if</code> statement:</p>
+<pre>if i % 2 == 0 {
+  // even
+} else {
+  // odd
+}</pre><p>An <code>if</code> statement is similar to a <code>for</code> statement in that it has a condition followed by a block. If statements also have an optional <code>else</code> part. If the condition evaluates to <code>true</code> then the block after the condition is run, otherwise either the block is skipped or if the <code>else</code> block is present that block is run.</p>
+<p>If statements can also have <code>else if</code> parts:</p>
+<pre>if i % 2 == 0 {
+  // divisible by 2
+} else if i % 3 == 0 {
+  // divisible by 3
+} else if i % 4 == 0 {
+  // divisible by 4
+}</pre><p>The conditions are checked top down and the first one to result in true will have its associated block executed. None of the other blocks will execute, even if their conditions also pass. (So for example the number 8 is divisible by both 4 and 2, but the <code>// divisible by 4</code> block will never execute because the <code>// divisible by 2</code> block is done first)</p>
+<p>Putting it all together we have:</p>
+<pre>func main() {
+  for i := 1; i &lt;= 10; i++ {
+    if i % 2 == 0 {
+      fmt.Println(i, &#34;even&#34;)
+    } else {
+      fmt.Println(i, &#34;odd&#34;)
+    }
+  }
+}</pre><p>Let&#39;s walk through this program:</p>
+<ul><li><p>Create a variable <code>i</code> of type <code>int</code> and give it the value <code>1</code></p>
+</li><li><p>Is <code>i</code> less than or equal to <code>10</code>? Yes: jump to the block</p>
+</li><li><p>Is the remainder of <code>i</code> ÷ <code>2</code> equal to <code>0</code>? No: jump to the <code>else</code> block</p>
+</li><li><p>Print <code>i</code> followed by <code>odd</code></p>
+</li><li><p>Increment <code>i</code> (the statement after the condition)</p>
+</li><li><p>Is <code>i</code> less than or equal to <code>10</code>? Yes: jump to the block</p>
+</li><li><p>Is the remainder of <code>i</code> ÷ <code>2</code> equal to <code>0</code>? Yes: jump to the <code>if</code> block</p>
+</li><li><p>Print <code>i</code> followed by <code>even</code></p>
+</li><li><p>…<br /></p>
+</li></ul><p>The remainder operator, while rarely seen outside of elementary school, turns out to be really useful when programming. You&#39;ll see it turn up everywhere from zebra striping tables to partitioning data sets.</p>
+<h2 id="section3">Switch</h2><p>Suppose we wanted to write a program that printed the English names for numbers. Using what we&#39;ve learned so far we might start by doing this:</p>
+<pre>if i == 0 {
+  fmt.Println(&#34;Zero&#34;)
+} else if i == 1 {
+  fmt.Println(&#34;One&#34;)
+} else if i == 2 {
+  fmt.Println(&#34;Two&#34;)
+} else if i == 3 {
+  fmt.Println(&#34;Three&#34;)
+} else if i == 4 {
+  fmt.Println(&#34;Four&#34;)
+} else if i == 5 {
+  fmt.Println(&#34;Five&#34;)
+}</pre><p>Since writing a program in this way would be pretty tedious Go provides another statement to make this easier: the <code>switch</code> statement. We can rewrite our program to look like this:</p>
+<pre>switch i {
+case 0: fmt.Println(&#34;Zero&#34;)
+case 1: fmt.Println(&#34;One&#34;)
+case 2: fmt.Println(&#34;Two&#34;)
+case 3: fmt.Println(&#34;Three&#34;)
+case 4: fmt.Println(&#34;Four&#34;)
+case 5: fmt.Println(&#34;Five&#34;)
+default: fmt.Println(&#34;Unknown Number&#34;)
+}</pre><p>A switch statement starts with the keyword <code>switch</code> followed by an expression (in this case <code>i</code>) and then a series of <code>case</code>s. The value of the expression is compared to the expression following each <code>case</code> keyword. If they are equivalent then the statement(s) following the <code>:</code> is executed. </p>
+<p>Like an if statement each case is checked top down and the first one to succeed is chosen. A switch also supports a default case which will happen if none of the cases matches the value. (Kind of like the else in an if statement)</p>
+<p>These are the main control flow statements. Additional statements will be explored in later chapters.</p>
+
+
+<h3>Problems</h3>
+
+<ul><li><p>What does the following program print:</p>
+<pre>i := 10
+if i &gt; 10 {
+  fmt.Println(&#34;Big&#34;)
+} else {
+  fmt.Println(&#34;Small&#34;)
+}</pre></li><li><p>Write a program that prints out all the numbers evenly divisible by 3 between 1 and 100. (3, 6, 9, etc.)</p>
+</li><li><p>Write a program that prints the numbers from 1 to 100. But for multiples of three print &#34;Fizz&#34; instead of the number and for the multiples of five print &#34;Buzz&#34;. For numbers which are multiples of both three and five print &#34;FizzBuzz&#34;.</p>
+</li></ul>
+
+<table class="paging">
+  <tr>
+    <td class="prev"><a href="/books/intro/4">&larr; Previous</a></td>
+    <td><a href="/books/intro">Index</a></td>
+    <td class="next"><a href="/books/intro/6">Next &rarr;</a></td>
+  </tr>
+</table>
+
+</div>

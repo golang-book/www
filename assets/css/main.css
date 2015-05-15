@@ -1,0 +1,190 @@
+* {
+  box-sizing: border-box;
+}
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+body {
+  background: #E0EBF5 URL(/assets/img/pattern-1ask.png) repeat;
+  font-family: "Fira Sans", serif;
+  font-size: 15px;
+  color: #333;
+}
+
+a, a:active, a:visited, a:link, a:hover {
+  color: #375EAB;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 40px;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+p {
+  line-height: 24px;
+}
+
+pre, code, .code {
+  font-family: "Fira Mono", monospace;
+  font-size: 13px;
+}
+pre, code {
+  background: #F3F3F3;
+  border: 1px solid #E3E3E3;
+}
+pre {
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  line-height: 18px;
+}
+code {
+  border-radius: 3px;
+  padding: 1px 2px;
+  white-space: nowrap;
+}
+
+q, blockquote {
+  color: black;
+}
+blockquote {
+  background: #fff8dc;
+  border: 1px solid #e0dcbf;
+}
+q {
+  font-style: italic;
+}
+q:before {
+  content: "";
+}
+q:after {
+ content: "";
+}
+
+.book-list {
+  padding-bottom: 24px;
+}
+.book-list dt {
+  font-size: 20px;
+}
+dl dt {
+  font-weight: bold;
+}
+dl dd {
+  padding: 8px 0;
+  margin: 0;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+
+.cover-image {
+  float: left;
+  margin-right: 16px;
+  margin-top: 4px;
+  border: 1px solid #666;
+  border-radius: 4px;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
+}
+
+img.block {
+  display :block;
+  margin: 16px auto;
+}
+.book table {
+  margin-bottom: 16px;
+}
+.book td {
+  border: 1px solid #E3E3E3;
+  padding: 4px 8px;
+  background: #FAFAFA;
+  text-align: center;
+}
+
+.paging {
+  border-top: 1px solid #ddd;
+  width: 100%;
+  margin-top: 16px;
+}
+  .paging td {
+    text-align: center;
+    padding: 8px 0 0;
+    border: none;
+    background: transparent;
+  }
+  .paging .prev, .paging .next {
+    width: 100px;
+  }
+  .paging .prev {
+    text-align: left;
+  }
+  .paging .next {
+    text-align: right;
+  }
+
+.section-link {
+  margin-left: 4px;
+}
+
+.outer-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #FFF;
+  border: 1px solid #AAA;
+  border-top: none;
+  border-bottom: none;
+
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.container {
+  padding: 20px;
+}
+.body {
+  flex: 1;
+}
+.breadcrumbs {
+  padding: 8px 16px;
+  border-bottom: 1px solid #DDD;
+  background: #F3F3F3;
+  font-size: 13px;
+}
+.footer {
+  padding: 4px 16px;
+  border-top: 1px solid #DDD;
+  background: #F3F3F3;
+  font-size: 8px;
+
+}
+
+p {
+  margin: 12px 0;
+}
+h2 {
+  font-size: 28px;
+}
+h3 {
+  font-size: 18px;
+}
+h4, h5 {
+  font-size: 15px;
+}
+h2, h3, h4, h5 {
+  color: #000;
+  margin: 20px 0 12px 0;
+}

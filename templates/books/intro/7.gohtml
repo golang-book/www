@@ -1,0 +1,245 @@
+<div class="book body container">
+
+<h1>Functions</h1>
+<p>A function is an independent section of code that maps zero or more input parameters to zero or more output parameters. Functions (also known as procedures or subroutines) are often represented as a black box: (the black box represents the function)</p>
+<p><img class="block" src="/assets/img/intro/10000000000001FF000000A90C708B88.png" />Until now the programs we have written in Go have used only one function:</p>
+<pre>func main() {}</pre><p>We will now begin writing programs that use more than one function.</p>
+<h2 id="section1">Your Second Function</h2><p>Remember this program from chapter 6:</p>
+<pre>func main() {
+  xs := []float64{98,93,77,82,83}
+
+  total := 0.0
+  for _, v := range xs {
+    total += v
+  }
+  fmt.Println(total / float64(len(xs)))
+}</pre>
+<p>
+  This program computes the average of a series of numbers. Finding the
+  average like this is a very general problem, so it's an ideal candidate for
+  definition as a function.
+</p>
+<p>The <code>average</code> function will need to take in a slice of <code>float64</code>s and return one <code>float64</code>. Insert this before the <code>main</code> function:</p>
+<pre>func average(xs []float64) float64 {
+  panic(&#34;Not Implemented&#34;)
+}</pre><p>Functions start with the keyword <code>func</code>, followed by the function&#39;s name. The parameters (inputs) of the function are defined like this: <code>name type, name type, …</code>. Our function has one parameter (the list of scores) that we named <code>xs</code>. After the parameters we put the return type. Collectively the parameters and the return type are known as the function&#39;s signature.</p>
+<p>Finally we have the function body which is a series of statements between curly braces. In this body we invoke a built-in function called <code>panic</code> which causes a run time error. (We&#39;ll see more about panic later in this chapter) Writing functions can be difficult so it&#39;s a good idea to break the process into manageable chunks, rather than trying to implement the entire thing in one large step. </p>
+<p>Now let's take the code from our main function and move it into our average function:</p>
+<pre>func average(xs []float64) float64 {
+  total := 0.0
+  for _, v := range xs {
+    total += v
+  }
+  return total / float64(len(xs))
+}</pre><p>Notice that we changed the <code>fmt.Println</code> to be a <code>return</code> instead. The return statement causes the function to immediately stop and return the value after it to the function that called this one. Modify <code>main</code> to look like this:</p>
+<pre>func main() {
+  xs := []float64{98,93,77,82,83}
+  fmt.Println(average(xs))
+}</pre><p>Running this program should give you exactly the same result as the original. A few things to keep in mind:</p>
+<ul>
+  <li><p>The names of the parameters don&#39;t have to match in the calling
+      function. For example we could have done this:</p>
+<pre>func main() {
+  someOtherName := []float64{98,93,77,82,83}
+  fmt.Println(average(someOtherName))
+}</pre>
+
+<p>And our program would still work.</p>
+</li>
+<li>
+  <p>Functions don&#39;t have access to anything in the calling function. This won&#39;t work:</p>
+<pre>func f() {
+  fmt.Println(x)
+}
+func main() {
+  x := 5
+  f()
+}</pre>
+
+  <p>We need to either do this:</p>
+
+<pre>func f(x int) {
+  fmt.Println(x)
+}
+func main() {
+  x := 5
+  f(x)
+}</pre>
+
+  <p>Or this:</p>
+
+<pre>var x int = 5
+func f() {
+  fmt.Println(x)
+}
+  func main() {
+  f()
+}</pre>
+
+</li>
+<li><p>Functions are built up in a “stack”. Suppose we had this program:</p>
+
+<pre>func main() {
+  fmt.Println(f1())
+}
+func f1() int {
+  return f2()
+}
+func f2() int {
+  return 1
+}</pre>
+
+</li>
+<li>
+  <p>We could visualize it like this:</p>
+  <img class="block" src="/assets/img/intro/10000000000001840000005156009DB3.png" />
+  <p>Each time we call a function we push it onto the call stack and each time we return from a function we pop the last function off of the stack.</p>
+</li>
+<li><p>We can also name the return type:</p>
+
+<pre>func f2() (r int) {
+  r = 1
+  return
+}</pre>
+</li></ul><h2 id="section2">Returning Multiple Values</h2><p>Go is also capable of returning multiple values from a function:</p>
+<pre>func f() (int, int) {
+  return 5, 6
+}
+
+func main() {
+  x, y := f()
+}</pre><p>Three changes are necessary: change the return type to contain multiple types separated by <code>,</code>, change the expression after the return so that it contains multiple expressions separated by <code>,</code> and finally change the assignment statement so that multiple values are on the left side of the <code>:=</code> or <code>=</code>.</p>
+<p>Multiple values are often used to return an error value along with the result (<code>x, err := f()</code>), or a boolean to indicate success (<code>x, ok := f()</code>).</p>
+<h2 id="section3">Variadic Functions</h2><p>There is a special form available for the last parameter in a Go function:</p>
+<pre>func add(args ...int) int {
+  total := 0
+  for _, v := range args {
+    total += v
+  }
+  return total
+}
+func main() {
+  fmt.Println(add(1,2,3))
+}</pre><p>By using <code>...</code> before the type name of the last parameter you can indicate that it takes zero or more of those parameters. In this case we take zero or more <code>int</code>s. We invoke the function like any other function except we can pass as many <code>int</code>s as we want.</p>
+<p>This is precisely how the <code>fmt.Println</code> function is implemented:</p>
+<pre>func Println(a ...interface{}) (n int, err error)</pre><p>The <code>Println</code> function takes any number of values of any type. (The special <code>interface{}</code> type will be discussed in more detail in chapter 9)</p>
+<p>We can also pass a slice of <code>int</code>s by following the slice with <code>...</code>:</p>
+<pre>func main() {
+  xs := []int{1,2,3}
+  fmt.Println(add(xs...))
+}</pre>
+
+<h2 id="section4">Closure</h2>
+<p>It is possible to create functions inside of functions:</p>
+<pre>func main() {
+  add := func(x, y int) int {
+    return x + y
+  }
+  fmt.Println(add(1,1))
+}</pre><p><code>add</code> is a local variable that has the type <code>func(int, int) int</code> (a function that takes two <code>int</code>s and returns an <code>int</code>).  When you create a local function like this it also has access to other local variables (remember scope from chapter 4):</p>
+<pre>func main() {
+  x := 0
+  increment := func() int {
+    x++
+    return x
+  }
+  fmt.Println(increment())
+  fmt.Println(increment())
+}</pre><p><code>increment</code> adds 1 to the variable <code>x</code> which is defined in the <code>main</code> function&#39;s scope. This <code>x</code> variable can be accessed and modified by the <code>increment</code> function. This is why the first time we call <code>increment</code> we see 1 displayed, but the second time we call it we see 2 displayed.</p>
+<p>A function like this together with the non-local variables it references is known as a closure. In this case <code>increment</code> and the variable <code>x</code> form the closure. </p>
+<p>One way to use closure is by writing a function which returns another function which – when called – can generate a sequence of numbers. For example here&#39;s how we might generate all the even numbers:</p>
+<pre>func makeEvenGenerator() func() uint {
+  i := uint(0)
+  return func() (ret uint) {
+    ret = i
+    i += 2
+    return
+  }
+}
+func main() {
+  nextEven := makeEvenGenerator()
+  fmt.Println(nextEven()) // 0
+  fmt.Println(nextEven()) // 2
+  fmt.Println(nextEven()) // 4
+}</pre><p><code>makeEvenGenerator</code> returns a function which generates even numbers. Each time it&#39;s called it adds 2 to the local <code>i</code> variable which – unlike normal local variables –   persists between calls.</p>
+<h2 id="section5">Recursion</h2><p>Finally a function is able to call itself. Here is one way to compute the factorial of a number:</p>
+<pre>func factorial(x uint) uint {
+  if x == 0 {
+    return 1
+  }
+  return x * factorial(x-1)
+}</pre><p><code>factorial</code> calls itself, which is what makes this function recursive. In order to better understand how this function works, lets walk through <code>factorial(2)</code>:</p>
+<ul><li><p>Is <code>x == 0</code>? No. (<code>x</code> is 2)</p>
+</li><li><p>Find the factorial of <code>x – 1</code></p>
+<ul><li><p>Is <code>x == 0</code>? No. (<code>x</code> is 1)</p>
+</li><li><p>Find the <code>factorial</code> of <code>x – 1</code></p>
+<ul><li><p>Is <code>x == 0</code>? Yes, return 1.</p>
+</li></ul></li><li><p>return <code>1 * 1</code></p>
+</li></ul></li><li><p>return <code>2 * 1</code></p>
+
+</li></ul><p>Closure and recursion are powerful programming techniques which form the basis of a paradigm known as functional programming. Most people will find functional programming more difficult to understand than an approach based on for loops, if statements, variables and simple functions.</p>
+<h2 id="section6">Defer, Panic &amp; Recover</h2><p>Go has a special statement called <code>defer</code> which schedules a function call to be run after the function completes. Consider the following example:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func first() {
+  fmt.Println(&#34;1st&#34;)
+}
+func second() {
+  fmt.Println(&#34;2nd&#34;)
+}
+func main() {
+  defer second()
+  first()
+}</pre><p>This program prints <code>1st</code> followed by <code>2nd</code>. Basically defer moves the call to <code>second</code> to the end of the function:</p>
+<pre>func main() {
+  first()
+  second()
+}</pre><p><code>defer</code> is often used when resources need to be freed in some way. For example when we open a file we need to make sure to close it later. With <code>defer</code>:</p>
+<pre>f, _ := os.Open(filename)
+defer f.Close()</pre>
+
+<p>This has 3 advantages: (1) it keeps our <code>Close</code> call near our <code>Open</code> call so it's easier to understand, (2) if our function had multiple return statements (perhaps one in an <code>if</code> and one in an <code>else</code>) <code>Close</code> will happen before both of them and (3) deferred functions are run even if a run-time panic occurs.</p>
+<h3>Panic &amp; Recover</h3>
+
+<p>Earlier we created a function that called the <code>panic</code> function to cause a run time error. We can handle a run-time panic with the built-in <code>recover</code> function. <code>recover</code> stops the panic and returns the value that was passed to the call to <code>panic</code>. We might be tempted to use it like this:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  panic(&#34;PANIC&#34;)
+  str := recover()
+  fmt.Println(str)
+}</pre><p>But the call to <code>recover</code> will never happen in this case because the call to <code>panic</code> immediately stops execution of the function. Instead we have to pair it with <code>defer</code>:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  defer func() {
+    str := recover()
+    fmt.Println(str)
+  }()
+  panic(&#34;PANIC&#34;)
+}</pre><p>A panic generally indicates a programmer error (for example attempting to access an index of an array that&#39;s out of bounds, forgetting to initialize a map, etc.) or an exceptional condition that there&#39;s no easy way to recover from. (Hence the name “panic”) </p>
+<h3>Problems</h3>
+
+<ul><li><p><code>sum</code> is a function which takes a slice of numbers and adds them together. What would its function signature look like in Go?</p>
+</li><li><p>Write a function which takes an integer and halves it and returns true if it was even or false if it was odd. For example <code>half(1)</code> should return <code>(0, false)</code> and <code>half(2)</code> should return <code>(1, true)</code>.</p>
+</li><li><p>Write a function with one variadic parameter that finds the greatest number in a list of numbers.</p>
+</li><li><p>Using <code>makeEvenGenerator</code> as an example, write a <code>makeOddGenerator</code> function that generates odd numbers.</p>
+</li><li><p>The Fibonacci sequence is defined as: <code>fib(0) = 0</code>, <code>fib(1) = 1</code>, <code>fib(n) = fib(n-1) + fib(n-2)</code>. Write a recursive function which can find <code>fib(n)</code>.</p>
+</li><li><p>What are defer, panic and recover? How do you recover from a run-time panic?</p>
+</li></ul>
+
+<table class="paging">
+  <tr>
+    <td class="prev"><a href="/books/intro/6">&larr; Previous</a></td>
+    <td><a href="/books/intro">Index</a></td>
+    <td class="next"><a href="/books/intro/8">Next &rarr;</a></td>
+  </tr>
+</table>
+
+</div>

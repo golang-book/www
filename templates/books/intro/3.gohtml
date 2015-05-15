@@ -1,0 +1,92 @@
+<div class="book body container">
+
+<h1>Types</h1><p>In the last chapter we used the data type string to store <code>Hello World</code>. Data types categorize a set of related values, describe the operations that can be done on them and define the way they are stored. Since types can be a difficult concept to grasp we will look at them from a couple different perspectives before we see how they are implemented in Go.</p>
+<p>Philosophers sometimes make a distinction between types and tokens. For example suppose you have a dog named Max. Max is the token (a particular instance or member) and dog is the type (the general concept). “Dog” or “dogness” describes a set of properties that all dogs have in common. Although oversimplistic we might reason like this: All dogs have 4 legs, Max is a dog, therefore Max has 4 legs. Types in programming languages work in a similar way: All strings have a length, x is a string, therefore x has a length.</p>
+<p>In mathematics we often talk about sets. For example: ℝ (the set of all real numbers) or ℕ (the set of all natural numbers). Each member of these sets shares properties with all the other members of the set. For example all natural numbers are associative: “for all natural numbers a, b, and c, a + (b + c) = (a + b) + c and a × (b × c) = (a × b) × c.” In this way sets are similar to types in programming languages since all the values of a particular type share certain properties. </p>
+<p>Go is a statically typed programming language. This means that variables always have a specific type and that type cannot change. Static typing may seem cumbersome at first. You&#39;ll spend a large amount of your time just trying to fix your program so that it finally compiles. But types help us reason about what our program is doing and catch a wide variety of common mistakes.</p>
+<p>Go comes with several built-in data types which we will now look at in more detail.</p>
+<h2 id="section1">Numbers</h2><p>Go has several different types to represent numbers. Generally we split numbers into two different kinds: integers and floating-point numbers.</p>
+<h3>Integers</h3>
+
+<p>Integers – like their mathematical counterpart – are numbers without a decimal component. (…, -3, -2, -1, 0, 1, …) Unlike the base-10 decimal system we use to represent numbers, computers use a base-2 binary system. </p>
+<p>Our system is made up of 10 different digits. Once we&#39;ve exhausted our available digits we represent larger numbers by using 2 (then 3, 4, 5, …) digits put next to each other. For example the number after 9 is 10, the number after 99 is 100 and so on. Computers do the same, but they only have 2 digits instead of 10. So counting looks like this: 0, 1, 10, 11, 100, 101, 110, 111 and so on. The other difference between the number system we use and the one computers use is that all of the integer types have a definite size. They only have room for a certain number of digits. So a 4 bit integer might look like this: 0000, 0001, 0010, 0011, 0100. Eventually we run out of space and most computers just wrap around to the beginning. (Which can result in some very strange behavior)</p>
+<p>Go&#39;s integer types are: <code>uint8</code>, <code>uint16</code>, <code>uint32</code>, <code>uint64</code>, <code>int8</code>, <code>int16</code>, <code>int32</code> and <code>int64.</code> 8, 16, 32 and 64 tell us how many bits each of the types use. <code>uint</code> means “unsigned integer” while <code>int</code> means “signed integer”. Unsigned integers only contain positive numbers (or zero). In addition there two alias types: <code>byte</code> which is the same as <code>uint8</code> and <code>rune</code> which is the same as <code>int32</code>. Bytes are an extremely common unit of measurement used on computers (1 byte = 8 bits, 1024 bytes = 1 kilobyte, 1024 kilobytes = 1 megabyte, …) and therefore Go&#39;s <code>byte</code> data type is often used in the definition of other types. There are also 3 machine dependent integer types: <code>uint</code>, <code>int</code> and <code>uintptr</code>. They are machine dependent because their size depends on the type of architecture you are using.</p>
+<p>Generally if you are working with integers you should just use the <code>int</code> type.</p>
+<h3>Floating Point Numbers</h3>
+
+<p>Floating point numbers are numbers that contain a decimal component (real numbers). (1.234, 123.4, 0.00001234, 12340000) Their actual representation on a computer is fairly complicated and not really necessary in order to know how to use them. So for now we need only keep the following in mind:</p>
+<ul><li><p>Floating point numbers are inexact. Occasionally it is not possible to represent a number. For example computing <code>1.01 - 0.99</code> results in <code>0.020000000000000018</code> – A number extremely close to what we would expect, but not exactly the same.</p>
+</li><li><p>Like integers floating point numbers have a certain size (32 bit or 64 bit). Using a larger sized floating point number increases it&#39;s precision. (how many digits it can represent)</p>
+</li><li><p>In addition to numbers there are several other values which can be represented: “not a number” (<code>NaN</code>, for things like <code>0/0</code>) and positive and negative infinity. (<code>+∞</code> and <code>−∞</code>)</p>
+</li></ul><p>Go has two floating point types: <code>float32</code> and <code>float64</code> (also often referred to as single precision and double precision respectively) as well as two additional types for representing complex numbers (numbers with imaginary parts): <code>complex64</code> and <code>complex128</code>. Generally we should stick with <code>float64</code> when working with floating point numbers.</p>
+<h3>Example</h3>
+
+<p>Let&#39;s write an example program using numbers. First create a folder called <code>chapter3</code> and make a <code>main.go</code> file containing the following:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  fmt.Println(&#34;1 + 1 =&#34;, 1 + 1)
+}</pre><p>If you run the program and you should see this:</p>
+<pre>$ go run main.go
+1 + 1 = 2</pre><p>Notice that this program is very similar to the program we wrote in chapter 2. It contains the same package line, the same import line, the same function declaration and uses the same <code>Println</code> function. This time instead of printing the string <code>Hello World</code> we print the string <code>1 + 1 =</code> followed by the result of the expression <code>1 + 1</code>. This expression is made up of three parts: the numeric literal <code>1</code> (which is of type <code>int</code>), the <code>+</code> operator (which represents addition) and another numeric literal <code>1</code>. Let&#39;s try the same thing using floating point numbers:</p>
+<pre> fmt.Println(&#34;1 + 1 =&#34;, 1.0 + 1.0)</pre><p>Notice that we use the <code>.0</code> to tell Go that this is a floating point number instead of an integer. Running this program will give you the same result as before.</p>
+<p>In addition to addition Go has several other operators:</p>
+<table><tr><td class="code">+</td><td>addition</td></tr><tr><td class="code">-</td><td>subtraction</td></tr><tr><td class="code">*</td><td>multiplication</td></tr><tr><td class="code">/</td><td>division</td></tr><tr><td class="code">%</td><td>remainder</td></tr></table>
+<h2 id="section2">Strings</h2><p>As we saw in chapter 2 a string is a sequence of characters with a definite length used to represent text. Go strings are made up of individual bytes, usually one for each character. (Characters from other languages like Chinese are represented by more than one byte)</p>
+<p>String literals can be created using double quotes <code>&#34;Hello World&#34;</code> or back ticks <code>`Hello World`</code>. The difference between these is that double quoted strings cannot contain newlines and they allow special escape sequences. For example <code>\n</code> gets replaced with a newline and <code>\t</code> gets replaced with a tab character.</p>
+<p>Several common operations on strings include finding the length of a string: <code>len(&#34;Hello World&#34;)</code>, accessing an individual character in the string: <code>&#34;Hello World&#34;[1]</code>, and concatenating two strings together:  <code>&#34;Hello &#34; + &#34;World&#34;</code>. Let&#39;s modify the program we created earlier to test these out:</p>
+<pre>package main
+
+import &#34;fmt&#34;
+
+func main() {
+  fmt.Println(len(&#34;Hello World&#34;))
+  fmt.Println(&#34;Hello World&#34;[1])
+  fmt.Println(&#34;Hello &#34; + &#34;World&#34;)
+}</pre><p>A few things to notice:</p>
+<ul><li><p>A space is also considered a character, so the string&#39;s length is 11 not 10 and the 3rd line has <code>&#34;Hello &#34;</code> instead of <code>&#34;Hello&#34;</code>.</p>
+</li><li><p>Strings are “indexed” starting at 0 not 1. <code>[1]</code> gives you the 2nd element not the 1st. Also notice that you see <code>101</code> instead of <code>e</code> when you run this program. This is because the character is represented by a byte (remember a byte is an integer).<br /><br />One way to think about indexing would be to show it like this instead: <code>&#34;Hello World&#34;<sub>1</sub></code>. You&#39;d read that as “The string Hello World sub 1,” “The string Hello World at 1” or “The second character of the string Hello World”.</p>
+</li><li><p>Concatenation uses the same symbol as addition. The Go compiler figures out what to do based on the types of the arguments. Since both sides of the <code>+</code> are strings the compiler assumes you mean concatenation and not addition. (Addition is meaningless for strings)</p>
+</li></ul><h2 id="section3">Booleans</h2><p>A boolean value (named after George Boole) is a special 1 bit integer type used to represent true and false (or on and off). Three logical operators are used with boolean values:</p>
+<table><tr><td class="code">&amp;&amp;</td><td>and</td></tr><tr><td class="code">||</td><td>or</td></tr><tr><td class="code">!</td><td>not</td></tr></table>
+
+<p>Here is an example program showing how they can be used:</p>
+<pre>func main() {
+  fmt.Println(true &amp;&amp; true)
+  fmt.Println(true &amp;&amp; false)
+  fmt.Println(true || true)
+  fmt.Println(true || false)
+  fmt.Println(!true)
+}</pre><p>Running this program should give you:</p>
+<pre>$ go run main.go
+true
+false
+true
+true
+false</pre><p>We usually use truth tables to define how these operators work:</p>
+<table><tr><td>Expression</td><td>Value</td></tr><tr><td class="code">true &amp;&amp; true</td><td class="code">true</td></tr><tr><td class="code">true &amp;&amp; false</td><td class="code">false</td></tr><tr><td class="code">false &amp;&amp; true</td><td class="code">false</td></tr><tr><td class="code">false &amp;&amp; false</td><td class="code">false</td></tr></table>
+<table><tr><td>Expression</td><td>Value</td></tr><tr><td class="code">true || true</td><td class="code">true</td></tr><tr><td class="code">true || false</td><td class="code">true</td></tr><tr><td class="code">false || true</td><td class="code">true</td></tr><tr><td class="code">false || false</td><td class="code">false</td></tr></table>
+
+<table><tr><td>Expression</td><td>Value</td></tr><tr><td class="code">!true</td><td class="code">false</td></tr><tr><td class="code">!false</td><td class="code">true</td></tr></table>
+
+<p>These are the simplest types included with Go and form the foundation from which all later types are built. </p>
+
+
+<h3>Problems</h3>
+
+<ul><li><p>How are integers stored on a computer?</p>
+</li><li><p>We know that (in base 10) the largest 1 digit number is 9 and the largest 2 digit number is 99. Given that in binary the largest 2 digit number is 11 (3), the largest 3 digit number is 111 (7) and the largest 4 digit number is 1111 (15) what&#39;s the largest 8 digit number? (hint: 10<sup>1</sup>-1 = 9 and 10<sup>2</sup>-1 = 99)</p>
+</li><li><p>Although overpowered for the task you can use Go as a calculator. Write a program that computes <code>32132 × 42452</code> and prints it to the terminal. (Use the <code>*</code> operator for multiplication)</p>
+</li><li><p>What is a string? How do you find its length?</p>
+</li><li><p>What&#39;s the value of the expression <code>(true &amp;&amp; false) || (false &amp;&amp; true) || !(false &amp;&amp; false)</code>?</p>
+</li></ul>
+
+<table class="paging"><tr>
+  <td class="prev"><a href="/books/intro/2">&larr; Previous</a></td>
+  <td><a href="/books/intro">Index</a></td>
+  <td class="next"><a href="/books/intro/4">Next &rarr;</a></td>
+</tr></table>
+
+</div>

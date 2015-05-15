@@ -1,0 +1,510 @@
+<div class="book body container">
+
+<h1>The Core Packages</h1>
+
+<p>Instead of writing everything from scratch, most real world programming depends on our ability to interface with existing libraries. This chapter will take a look at some of the most commonly used packages included with Go.</p>
+
+<p>First a word of warning: although some of these libraries are fairly obvious (or have been explained in previous chapters), many of the libraries included with Go require specialized domain specific knowledge (for example: cryptography). It is beyond the scope of this book to explain these underlying technologies.</p>
+
+<h2 id="section1">Strings</h2>
+
+<p>Go includes a large number of functions to work with strings in the <code>strings</code> package:</p>
+
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;strings&#34;
+)
+
+func main() {
+  fmt.Println(
+    // true
+    strings.Contains(&#34;test&#34;, &#34;es&#34;),
+
+    // 2
+    strings.Count(&#34;test&#34;, &#34;t&#34;),
+
+    // true
+    strings.HasPrefix(&#34;test&#34;, &#34;te&#34;),
+
+    // true
+    strings.HasSuffix(&#34;test&#34;, &#34;st&#34;),
+
+    // 1
+    strings.Index(&#34;test&#34;, &#34;e&#34;),
+
+    // &#34;a-b&#34;
+    strings.Join([]string{&#34;a&#34;,&#34;b&#34;}, &#34;-&#34;),
+
+    // == &#34;aaaaa&#34;
+    strings.Repeat(&#34;a&#34;, 5),
+
+    // &#34;bbaa&#34;
+    strings.Replace(&#34;aaaa&#34;, &#34;a&#34;, &#34;b&#34;, 2),
+
+    // []string{&#34;a&#34;,&#34;b&#34;,&#34;c&#34;,&#34;d&#34;,&#34;e&#34;}
+    strings.Split(&#34;a-b-c-d-e&#34;, &#34;-&#34;),
+
+    // &#34;test&#34;
+    strings.ToLower(&#34;TEST&#34;),
+
+    // &#34;TEST&#34;
+    strings.ToUpper(&#34;test&#34;),
+  )
+}</pre>
+
+<p>Sometimes we need to work with strings as binary data. To convert a string to a slice of bytes (and vice-versa) do this:</p>
+<pre>arr := []byte(&#34;test&#34;)
+str := string([]byte{&#39;t&#39;,&#39;e&#39;,&#39;s&#39;,&#39;t&#39;})</pre><h2 id="section2">Input / Output</h2><p>Before we look at files we need to understand Go&#39;s <code>io</code> package. The <code>io</code> package consists of a few functions, but mostly interfaces used in other packages. The two main interfaces are <code>Reader</code> and <code>Writer</code>. <code>Reader</code>s support reading via the <code>Read</code> method. <code>Writer</code>s support writing via the <code>Write</code> method. Many functions in Go take <code>Reader</code>s or <code>Writer</code>s as arguments. For example the <code>io</code> package has a <code>Copy</code> function which copies data from a <code>Reader</code> to a <code>Writer</code>:</p>
+<pre>func Copy(dst Writer, src Reader) (written int64, err error)</pre><p>To read or write to a <code>[]byte</code> or a <code>string</code> you can use the <code>Buffer</code> struct found in the <code>bytes</code> package:</p>
+<pre>var buf bytes.Buffer
+buf.Write([]byte(&#34;test&#34;))</pre><p>A <code>Buffer</code> doesn&#39;t have to be initialized and supports both the <code>Reader</code> and <code>Writer</code> interfaces. You can convert it into a <code>[]byte</code> by calling <code>buf.Bytes()</code>. If you only need to read from a string you can also use the <code>strings.NewReader</code> function which is more efficient than using a buffer.</p>
+<h2 id="section3">Files &amp; Folders</h2><p>To open a file in Go use the <code>Open</code> function from the <code>os</code> package.  Here is an example of how to read the contents of a file and display them on the terminal:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;os&#34;
+)
+
+func main() {
+  file, err := os.Open(&#34;test.txt&#34;)
+  if err != nil {
+    // handle the error here
+    return
+  }
+  defer file.Close()
+
+  // get the file size
+  stat, err := file.Stat()
+  if err != nil {
+    return
+  }
+  // read the file
+  bs := make([]byte, stat.Size())
+  _, err = file.Read(bs)
+  if err != nil {
+    return
+  }
+
+  str := string(bs)
+  fmt.Println(str)
+}</pre><p>We use <code>defer file.Close()</code> right after opening the file  to make sure the file is closed as soon as the function completes. Reading files is very common, so there&#39;s a shorter way to do this:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;io/ioutil&#34;
+)
+
+func main() {
+  bs, err := ioutil.ReadFile(&#34;test.txt&#34;)
+  if err != nil {
+    return
+  }
+  str := string(bs)
+  fmt.Println(str)
+}</pre>
+
+<p>Here is how we can create a file:</p>
+<pre>package main
+
+import (
+  &#34;os&#34;
+)
+
+func main() {
+  file, err := os.Create(&#34;test.txt&#34;)
+  if err != nil {
+    // handle the error here
+    return
+  }
+  defer file.Close()
+
+  file.WriteString(&#34;test&#34;)
+}</pre>
+
+<p>To get the contents of a directory we use the same <code>os.Open</code> function but give it a directory path instead of a file name. Then we call the <code>Readdir</code> method:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;os&#34;
+)
+
+func main() {
+  dir, err := os.Open(&#34;.&#34;)
+  if err != nil {
+    return
+  }
+  defer dir.Close()
+
+  fileInfos, err := dir.Readdir(-1)
+  if err != nil {
+    return
+  }
+  for _, fi := range fileInfos {
+    fmt.Println(fi.Name())
+  }
+}</pre><p>Often we want to recursively walk a folder (read the folder&#39;s contents, all the sub-folders, all the sub-sub-folders, …). To make this easier there&#39;s a <code>Walk</code> function provided in the <code>path/filepath</code> package:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;os&#34;
+  &#34;path/filepath&#34;
+)
+
+func main() {
+  filepath.Walk(&#34;.&#34;, func(path string, info os.FileInfo, err error) error {
+    fmt.Println(path)
+    return nil
+  })
+}</pre>
+
+<p>The function you pass to <code>Walk</code> is called for every file and folder in the root folder. (in this case <code>.</code>)</p>
+
+<h2 id="section4">Errors</h2><p>Go has a built-in type for errors that we have already seen (the <code>error</code> type). We can create our own errors by using the <code>New</code> function in the <code>errors</code> package:</p>
+<pre>package main
+
+import &#34;errors&#34;
+
+func main() {
+  err := errors.New(&#34;error message&#34;)
+}</pre><h2 id="section5">Containers &amp; Sort</h2><p>In addition to lists and maps Go has several more collections available underneath the container package. We&#39;ll take a look at the <code>container/list</code> package as an example.</p>
+<h3>List</h3>
+
+<p>The <code>container/list</code> package implements a doubly-linked list. A linked list is a type of data structure that looks like this:</p>
+<img class="block" src="/assets/img/intro/100000000000019000000057111AA314.png" />
+<p>
+  Each node of the list contains a value (1, 2, or 3 in this case) and a pointer to the next node. Since this is a doubly-linked list each node will also have pointers to the previous node. This list could be created by this program:</p>
+<pre>package main
+
+import (&#34;fmt&#34; ; &#34;container/list&#34;)
+
+func main() {
+  var x list.List
+  x.PushBack(1)
+  x.PushBack(2)
+  x.PushBack(3)
+
+  for e := x.Front(); e != nil; e=e.Next() {
+    fmt.Println(e.Value.(int))
+  }
+}</pre><p>The zero value for a <code>List</code> is an empty list (a <code>*List</code> can also be created using <code>list.New</code>). Values are appended to the list using <code>PushBack</code>. We loop over each item in the list by getting the first element, and following all the links until we reach nil.</p>
+<h3>Sort</h3>
+
+<p>The sort package contains functions for sorting arbitrary data. There are several predefined sorting functions (for slices of ints and floats) Here&#39;s an example for how to sort your own data:</p>
+<pre>package main
+
+import (&#34;fmt&#34; ; &#34;sort&#34;)
+
+type Person struct {
+  Name string
+  Age int
+}
+
+type ByName []Person
+
+func (this ByName) Len() int {
+  return len(this)
+}
+func (this ByName) Less(i, j int) bool {
+  return this[i].Name &lt; this[j].Name
+}
+func (this ByName) Swap(i, j int) {
+  this[i], this[j] = this[j], this[i]
+}
+
+func main() {
+  kids := []Person{
+    {&#34;Jill&#34;,9},
+    {&#34;Jack&#34;,10},
+  }
+  sort.Sort(ByName(kids))
+  fmt.Println(kids)
+}</pre><p>The <code>Sort</code> function in <code>sort</code> takes a <code>sort.Interface</code> and sorts it. The <code>sort.Interface</code> requires 3 methods: <code>Len</code>, <code>Less</code> and <code>Swap</code>. To define our own sort we create a new type (<code>ByName</code>) and make it equivalent to a slice of what we want to sort. We then define the 3 methods.</p>
+<p>Sorting our list of people is then as easy as casting the list into our new type. We could also sort by age by doing this:</p>
+<pre>type ByAge []Person
+func (this ByAge) Len() int {
+  return len(this)
+}
+func (this ByAge) Less(i, j int) bool {
+  return this[i].Age &lt; this[j].Age
+}
+func (this ByAge) Swap(i, j int) {
+  this[i], this[j] = this[j], this[i]
+}</pre><h2 id="section6">Hashes &amp; Cryptography</h2><p>A hash function takes a set of data and reduces it to a smaller fixed size. Hashes are frequently used in programming for everything from looking up data to easily detecting changes. Hash functions in Go are broken into two categories: cryptographic and non-cryptographic.</p>
+<p>The non-cryptographic hash functions can be found underneath the hash package and include <code>adler32</code>, <code>crc32</code>, <code>crc64</code> and <code>fnv</code>. Here&#39;s an example using <code>crc32</code>:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;hash/crc32&#34;
+)
+
+func main() {
+  h := crc32.NewIEEE()
+  h.Write([]byte(&#34;test&#34;))
+  v := h.Sum32()
+  fmt.Println(v)
+}</pre><p>The <code>crc32</code> hash object implements the <code>Writer</code> interface, so we can write bytes to it like any other <code>Writer</code>. Once we&#39;ve written everything we want we call <code>Sum32()</code> to return a <code>uint32</code>. A common use for <code>crc32</code> is to compare two files. If the <code>Sum32</code> value for both files is the same, it&#39;s highly likely (though not 100% certain) that the files are the same. If the values are different then the files are definitely not the same:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;hash/crc32&#34;
+  &#34;io/ioutil&#34;
+)
+
+func getHash(filename string) (uint32, error) {
+  bs, err := ioutil.ReadFile(filename)
+  if err != nil {
+    return 0, err
+  }
+  h := crc32.NewIEEE()
+  h.Write(bs)
+  return h.Sum32(), nil
+}
+
+func main() {
+  h1, err := getHash(&#34;test1.txt&#34;)
+  if err != nil {
+    return
+  }
+  h2, err := getHash(&#34;test2.txt&#34;)
+  if err != nil {
+    return
+  }
+  fmt.Println(h1, h2, h1 == h2)
+}</pre><p>Cryptographic hash functions are similar to their non-cryptographic counterparts, but they have the added property of being hard to reverse. Given the cryptographic hash of a set of data, it&#39;s extremely difficult to determine what made the hash. These hashes are often used in security applications.</p>
+<p>One common cryptographic hash function is known as SHA-1. Here&#39;s how it is used:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;crypto/sha1&#34;
+)
+
+func main() {
+  h := sha1.New()
+  h.Write([]byte(&#34;test&#34;))
+  bs := h.Sum([]byte{})
+  fmt.Println(bs)
+}</pre>
+
+<p>This example is very similar to the <code>crc32</code> one, because both <code>crc32</code> and <code>sha1</code> implement the <code>hash.Hash</code> interface. The main difference is that whereas <code>crc32</code> computes a 32 bit hash, <code>sha1</code> computes a 160 bit hash. There is no native type to represent a 160 bit number, so we use a slice of 20 bytes instead.</p>
+<h2 id="section7">Servers</h2><p>Writing network servers in Go is very easy. We will first take a look at how to create a TCP server:</p>
+<pre>package main
+
+import (
+  &#34;encoding/gob&#34;
+  &#34;fmt&#34;
+  &#34;net&#34;
+)
+
+func server() {
+  // listen on a port
+  ln, err := net.Listen(&#34;tcp&#34;, &#34;:9999&#34;)
+  if err != nil {
+    fmt.Println(err)
+    return
+  }
+  for {
+    // accept a connection
+    c, err := ln.Accept()
+    if err != nil {
+      fmt.Println(err)
+      continue
+    }
+    // handle the connection
+    go handleServerConnection(c)
+  }
+}
+
+func handleServerConnection(c net.Conn) {
+  // receive the message
+  var msg string
+  err := gob.NewDecoder(c).Decode(&amp;msg)
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Println(&#34;Received&#34;, msg)
+  }
+
+  c.Close()
+}
+
+func client() {
+  // connect to the server
+  c, err := net.Dial(&#34;tcp&#34;, &#34;127.0.0.1:9999&#34;)
+  if err != nil {
+    fmt.Println(err)
+    return
+  }
+
+  // send the message
+  msg := &#34;Hello World&#34;
+  fmt.Println(&#34;Sending&#34;, msg)
+  err = gob.NewEncoder(c).Encode(msg)
+  if err != nil {
+    fmt.Println(err)
+  }
+
+  c.Close()
+}
+
+func main() {
+  go server()
+  go client()
+
+  var input string
+  fmt.Scanln(&amp;input)
+}</pre>
+
+<p>This example uses the <code>encoding/gob</code> package which makes it easy to encode Go values so that other Go programs (or the same Go program in this case) can read them. Additional encodings are available in packages underneath <code>encoding</code> (like <code>encoding/json</code>) as well as in 3rd party packages. (for example we could use <code>labix.org/v2/mgo/bson</code>  for bson support)</p>
+
+<h3>HTTP</h3>
+
+<p>HTTP servers are even easier to setup and use:</p>
+
+<pre>package main
+
+import (&#34;net/http&#34; ; &#34;io&#34;)
+
+func hello(res http.ResponseWriter, req *http.Request) {
+  res.Header().Set(
+    &#34;Content-Type&#34;,
+    &#34;text/html&#34;,
+  )
+  io.WriteString(
+    res,
+    `&lt;DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+      &lt;title&gt;Hello World&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      Hello World!
+  &lt;/body&gt;
+&lt;/html&gt;`,
+  )
+}
+func main() {
+  http.HandleFunc(&#34;/hello&#34;, hello)
+  http.ListenAndServe(&#34;:9000&#34;, nil)
+}</pre>
+
+<p><code>HandleFunc</code> handles a URL route (<code>/hello</code>) by calling the given function. We can also handle static files by using <code>FileServer</code>:</p>
+<pre>http.Handle(
+  &#34;/assets/&#34;,
+  http.StripPrefix(
+    &#34;/assets/&#34;,
+    http.FileServer(http.Dir(&#34;assets&#34;)),
+  ),
+)</pre><h3>RPC</h3>
+
+<p>The <code>net/rpc</code> (remote procedure call) and <code>net/rpc/jsonrpc</code> packages provide an easy way to expose methods so they can be invoked over a network. (rather than just in the program running them)</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;net&#34;
+  &#34;net/rpc&#34;
+)
+
+type Server struct {}
+func (this *Server) Negate(i int64, reply *int64) error {
+  *reply = -i
+  return nil
+}
+
+func server() {
+  rpc.Register(new(Server))
+  ln, err := net.Listen(&#34;tcp&#34;, &#34;:9999&#34;)
+  if err != nil {
+    fmt.Println(err)
+    return
+  }
+  for {
+    c, err := ln.Accept()
+    if err != nil {
+      continue
+    }
+    go rpc.ServeConn(c)
+  }
+}
+func client() {
+  c, err := rpc.Dial(&#34;tcp&#34;, &#34;127.0.0.1:9999&#34;)
+  if err != nil {
+    fmt.Println(err)
+    return
+  }
+  var result int64
+  err = c.Call(&#34;Server.Negate&#34;, int64(999), &amp;result)
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Println(&#34;Server.Negate(999) =&#34;, result)
+  }
+}
+func main() {
+  go server()
+  go client()
+
+  var input string
+  fmt.Scanln(&amp;input)
+}</pre><p>This program is similar to the TCP example, except now we created an object to hold all the methods we want to expose and we call the <code>Negate</code> method from the client. See the documentation in <code>net/rpc</code> for more details.</p>
+<h2 id="section8">Parsing Command Line Arguments</h2><p>When we invoke a command on the terminal it&#39;s possible to pass that command arguments. We&#39;ve seen this with the <code>go</code> command:</p>
+<pre>go run myfile.go</pre><p>run and myfile.go are arguments. We can also pass flags to a command:</p>
+<pre>go run -v myfile.go</pre><p>The flag package allows us to parse arguments and flags sent to our program. Here&#39;s an example program that generates a number between 0 and 6. We can change the max value by sending a flag (<code>-max=100</code>) to the program:</p>
+<pre>package main
+
+import (&#34;fmt&#34;;&#34;flag&#34;;&#34;math/rand&#34;)
+
+func main() {
+  // Define flags
+  maxp := flag.Int(&#34;max&#34;, 6, &#34;the max value&#34;)
+  // Parse
+  flag.Parse()
+  // Generate a number between 0 and max
+  fmt.Println(rand.Intn(*maxp))
+}</pre><p>Any additional non-flag arguments can be retrieved with <code>flag.Args()</code> which returns a <code>[]string</code>.</p>
+<h2 id="section9">Synchronization Primitives</h2><p>The preferred way to handle concurrency and synchronization in Go is through goroutines and channels as discussed in chapter 10. However Go does provide more traditional multithreading routines in the <code>sync</code> and <code>sync/atomic</code> packages.</p>
+<h3>Mutexes</h3>
+
+<p>A mutex (mutal exclusive lock) locks a section of code to a single thread at a time and is used to protect shared resources from non-atomic operations. Here is an example of a mutex:</p>
+<pre>package main
+
+import (
+  &#34;fmt&#34;
+  &#34;sync&#34;
+  &#34;time&#34;
+)
+
+func main() {
+  m := new(sync.Mutex)
+
+  for i := 0; i &lt; 10; i++ {
+    go func(i int) {
+      m.Lock()
+      fmt.Println(i, &#34;start&#34;)
+      time.Sleep(time.Second)
+      fmt.Println(i, &#34;end&#34;)
+      m.Unlock()
+    }(i)
+  }
+
+  var input string
+  fmt.Scanln(&amp;input)
+}</pre><p>When the mutex (<code>m</code>) is locked any other attempt to lock it will block until it is unlocked. Great care should be taken when using mutexes or the synchronization primitives provided in the <code>sync/atomic</code> package. </p>
+<p>Traditional multithreaded programming is difficult; it&#39;s easy to make mistakes and those mistakes are hard to find, since they may depend on a very specific, relatively rare, and difficult to reproduce set of circumstances. One of Go&#39;s biggest strengths is that the concurrency features it provides are much easier to understand and use properly than threads and locks.</p>
+
+<table class="paging"><tr>
+  <td class="prev"><a href="/books/intro/12">&larr; Previous</a></td>
+  <td><a href="/books/intro">Index</a></td>
+  <td class="next"><a href="/books/intro/14">Next &rarr;</a></td>
+</tr></table>
+
+</div>

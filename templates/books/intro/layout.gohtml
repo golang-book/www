@@ -1,0 +1,21 @@
+<div class="breadcrumbs">
+  <a href="/">Go Resources</a>
+  / <a href="/books/intro">An Introduction to Programming in Go</a>
+  {{if .Title}}
+  / <a href="">{{.Title}}</a>
+  {{end}}
+</div>
+{{.Body}}
+<div class="footer">
+  &copy; {{year}} Caleb Doxsey.
+  {{if eq "" .Title}}
+    Cover Art: &copy; 2012 Abigail Doxsey Anderson.
+  {{end}}
+  All Rights Reserved.<br><br>
+
+  Portions of this page may contain modifications based on work created and
+  <a href="https://developers.google.com/site-policies">shared by Google</a>
+  and used according to terms described in the
+  <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons 3.0
+    Attribution License</a>.
+</div>

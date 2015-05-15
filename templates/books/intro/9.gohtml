@@ -1,0 +1,184 @@
+<div class="book body container">
+
+<h1>Structs and Interfaces</h1>
+<p>Although it would be possible for us to write programs only using Go&#39;s built-in data types, at some point it would become quite tedious. Consider a program that interacts with shapes:</p>
+<pre>package main
+
+import (&#34;fmt&#34;; &#34;math&#34;)
+
+func distance(x1, y1, x2, y2 float64) float64 {
+  a := x2 – x1
+  b := y2 – y1
+  return math.Sqrt(a*a + b*b)
+}
+func rectangleArea(x1, y1, x2, y2 float64) float64 {
+  l := distance(x1, y1, x1, y2)
+  w := distance(x1, y1, x2, y1)
+  return l * w
+}
+func circleArea(x, y, r float64) float64 {
+  return math.Pi * r*r
+}
+func main() {
+  var rx1, ry1 float64 = 0, 0
+  var rx2, ry2 float64 = 10, 10
+  var cx, cy, cr float64 = 0, 0, 5
+
+  fmt.Println(rectangleArea(rx1, ry1, rx2, ry2))
+  fmt.Println(circleArea(cx, cy, cr))
+}</pre>
+
+<p>Keeping track of all the coordinates makes it difficult to see what the program is doing and will likely lead to mistakes.</p>
+
+<h2 id="section1">Structs</h2>
+<p>An easy way to make this program better is to use a struct. A struct is a type which contains named fields. For example we could represent a Circle like this:</p>
+<pre>type Circle struct {
+  x float64
+  y float64
+  r float64
+}</pre>
+
+<p>The <code>type</code> keyword introduces a new type. It&#39;s followed by the name of the type (<code>Circle</code>), the keyword <code>struct</code> to indicate that we are defining a <code>struct</code> type and a list of fields inside of curly braces. Each field has a name and a type. Like with functions we can collapse fields that have the same type:</p>
+<pre>type Circle struct {
+  x, y, r float64
+}</pre>
+
+<h3>Initialization</h3>
+
+<p>We can create an instance of our new Circle type in a variety of ways:</p>
+<pre>var c Circle</pre>
+
+<p>Like with other data types, this will create a local Circle variable that is by default set to zero. For a <code>struct</code> zero means each of the fields is set to their corresponding zero value (<code>0</code> for <code>int</code>s, <code>0.0</code> for <code>float</code>s, <code>&#34;&#34;</code> for <code>string</code>s, <code>nil</code> for pointers, …) We can also use the new function:</p>
+<pre>c := new(Circle)</pre>
+
+<p>This allocates memory for all the fields, sets each of them to their zero value and returns a pointer. (<code>*Circle</code>) More often we want to give each of the fields a value. We can do this in two ways. Like this:</p>
+<pre>c := Circle{x: 0, y: 0, r: 5}</pre>
+
+<p>Or we can leave off the field names if we know the order they were defined:</p>
+<pre>c := Circle{0, 0, 5}</pre><h3>Fields</h3>
+
+<p>We can access fields using the <code>.</code> operator:</p>
+<pre>fmt.Println(c.x, c.y, c.r)
+c.x = 10
+c.y = 5</pre>
+
+<p>Let&#39;s modify the <code>circleArea</code> function so that it uses a <code>Circle</code>:</p>
+<pre>func circleArea(c Circle) float64 {
+  return math.Pi * c.r*c.r
+}</pre>
+
+<p>In main we have:</p>
+<pre>c := Circle{0, 0, 5}
+fmt.Println(circleArea(c))</pre>
+
+<p>One thing to remember is that arguments are always copied in Go. If we attempted to modify one of the fields inside of the <code>circleArea</code> function, it would not modify the original variable. Because of this we would typically write the function like this:</p>
+<pre>func circleArea(c *Circle) float64 {
+  return math.Pi * c.r*c.r
+}</pre>
+
+<p>And change main:</p>
+<pre>c := Circle{0, 0, 5}
+fmt.Println(circleArea(&amp;c))</pre><h2 id="section2">Methods</h2><p>Although this is better than the first version of this code, we can improve it significantly by using a special type of function known as a method:</p>
+<pre>func (c *Circle) area() float64 {
+  return math.Pi * c.r*c.r
+}</pre>
+
+<p>In between the keyword <code>func</code> and the name of the function we&#39;ve added a “receiver”. The receiver is like a parameter – it has a name and a type – but by creating the function in this way it allows us to call the function using the <code>.</code> operator:</p>
+<pre>fmt.Println(c.area())</pre><p>This is much easier to read, we no longer need the <code>&amp;</code> operator (Go automatically knows to pass a pointer to the circle for this method) and because this function can only be used with <code>Circle</code>s we can rename the function to just <code>area</code>.</p>
+
+<p>Let&#39;s do the same thing for the rectangle:</p>
+<pre>type Rectangle struct {
+  x1, y1, x2, y2 float64
+}
+func (r *Rectangle) area() float64 {
+  l := distance(r.x1, r.y1, r.x1, r.y2)
+  w := distance(r.x1, r.y1, r.x2, r.y1)
+  return l * w
+}</pre>
+
+<p><code>main</code> has:</p>
+<pre>r := Rectangle{0, 0, 10, 10}
+fmt.Println(r.area())</pre><h3>Embedded Types</h3>
+
+<p>A struct&#39;s fields usually represent the has-a relationship. For example a <code>Circle</code> has a <code>radius</code>. Suppose we had a person struct:</p>
+<pre>type Person struct {
+  Name string
+}
+func (p *Person) Talk() {
+  fmt.Println(&#34;Hi, my name is&#34;, p.Name)
+}</pre>
+
+<p>And we wanted to create a new <code>Android</code> struct. We could do this:</p>
+<pre>type Android struct {
+  Person Person
+  Model string
+}</pre>
+
+<p>This would work, but we would rather say an Android is a Person, rather than an Android has a Person. Go supports relationships like this by using an embedded type. Also known as anonymous fields, embedded types look like this:</p>
+<pre>type Android struct {
+  Person
+  Model string
+}</pre>
+
+<p>We use the type (<code>Person</code>) and don&#39;t give it a name. When defined this way the <code>Person</code> struct can be accessed using the type name:</p>
+<pre>a := new(Android)
+a.Person.Talk()</pre>
+
+<p>But we can also call any <code>Person</code> methods directly on the <code>Android</code>:</p>
+<pre>a := new(Android)
+a.Talk()</pre>
+
+<p>The is-a relationship works this way intuitively: People can talk, an android is a person, therefore an android can talk.</p>
+
+<h2 id="section3">Interfaces</h2>
+<p>You may have noticed that we were able to name the <code>Rectangle</code>&#39;s <code>area</code> method the same thing as the <code>Circle</code>&#39;s <code>area</code> method. This was no accident. In both real life and in programming, relationships like these are commonplace. Go has a way of making these accidental similarities explicit through a type known as an Interface. Here is an example of a <code>Shape</code> interface:</p>
+<pre>type Shape interface {
+  area() float64
+}</pre>
+
+<p>Like a struct an interface is created using the <code>type</code> keyword, followed by a name and the keyword <code>interface</code>. But instead of defining fields, we define a “method set”. A method set is a list of methods that a type must have in order to “implement” the interface.</p>
+
+<p>In our case both <code>Rectangle</code> and <code>Circle</code> have area methods which return <code>float64</code>s so both types implement the <code>Shape</code> interface. By itself this wouldn&#39;t be particularly useful, but we can use interface types as arguments to functions:</p>
+<pre>func totalArea(shapes ...Shape) float64 {
+  var area float64
+  for _, s := range shapes {
+    area += s.area()
+  }
+  return area
+}</pre>
+
+<p>We would call this function like this:</p>
+<pre>fmt.Println(totalArea(&amp;c, &amp;r))</pre>
+
+<p>Interfaces can also be used as fields:</p>
+<pre>type MultiShape struct {
+  shapes []Shape
+}</pre>
+
+<p>We can even turn <code>MultiShape</code> itself into a <code>Shape</code> by giving it an area method:</p>
+<pre>func (m *MultiShape) area() float64 {
+  var area float64
+  for _, s := range m.shapes {
+    area += s.area()
+  }
+  return area
+}</pre>
+
+<p>Now a <code>MultiShape</code> can contain <code>Circle</code>s, <code>Rectangle</code>s or even other <code>MultiShape</code>s.</p>
+
+<h3>Problems</h3>
+
+<ul><li><p>What&#39;s the difference between a method and a function?</p>
+</li><li><p>Why would you use an embedded anonymous field instead of a normal named field?</p>
+</li><li><p>Add a new method to the <code>Shape</code> interface called <code>perimeter</code> which calculates the perimeter of a shape. Implement the method for <code>Circle</code> and <code>Rectangle</code>.</p>
+</li></ul>
+
+<table class="paging">
+  <tr>
+    <td class="prev"><a href="/books/intro/8">&larr; Previous</a></td>
+    <td><a href="/books/intro">Index</a></td>
+    <td class="next"><a href="/books/intro/10">Next &rarr;</a></td>
+  </tr>
+</table>
+
+</div>
