@@ -124,24 +124,22 @@ func main() {
 	})
 	handler := router
 
-	/*
-		log.Println("starting server on :443")
-		li1, err := client.Listen(protocol.SocketDefinition{
-			Port: 443,
-			HTTP: &protocol.SocketHTTPDefinition{
-				DomainSuffix: "golang-book.com",
-			},
-			TLS: &protocol.SocketTLSDefinition{
-				Cert: tlsCert,
-				Key:  tlsKey,
-			},
-		})
-		if err != nil {
-			log.Fatalln(err)
-		}
-		defer li1.Close()
-		go http.Serve(li1, nil)
-	*/
+	log.Println("starting server on :443")
+	li1, err := client.Listen(protocol.SocketDefinition{
+		Port: 443,
+		HTTP: &protocol.SocketHTTPDefinition{
+			DomainSuffix: "golang-book.com",
+		},
+		TLS: &protocol.SocketTLSDefinition{
+			Cert: tlsCert,
+			Key:  tlsKey,
+		},
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer li1.Close()
+	go http.Serve(li1, handler)
 
 	log.Println("starting server on :80")
 	li2, err := client.Listen(protocol.SocketDefinition{
