@@ -80,7 +80,7 @@ fmt.Println(total / float64(len(x)))</pre><p>A single <code>_</code> (underscore
 <p>If you want to create a slice you should use the built-in <code>make</code> function:</p>
 <pre>x := make([]float64, 5)</pre><p>This creates a slice that is associated with an underlying <code>float64</code> array of length 5. Slices are always associated with some array, and although they can never be longer than the array, they can be smaller. The <code>make</code> function also allows a 3rd parameter:</p>
 <pre>x := make([]float64, 5, 10)</pre><p>10 represents the capacity of the underlying array which the slice points to:</p>
-<p><img class="block" src="/assets/img/intro/10000000000001740000006A3733A30E.png" />Another way to create slices is to use the <code>[low : high]</code> expression:</p>
+<p><img class="block" src="{{public_link "img/intro/10000000000001740000006A3733A30E.png"}}" />Another way to create slices is to use the <code>[low : high]</code> expression:</p>
 <pre>arr := [5]float64{1,2,3,4,5}
 x := arr[0:5]</pre><p><code>low</code> is the index of where to start the slice and <code>high</code> is the index where to end it (but not including the index itself). For example while <code>arr[0:5]</code> returns <code>[1,2,3,4,5]</code>, <code>arr[1:4]</code> returns <code>[2,3,4]</code>.</p>
 <p>For convenience we are also allowed to omit <code>low</code>, <code>high</code> or even both <code>low</code> and <code>high</code>. <code>arr[0:]</code> is the same as <code>arr[0:len(arr)]</code>, <code>arr[:5]</code> is the same as <code>arr[0:5]</code> and <code>arr[:]</code> is the same as <code>arr[0:len(arr)]</code>.</p>

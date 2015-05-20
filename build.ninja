@@ -1,0 +1,21 @@
+rule css
+  command = cleancss --source-map --source-map-inline-sources -o $out $in
+
+rule js
+  command = uglifyjs --compress --mangle --source-map-url /$out.map --source-map $out.map --output $out -- $in
+
+rule gocompile
+  command = go build -o $out
+
+build tmp/golang-book-www: gocompile | main.go templates.go tls.go
+
+build public/golang-book.css: css $
+  app/css/normalize.css $
+  app/css/fonts.css $
+  app/css/main.css $
+  app/css/layout.css $
+  app/css/book.css $
+  app/css/toc.css
+
+build public/golang-book.js: js $
+  app/js/main.js

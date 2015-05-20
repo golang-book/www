@@ -4,15 +4,13 @@
     <title>Books</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
-    <link rel="stylesheet" href="/assets/css/normalize.css" type="text/css">
-    <link rel="stylesheet" href="/assets/css/main.css" type="text/css">
-    <link rel="stylesheet" href="/assets/css/toc.css" type="text/css">
+    <link rel="shortcut icon" href="/public/img/favicon.ico">
+    <link rel="stylesheet" href="{{public_link "golang-book.css"}}" type="text/css">
   </head>
   <body>
     <div class="outer-container">
     {{.Body}}
     </div>
-    <script src="/assets/js/main.js"></script>
+    <script src="{{public_link "golang-book.js"}}"></script>
   </body>
 </html>

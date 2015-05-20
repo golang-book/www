@@ -1,0 +1,110 @@
+
+* {
+  box-sizing: border-box;
+}
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+body {
+  background: #E0EBF5 url("/public/img/pattern-1ask.png") repeat;
+  font-family: "Fira Sans", serif;
+  font-size: 15px;
+  color: #333;
+}
+a, a:active, a:visited, a:link, a:hover {
+  color: #375EAB;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 40px;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+p {
+  line-height: 24px;
+}
+
+pre, code, .code {
+  font-family: "Fira Mono", monospace;
+  font-size: 13px;
+}
+pre, code {
+  background: #F3F3F3;
+  border: 1px solid #E3E3E3;
+}
+pre {
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  line-height: 18px;
+}
+code {
+  border-radius: 3px;
+  padding: 1px 2px;
+  white-space: nowrap;
+}
+
+q, blockquote {
+  color: black;
+}
+blockquote {
+  background: #fff8dc;
+  border: 1px solid #e0dcbf;
+}
+q {
+  font-style: italic;
+}
+q:before {
+  content: "";
+}
+q:after {
+ content: "";
+}
+
+.book-list {
+  padding-bottom: 24px;
+}
+.book-list dt {
+  font-size: 20px;
+}
+dl dt {
+  font-weight: bold;
+}
+dl dd {
+  padding: 8px 0;
+  margin: 0;
+}
+
+p {
+  margin: 12px 0;
+}
+h2 {
+  font-size: 28px;
+}
+h3 {
+  font-size: 18px;
+}
+h4, h5 {
+  font-size: 15px;
+}
+h2, h3, h4, h5 {
+  color: #000;
+  margin: 20px 0 12px 0;
+}
+
+
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}

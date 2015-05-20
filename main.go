@@ -87,7 +87,6 @@ func register(path string, tpl Template) {
 
 func main() {
 	log.SetFlags(0)
-	assets := http.FileServer(http.Dir("assets"))
 
 	router = httprouter.New()
 	register("/", PageTemplate{FileTemplate("index.gohtml")})
@@ -118,10 +117,16 @@ func main() {
 			},
 		)
 	}
-	router.GET("/assets/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
+
+	public := http.FileServer(http.Dir("public"))
+	router.GET("/public/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
 		req.URL.Path = "/" + params.ByName("path")
-		assets.ServeHTTP(res, req)
+		if req.URL.Query().Get("version") == getVersion("public/"+params.ByName("path")) {
+			res.Header().Set("Cache-Control", "max-age=31556926")
+		}
+		public.ServeHTTP(res, req)
 	})
+
 	handler := router
 
 	log.Println("starting server on :443")

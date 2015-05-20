@@ -15,6 +15,9 @@ type FileTemplate string
 
 func (ft FileTemplate) Render(data interface{}) (string, error) {
 	tpl, err := template.New("").Funcs(map[string]interface{}{
+		"public_link": func(name string) string {
+			return "/public/" + name + "?version=" + getVersion("public/"+name)
+		},
 		"year": func() string {
 			return time.Now().Format("2006")
 		},

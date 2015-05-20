@@ -1,0 +1,39 @@
+img.block {
+  display: block;
+  margin: 16px auto;
+}
+.book table {
+  margin-bottom: 16px;
+}
+.book td {
+  border: 1px solid #E3E3E3;
+  padding: 4px 8px;
+  background: #FAFAFA;
+  text-align: center;
+}
+
+
+.book .paging {
+  border-top: 1px solid #ddd;
+  width: 100%;
+  margin-top: 16px;
+}
+.book .paging td {
+  text-align: center;
+  padding: 8px 0 0;
+  border: none;
+  background: transparent;
+}
+.book .paging .prev, .book .paging .next {
+  width: 100px;
+}
+.book .paging .prev {
+  text-align: left;
+}
+.book .paging .next {
+  text-align: right;
+}
+
+.book .section-link {
+  margin-left: 4px;
+}

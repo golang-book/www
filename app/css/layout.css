@@ -1,0 +1,40 @@
+.outer-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #FFF;
+  border: 1px solid #AAA;
+  border-top: none;
+  border-bottom: none;
+
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.container {
+  padding: 20px;
+}
+.body {
+  flex: 1;
+}
+.breadcrumbs {
+  padding: 8px 16px;
+  border-bottom: 1px solid #DDD;
+  background: #F3F3F3;
+  font-size: 13px;
+}
+.footer {
+  padding: 4px 16px;
+  border-top: 1px solid #DDD;
+  background: #F3F3F3;
+  font-size: 8px;
+}
+
+.cover-image {
+  float: left;
+  margin-right: 16px;
+  margin-top: 4px;
+  border: 1px solid #666;
+  border-radius: 4px;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
+}

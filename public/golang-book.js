@@ -1,0 +1,2 @@
+!function(){var e=[];e.push.apply(e,document.getElementsByTagName("h2")),e.push.apply(e,document.getElementsByTagName("h3")),e.push.apply(e,document.getElementsByTagName("h4")),e.push.apply(e,document.getElementsByTagName("h5"));for(var n=0;n<e.length;n++)!function(e){if(e.id){var n;e.addEventListener("mouseenter",function(t){n||(n=document.createElement("a"),n.className="section-link",n.href="#"+e.id,n.textContent="§",e.appendChild(n))}),e.addEventListener("mouseleave",function(t){n&&(e.removeChild(n),n=null)})}}(e[n])}();
+//# sourceMappingURL=/public/golang-book.js.map
