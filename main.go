@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/NYTimes/gziphandler"
 	"github.com/badgerodon/socketmaster/client"
 	"github.com/badgerodon/socketmaster/protocol"
 	"github.com/julienschmidt/httprouter"
@@ -132,21 +133,26 @@ func main() {
 
 	public := http.FileServer(http.Dir("public"))
 	router.GET("/public/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
-		req.URL.Path = "/" + params.ByName("path")
-		if req.URL.Query().Get("version") == getVersion("public/"+params.ByName("path")) {
-			res.Header().Set("Cache-Control", "max-age=31556926")
+		path := params.ByName("path")
+		maxAge := "3600"
+		parts := strings.SplitN(path, ".", 3)
+		if len(parts) == 3 {
+			p := parts[0] + "." + parts[2]
+			if parts[1] == getVersion("public/"+p) {
+				path = p
+				maxAge = "31556926"
+			}
 		}
+		req.URL.Path = "/" + path
+		res.Header().Set("Cache-Control", "max-age="+maxAge+", public")
 		public.ServeHTTP(res, req)
 	})
 
-	secure := router
-	insecure := http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
-		if req.URL.Path == "/health" {
-			res.Write([]byte("OK"))
-			return
-		}
-		secure.ServeHTTP(res, req)
+	router.GET("/health", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
+		io.WriteString(res, "OK")
 	})
+
+	handler := gziphandler.GzipHandler(router)
 
 	log.Println("starting server on :443")
 	li1, err := client.Listen(protocol.SocketDefinition{
@@ -163,7 +169,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	defer li1.Close()
-	go http.Serve(li1, secure)
+	go http.Serve(li1, handler)
 
 	log.Println("starting server on :80")
 	li2, err := client.Listen(protocol.SocketDefinition{
@@ -177,7 +183,7 @@ func main() {
 	}
 	defer li2.Close()
 
-	err = http.Serve(li2, insecure)
+	err = http.Serve(li2, handler)
 	if err != nil {
 		log.Fatalln(err)
 	}

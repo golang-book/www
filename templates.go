@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"html/template"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -16,7 +17,12 @@ type FileTemplate string
 func (ft FileTemplate) Render(data interface{}) (string, error) {
 	tpl, err := template.New("").Funcs(map[string]interface{}{
 		"public_link": func(name string) string {
-			return "/public/" + name + "?version=" + getVersion("public/"+name)
+			version := getVersion("public/" + name)
+			parts := strings.SplitN(name, ".", 2)
+			if len(parts) == 1 {
+				return "/public/" + name + "." + version
+			}
+			return "/public/" + parts[0] + "." + version + "." + parts[1]
 		},
 		"year": func() string {
 			return time.Now().Format("2006")
