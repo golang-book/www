@@ -89,9 +89,9 @@ func main() {
 	log.SetFlags(0)
 
 	router = httprouter.New()
-	register("/", PageTemplate{FileTemplate("index.gohtml")})
-	register("/guides/machine_setup", PageTemplate{FileTemplate("guides/01_machine_setup.gohtml")})
-	register("/books/intro", IntroTemplate{Template: FileTemplate("books/intro/front.gohtml")})
+	register("/", PageTemplate{FileTemplate("index.gohtml"), ""})
+	register("/guides/machine_setup", guideTemplate{FileTemplate("guides/01_machine_setup.gohtml"), "Machine Setup"})
+	register("/books/intro", introTemplate{Template: FileTemplate("books/intro/front.gohtml")})
 	sections := []string{
 		"Getting Started",
 		"Your First Program",
@@ -111,11 +111,23 @@ func main() {
 	for i, section := range sections {
 		register(
 			fmt.Sprint("/books/intro/", i+1),
-			IntroTemplate{
+			introTemplate{
 				Template: FileTemplate(fmt.Sprint("books/intro/", i+1, ".gohtml")),
 				Title:    section,
 			},
 		)
+	}
+
+	for i := 1; i <= 14; i++ {
+		for _, str := range []string{
+			fmt.Sprintf("/%d", i),
+			fmt.Sprintf("/%d/index.htm", i),
+		} {
+			dst := fmt.Sprintf("/books/intro/%d", i)
+			router.GET(str, func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
+				http.Redirect(res, req, dst, http.StatusMovedPermanently)
+			})
+		}
 	}
 
 	public := http.FileServer(http.Dir("public"))
@@ -127,7 +139,14 @@ func main() {
 		public.ServeHTTP(res, req)
 	})
 
-	handler := router
+	secure := router
+	insecure := http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+		if req.URL.Path == "/health" {
+			res.Write([]byte("OK"))
+			return
+		}
+		secure.ServeHTTP(res, req)
+	})
 
 	log.Println("starting server on :443")
 	li1, err := client.Listen(protocol.SocketDefinition{
@@ -144,7 +163,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	defer li1.Close()
-	go http.Serve(li1, handler)
+	go http.Serve(li1, secure)
 
 	log.Println("starting server on :80")
 	li2, err := client.Listen(protocol.SocketDefinition{
@@ -158,7 +177,7 @@ func main() {
 	}
 	defer li2.Close()
 
-	err = http.Serve(li2, handler)
+	err = http.Serve(li2, insecure)
 	if err != nil {
 		log.Fatalln(err)
 	}

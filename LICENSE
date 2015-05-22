@@ -1,4 +1,4 @@
-With regards to the content (.gohtml, images, etc..):
+With regards to the book content (templates/books/**.gohtml, images, etc..):
 
   Copyright (c) 2015 Caleb Doxsey
   All Rights Reserved
@@ -7,6 +7,11 @@ The cover art for "An Introduction to Programming in Go" is:
 
   Copyright (c) 2012 Abigail Doxsey Anderson
   All Rights Reserved
+
+With regards to the guide content (templates/guides/**.gohtml, images, etc...):
+
+  Copyright (c) 2015 Caleb Doxsey
+  Licensed under a Creative Commons Attribution 4.0 International License.
 
 Portions of the text may contain modifications based on work created and shared
 by Google and used according to terms described in the Creative Commons 3.0

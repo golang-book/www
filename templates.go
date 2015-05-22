@@ -33,17 +33,24 @@ func (ft FileTemplate) Render(data interface{}) (string, error) {
 	return buf.String(), nil
 }
 
-type IntroTemplate struct {
+type introTemplate struct {
 	Template
 	Title string
 }
 
-func (it IntroTemplate) Render(data interface{}) (string, error) {
+func (it introTemplate) Render(data interface{}) (string, error) {
 	body, err := it.Template.Render(data)
 	if err != nil {
 		return "", err
 	}
-	return PageTemplate{FileTemplate("books/intro/layout.gohtml")}.Render(struct {
+	title := "An Introduction to Programming in Go"
+	if it.Title != "" {
+		title = it.Title + " — " + title
+	}
+	return PageTemplate{
+		Template: FileTemplate("books/intro/layout.gohtml"),
+		Title:    title,
+	}.Render(struct {
 		Body  template.HTML
 		Title string
 	}{
@@ -52,8 +59,29 @@ func (it IntroTemplate) Render(data interface{}) (string, error) {
 	})
 }
 
+type guideTemplate struct {
+	Template
+	Title string
+}
+
+func (gt guideTemplate) Render(data interface{}) (string, error) {
+	body, err := gt.Template.Render(data)
+	if err != nil {
+		return "", err
+	}
+	return PageTemplate{
+		Template: FileTemplate("guides/layout.gohtml"),
+		Title:    gt.Title,
+	}.Render(struct {
+		Body template.HTML
+	}{
+		Body: template.HTML(body),
+	})
+}
+
 type PageTemplate struct {
 	Template
+	Title string
 }
 
 func (pt PageTemplate) Render(data interface{}) (string, error) {
@@ -62,8 +90,10 @@ func (pt PageTemplate) Render(data interface{}) (string, error) {
 		return "", err
 	}
 	return FileTemplate("layout.gohtml").Render(struct {
-		Body template.HTML
+		Body  template.HTML
+		Title string
 	}{
-		Body: template.HTML(body),
+		Body:  template.HTML(body),
+		Title: pt.Title,
 	})
 }
