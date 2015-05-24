@@ -114,7 +114,7 @@ main.go:7 +0x4d
 goroutine 2 [syscall]:
 created by runtime.main
       C:/Users/ADMINI~1/AppData/Local/Temp/2/bindi
-t269497170/go/src/pkg/runtime/proc.c:221
+t269497170/src/pkg/runtime/proc.c:221
 exit status 2</pre><p>Up till now we have only seen compile-time errors. This is an example of a runtime error. As the name would imply, runtime errors happen when you run the program, while compile-time errors happen when you try to compile the program.</p>
 <p>The problem with our program is that maps have to be initialized before they can be used. We should have written this:</p>
 <pre>x := make(map[string]int)

@@ -1,8 +1,21 @@
 <div class="book body container">
-  <h1>Your First Program</h1><p>Traditionally the first program you write in any programming language is called a “Hello World” program – a program that simply outputs <code>Hello World</code> to your terminal. Let&#39;s write one using Go.</p>
-<p>First create a new folder where we can store our program. The installer you used in chapter 1 created a folder in your home directory named <code>Go</code>. Create a folder named <code>~/Go/src/golang-book/chapter2</code>. (Where <code>~</code> means your home directory) From the terminal you can do this by entering the following commands:</p>
-<pre>mkdir Go/src/golang-book
-mkdir Go/src/golang-book/chapter2</pre><p>Using your text editor type in the following:</p>
+  <h1>Your First Program</h1>
+  <p>
+    Traditionally the first program you write in any programming language is
+    called a “Hello World” program – a program that simply outputs
+    <code>Hello World</code> to your terminal. Let&#39;s write one using Go.
+  </p>
+  <p>
+    First create a new folder where we can store our program. Create a folder
+    named <code>~/src/golang-book/chapter2</code>. (Where <code>~</code> means
+    your home directory) From the terminal you can do this by entering the
+    following commands:
+  </p>
+  <pre>mkdir src/golang-book
+mkdir src/golang-book/chapter2</pre>
+  <p>
+    Using your text editor type in the following:
+  </p>
 <pre>package main
 
 import &#34;fmt&#34;
@@ -11,11 +24,30 @@ import &#34;fmt&#34;
 
 func main() {
     fmt.Println(&#34;Hello World&#34;)
-}</pre><p>Make sure your file is identical to what is shown here and save it as <code>main.go</code> in the folder we just created. Open up a new terminal and type in the following:</p>
-<pre>cd Go/src/golang-book/chapter2
-go run main.go</pre><p>You should see <code>Hello World</code> displayed in your terminal. The <code>go run</code> command takes the subsequent files   (separated by spaces), compiles them into an executable saved in a temporary directory and then runs the program. If you didn&#39;t see <code>Hello World</code> displayed you may have made a mistake when typing in the program. The Go compiler will give you hints about where the mistake lies. Like most compilers, the Go compiler is extremely pedantic and has no tolerance for mistakes. </p>
-<h2 id="section1">How to Read a Go Program</h2><p>Let&#39;s look at this program in more detail. Go programs are read top to bottom, left to right. (like a book) The first line says this:</p>
-<pre>package main</pre><p>This is known as a “package declaration”. Every Go program must start with a package declaration. Packages are Go&#39;s way of organizing and reusing code. There are two types of Go programs: executables and libraries. Executable applications are the kinds of programs that we can run directly from the terminal. (in Windows they end with <code>.exe</code>) Libraries are collections of code that we package together so that we can use them in other programs. We will explore libraries in more detail later, for now just make sure to include this line in any program you write.</p>
+}</pre>
+  <p>
+    Make sure your file is identical to what is shown here and save it as
+    <code>main.go</code> in the folder we just created. Open up a new terminal
+    and type in the following:
+  </p>
+  <pre>cd src/golang-book/chapter2
+go run main.go</pre>
+  <p>
+    You should see <code>Hello World</code> displayed in your terminal.
+    The <code>go run</code> command takes the subsequent files (separated by
+    spaces), compiles them into an executable saved in a temporary directory and
+    then runs the program. If you didn&#39;t see <code>Hello World</code>
+    displayed you may have made a mistake when typing in the program. The Go
+    compiler will give you hints about where the mistake lies. Like most
+    compilers, the Go compiler is extremely pedantic and has no tolerance for
+    mistakes.
+  </p>
+  <h2 id="section1">How to Read a Go Program</h2>
+  <p>
+    Let&#39;s look at this program in more detail. Go programs are read top to
+    bottom, left to right. (like a book) The first line says this:
+  </p>
+  <pre>package main</pre><p>This is known as a “package declaration”. Every Go program must start with a package declaration. Packages are Go&#39;s way of organizing and reusing code. There are two types of Go programs: executables and libraries. Executable applications are the kinds of programs that we can run directly from the terminal. (in Windows they end with <code>.exe</code>) Libraries are collections of code that we package together so that we can use them in other programs. We will explore libraries in more detail later, for now just make sure to include this line in any program you write.</p>
 <p>The next line is a blank line. Computers represent newlines with a special character (or several characters). Newlines, spaces and tabs are known as whitespace (because you can&#39;t see them). Go mostly doesn&#39;t care about whitespace, we use it to make programs easier to read. (You could remove this line and the program would behave in exactly the same way)</p>
 <p>Then we see this:</p>
 <pre>import &#34;fmt&#34;</pre><p>The <code>import</code> keyword is how we include code from other packages to use with our program. The <code>fmt</code> package (shorthand for format) implements formatting for input and output. Given what we just learned about packages what do you think the <code>fmt</code> package&#39;s files would contain at the top of them?</p>

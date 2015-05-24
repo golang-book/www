@@ -17,7 +17,7 @@
 </ul>
 
 <h2 id="section1">Creating Packages</h2>
-<p>Packages only really make sense in the context of a separate program which uses them. Without this separate program we have no way of using the package we create. Let&#39;s create an application that will use a package we will write. Create a folder in <code>~/Go/src/golang-book</code> called <code>chapter11</code>. Inside that folder create a file called <code>main.go</code> which contains this:</p>
+<p>Packages only really make sense in the context of a separate program which uses them. Without this separate program we have no way of using the package we create. Let&#39;s create an application that will use a package we will write. Create a folder in <code>~/src/golang-book</code> called <code>chapter11</code>. Inside that folder create a file called <code>main.go</code> which contains this:</p>
 <pre>package main
 
 import &#34;fmt&#34;
@@ -40,7 +40,7 @@ func Average(xs []float64) float64 {
   return total / float64(len(xs))
 }</pre>
 
-<p>Using a terminal in the <code>math</code> folder you just created run <code>go install</code>. This will compile the <code>math.go</code> program and create a linkable object file:  <code>~/Go/pkg/os_arch/golang-book/chapter11/math.a</code>. (where <code>os</code> is something like <code>windows</code> and <code>arch</code> is something like <code>amd64</code>)</p>
+<p>Using a terminal in the <code>math</code> folder you just created run <code>go install</code>. This will compile the <code>math.go</code> program and create a linkable object file:  <code>~/pkg/os_arch/golang-book/chapter11/math.a</code>. (where <code>os</code> is something like <code>windows</code> and <code>arch</code> is something like <code>amd64</code>)</p>
 <p>Now go back to the <code>chapter11</code> folder and run <code>go run main.go</code>. You should see <code>2.5</code>. Some things to note:</p>
 <ul>
   <li><p><code>math</code> is the name of a package that is part of Go&#39;s standard distribution, but since Go packages can be hierarchical we are safe to use the same name for our package. (The real <code>math</code> package is just <code>math</code>, ours is <code>golang-book/chapter11/math</code>)</p></li>

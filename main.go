@@ -12,8 +12,6 @@ import (
 	"time"
 
 	"github.com/NYTimes/gziphandler"
-	"github.com/badgerodon/socketmaster/client"
-	"github.com/badgerodon/socketmaster/protocol"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -154,36 +152,8 @@ func main() {
 
 	handler := gziphandler.GzipHandler(router)
 
-	log.Println("starting server on :443")
-	li1, err := client.Listen(protocol.SocketDefinition{
-		Port: 443,
-		HTTP: &protocol.SocketHTTPDefinition{
-			DomainSuffix: "golang-book.com",
-		},
-		TLS: &protocol.SocketTLSDefinition{
-			Cert: tlsCert,
-			Key:  tlsKey,
-		},
-	})
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer li1.Close()
-	go http.Serve(li1, handler)
-
-	log.Println("starting server on :80")
-	li2, err := client.Listen(protocol.SocketDefinition{
-		Port: 80,
-		HTTP: &protocol.SocketHTTPDefinition{
-			DomainSuffix: "golang-book.com",
-		},
-	})
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer li2.Close()
-
-	err = http.Serve(li2, handler)
+	log.Println("starting server on 127.0.0.1:8002")
+	err := http.ListenAndServe("127.0.0.1:8002", handler)
 	if err != nil {
 		log.Fatalln(err)
 	}
