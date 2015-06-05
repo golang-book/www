@@ -7,7 +7,7 @@ rule js
 rule gocompile
   command = go build -o $out
 
-build tmp/golang-book-www: gocompile | main.go templates.go tls.go
+build tmp/golang-book-www: gocompile | main.go templates.go util.go
 
 build public/golang-book.css: css $
   app/css/normalize.css $
@@ -15,7 +15,8 @@ build public/golang-book.css: css $
   app/css/main.css $
   app/css/layout.css $
   app/css/book.css $
-  app/css/toc.css
+  app/css/toc.css $
+  app/css/multi-step.css
 
 build public/golang-book.js: js $
   app/js/main.js

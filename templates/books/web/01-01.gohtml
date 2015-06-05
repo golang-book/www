@@ -1,0 +1,401 @@
+<div class="container book body">
+  <h1>Go Basics</h1>
+  <p>
+    Go is a procedural, imperative, modular, object-oriented, statically-typed,
+    garbage-collected, compiled programming language with syntax broadly similar
+    to the C family of languages (C, C++, C#, Java, Javascript, etc...) and
+    CSP-inspired concurrency features. We will examine each of those
+    descriptions in greater detail, but before we do lets write our first Go
+    program.
+  </p>
+  <h2>Compilation</h2>
+  <p>
+    Go is a <strong>compiled</strong> programming language. The Go compiler
+    takes source code and translates it into the native language the computer
+    speaks (machine code). Go programs are broken up into <q>packages</q>, with
+    a package called <q>main</q> being the entry point for our program. In turn
+    each package can be broken up into multiples files.
+  </p>
+  <p>
+    Although not strictly required, the conventional approach to writing
+    programs in Go, and the one enshrined by the <code>go</code> commands, is to
+    use a unified source code tree of files and folders. The Go compiler looks
+    for code in one of two locations:
+  </p>
+  <ul>
+    <li>
+      <p>
+        <code>GOROOT</code> which is usually defined implicitely based on your
+        Go installation (e.g. /usr/local/go), and contains all of the source code
+        for packages that come with the <a href="http://golang.org/pkg/">standard
+        library</a>
+      </p>
+    </li>
+    <li>
+      <p>
+        <code>GOPATH</code> which must be defined by an environment variable and
+        contains the code you write or 3rd party packages
+      </p>
+    </li>
+  </ul>
+  <p>
+    At a minimum both locations contain 3 folders:
+  </p>
+  <ul>
+    <li>
+      <p>
+        <code>bin</code> which contains the compiled, executable binaries
+        produced by the Go compiler
+      </p>
+    </li>
+    <li>
+      <p>
+        <code>pkg</code> which contains partial, intermediate files use to
+        improve compiler performance
+      </p>
+    </li>
+    <li>
+      <p>
+        <code>src</code> which contains the actual Go source code
+      </p>
+    </li>
+  </ul>
+  <p>
+    Packages are found by taking their name and appending it to
+    <code>GOPATH/src</code> or <code>GOROOT/src</code>. For example there is a
+    package in the standard library called <code>time</code> and we can find the
+    source code for it by doing the following:
+  </p>
+  <ol>
+    <li>
+      <p>
+        Open a terminal and enter the following command:
+      </p>
+      <pre>go env</pre>
+      <p>
+        This will print a variety of environment variables, one of which is
+        <code>GOROOT</code>. On my computer this is <code>/usr/local/go</code>.
+      </p>
+    </li>
+    <li>
+      <p>
+        Take your <code>GOROOT</code> folder and list its contents:
+      </p>
+      <pre>ls /usr/local/go</pre>
+      <p>
+        On my computer this displays:
+      </p>
+      <pre>api  AUTHORS  bin  blog  CONTRIBUTORS  doc  favicon.ico  include  lib  LICENSE  misc  PATENTS  pkg  README  robots.txt  src  test  VERSION</pre>
+      <p>
+        Notice that we see the same 3 folders discussed above:
+        <code>bin</code>, <code>pkg</code> and <code>src</code>.
+      </p>
+    </li>
+    <li>
+      <p>
+        We should expect to find the <code>time</code> package's source code in
+        the <code>GOROOT/src/time</code> folder. Let's confirm that:
+      </p>
+      <pre>ls /usr/local/go/src/time</pre>
+      <p>
+        You should see something like this:
+      </p>
+      <pre>example_test.go         sleep_test.go   zoneinfo_abbrs_windows.go
+export_test.go          sys_plan9.go    zoneinfo.go
+export_windows_test.go  sys_unix.go     zoneinfo_plan9.go
+format.go               sys_windows.go  zoneinfo_read.go
+format_test.go          tick.go         zoneinfo_test.go
+genzabbrs.go            tick_test.go    zoneinfo_unix.go
+internal_test.go        time.go         zoneinfo_windows.go
+sleep.go                time_test.go    zoneinfo_windows_test.go</pre>
+    </li>
+  </ol>
+  <h3>Hello World</h3>
+  <p>
+    Based on this folder structure, we can now create our first Go program.
+  </p>
+  <ol>
+    <li>
+      <p>
+        Create a folder for our program:
+      </p>
+      <pre>mkdir -p $GOPATH/src/example/hello</pre>
+    </li>
+    <li>
+      <p>
+        Open your text editor and create a new file called <q>main.go</q> and
+        save it in that folder with the following contents:
+      </p>
+      <pre>package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello World")
+}
+</pre>
+    </li>
+    <li>
+      <p>
+        Compile this program by running:
+      </p>
+      <pre>go install example/hello</pre>
+    </li>
+    <li>
+      <p>
+        Run the program:
+      </p>
+      <pre>$GOPATH/bin/hello</pre>
+      <p>
+        Or if <code>GOPATH/bin</code> has been added to <code>PATH</code>:
+      </p>
+      <pre>hello</pre>
+    </li>
+  </ol>
+  <p>
+    The <code>go install</code> compiles and links our Hello World program
+    into an executable binary in the <code>bin</code> folder. We could've also
+    used the <code>go build</code> command which we can call like this:
+  </p>
+  <pre>go build -o /tmp/hello example/hello</pre>
+  <p>
+    If we had done so this would've saved the binary as <code>/tmp/hello</code>
+    instead of <code>$GOPATH/bin/hello</code>.
+  </p>
+  <h3>Packages</h3>
+  <p>
+    Go source code files always start with a package clause. The grammar states:
+  </p>
+  <blockquote>
+    <pre>SourceFile    = PackageClause ";" { ImportDecl ";" } { TopLevelDecl ";" } .
+PackageClause = "package" PackageName .
+PackageName   = identifier .</pre>
+    <footer>
+      <cite>
+        <a href="http://golang.org/ref/spec#Package_clause">The Go
+          Programming Language Specification / Package clause</a>
+      </cite>
+    </footer>
+  </blockquote>
+  <p>
+    There are two types of packages. <code>main</code> packages which have
+    <code>package main</code> as their package clause, or all other packages
+    which should have a package name which matches their folder. For example
+    the files that make up the <code>fmt</code> package contain
+    <code>package fmt</code>:
+  </p>
+  <pre>cat /usr/local/go/src/fmt/scan.go</pre>
+  <pre>// Copyright 2010 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package fmt
+
+import (
+    "errors"
+    "io"
+    "math"
+    "os"
+    "reflect"
+    "strconv"
+    "sync"
+    "unicode/utf8"
+)
+
+...
+</pre>
+  <p>
+    Packages like this can't be executed directly, but rather they are meant to
+    be imported by other packages. Indeed in our Hello World program, we see
+    that immediately after the package clause we import the <code>fmt</code>
+    package:
+  </p>
+  <pre>import "fmt"</pre>
+  <p>
+    The Go compiler sees this, compiles all the code in <code>fmt</code> to a
+    temporary file in <code>GOROOT/pkg/OS_ARCH/fmt.a</code>, and then links that
+    with everything defined in the main package.
+  </p>
+  <p>
+    The important thing to remember is that the Go compiler links packages
+    and not files. In most interpreted languages, for example PHP, the primary
+    focus is on an entry file, which then includes other files. It's as
+    if you took the source code in those other files and then replaced the
+    <code>include</code> statement with that code. The same thing happens in C
+    or C++ with preprocessor directives.
+  </p>
+  <p>
+    Go is different in that a set of files is first compiled into a set of
+    exported elements, which are then used by other packages. This is why we
+    import a package, and not a specific file inside of the package.
+  </p>
+  <p>
+    As we can see above with the <code>fmt</code> source code, imports are
+    recursive. We import <code>fmt</code> in <code>main</code>, which then
+    imports <code>errors</code>, and so on. We can visualize this as a tree:
+  </p>
+  <img class="autoscale" src="{{public_link "img/web/import-tree.png"}}">
+  <p>
+    To recap, Go is a <strong>modular</strong> programming language where
+    programs are made up of packages, which are made up of files.
+    Every Go source code file has a package clause, and to use packages besides
+    <code>main</code> we use the import declaration.
+  </p>
+  <h3>Functions</h3>
+  <p>
+    The next element in our Hello World program is a function definition.
+  </p>
+<pre>func main() {
+    fmt.Println("Hello World")
+}</pre>
+  <p>
+    Functions are the building blocks of a Go program. They contain a sequence
+    of instructions called statements which we want our computer to perform. In
+    other programming languages functions are also called routines,
+    sub-routines, procedures or methods.
+  </p>
+  <p>
+    In Go a function declaration is described by the grammar like this:
+  </p>
+  <blockquote>
+    <pre>FunctionDecl  = "func" FunctionName ( Function | Signature ) .
+FunctionName  = identifier .
+Function      = Signature FunctionBody .
+FunctionBody  = Block .
+Block         = "{" StatementList "}" .</pre>
+    <footer>
+      <cite>
+        <a href="http://golang.org/ref/spec#Function_declarations">The Go
+          Programming Language Specification / Function declarations</a>
+      </cite>
+    </footer>
+  </blockquote>
+  <p>
+    Functions are defined with the <code>func</code> keyword, followed by a
+    function name, a function signature and a function body. In our program
+    the function name is <code>main</code>, the function signature is
+    <code>()</code> (meaning it takes no arguments and returns nothing) and the
+    function body is a <q>block</q>, which is a sequence of statements
+    surrounded by curly braces:
+  </p>
+  <pre>{
+    fmt.Println("Hello World")
+}</pre>
+  <p>
+    Our block has only one statement. For additional statements we either need
+    to separate them with a semicolon:
+  </p>
+  <pre>{
+    fmt.Println("Statement #1") ; fmt.Println("Statement #2")
+}</pre>
+  <p>
+    Or a newline:
+  </p>
+  <pre>{
+    fmt.Println("Statement #1")
+    fmt.Println("Statement #2")
+}</pre>
+  <p>
+    The latter is the preferred approach. (With the former being so unusual that
+    many Go programmers don't even realize it can be done) We will look at
+    functions in more detail later.
+  </p>
+  <p>
+    The function named <code>main</code> is special because it is the entry
+    point for our program. Every Go program must have one (and only one)
+    <code>main</code> function inside of the <code>main</code> package.
+  </p>
+  <h3>Statements and Expressions</h3>
+  <p>
+    Every function contains zero or more statements. In our <code>main</code>
+    function we only have one:
+  </p>
+  <pre>fmt.Println("Hello World")</pre>
+  <p>
+    This is known as an <q>expression statement</q>. An expression statement is
+    a statement made up of a single expression. The specification states:
+  </p>
+  <blockquote>
+    An expression specifies the computation of a value by applying operators and
+    functions to operands.
+    <footer>
+      <cite><a href="http://golang.org/ref/spec#Expressions">The Go Programming
+        Language Specification / Expressions</a></cite>
+    </footer>
+  </blockquote>
+  <p>
+    Expressions are like their mathematical counterpart. Consider a basic
+    arithmetic expression:
+  </p>
+  <pre>a + b</pre>
+  <p>
+    In this expression <code>a</code> and <code>b</code> are <q>operands</q> and
+    <code>+</code> is the <q>operator</q>. We can also use a function instead of
+    an operator:
+  </p>
+  <pre>sin a</pre>
+  <p>
+    <code>sin</code> is a function, though Go functions aren't quite the same.
+    For one they always require parentheses around the arguments:
+  </p>
+  <pre>sin(a)</pre>
+  <p>
+    And for another, when referencing a function from another package we use a
+    <q>qualified identifier</q>:
+  </p>
+  <pre>math.Sin(a)</pre>
+  <p>
+    <code>math.Sin</code> refers to the <code>Sin</code> function in the
+    <code>math</code> package. Since <code>math</code> is a package, we would
+    also need a corresponding <code>import</code> declaration at the top of the
+    file:
+  </p>
+  <pre>package main
+
+import "<strong>math</strong>"
+
+func main() {
+    <strong>math</strong>.Sin(1.234)
+}</pre>
+  <p>
+    If you're wondering why the function is capitalized it's because only
+    capitalized functions are exported from packages.
+  </p>
+  <p>
+    If we go back to our Hello World statement:
+  </p>
+  <pre>fmt.Println("Hello World")</pre>
+  <p>
+    We now know that we are calling a function in the <code>fmt</code> package
+    named <code>Println</code> and passing it the string
+    <code>Hello World</code>. When executed this expression results in
+    <q>Hello World</q> being output to the terminal.
+  </p>
+  <p>
+    So Go programs are built out of packages, which are made up of files, which
+    include functions each of which has a series of statements and statements
+    are made up of expressions, which are, in turn, made up of operands,
+    operators and function calls.
+  </p>
+  <p>
+    In a sense you can think of a Go program like a book, where each package is
+    a chapter of that book, each function is a paragraph, each statement is a
+    sentence and each expression is word or phrase.
+  </p>
+  <p>
+    Go is a <strong>procedural</strong> programming language because procedures
+    (functions) are stitched together to form a program. It is an
+    <strong>imperative</strong> programming language because functions are built
+    out of statements which are generally phrased as imperative commands.
+  </p>
+  <h2>Problems</h2>
+  <ol class="problems">
+    <li>
+      <p>
+        Create a program which outputs <q>Hello NAME</q> where
+        <q>NAME</q> is replaced with your name. For example:
+      </p>
+      <img class="autoscale" src="{{public_link "img/web/hello-name.png"}}">
+    </li>
+  </ol>
+</div>

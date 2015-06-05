@@ -65,6 +65,32 @@ func (it introTemplate) Render(data interface{}) (string, error) {
 	})
 }
 
+type webTemplate struct {
+	Template
+	Title string
+}
+
+func (wt webTemplate) Render(data interface{}) (string, error) {
+	body, err := wt.Template.Render(data)
+	if err != nil {
+		return "", err
+	}
+	title := "An Introduction to Web Development in Go"
+	if wt.Title != "" {
+		title = wt.Title + " — " + title
+	}
+	return PageTemplate{
+		Template: FileTemplate("books/web/layout.gohtml"),
+		Title:    title,
+	}.Render(struct {
+		Body  template.HTML
+		Title string
+	}{
+		Body:  template.HTML(body),
+		Title: wt.Title,
+	})
+}
+
 type guideTemplate struct {
 	Template
 	Title string

@@ -1,0 +1,60 @@
+.multi-step {
+  border: 1px solid #CCC;
+  background: #FAFAFA;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+  position: relative;
+}
+
+.multi-step h2 {
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.multi-step .step-breadcrumbs {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background: #F3F3F3;
+  padding: 8px;
+  margin: 0 -16px;
+  font-size: 12px;
+  border-top: 1px solid #CCC;
+  border-bottom: 1px solid #CCC;
+}
+.multi-step .step-breadcrumbs li {
+  list-style: none;
+  margin: 0;
+  white-space: nowrap;
+  padding: 2px 8px;
+  line-height: 18px;
+  border-radius: 4px;
+}
+.multi-step .step-breadcrumbs .selected {
+  background: white;
+  border: 1px solid #CCC;
+  box-shadow: 0 0 10px 0 rgba(100,100,100,.1);
+}
+
+.multi-step .step-footer {
+  background: #F3F3F3;
+  padding: 0 24px;
+  margin: 0 -16px -16px;
+  font-size: 12px;
+  border-top: 1px solid #CCC;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  height: 36px;
+  line-height: 36px;
+}
+.multi-step .step-footer .next {
+  float: right;
+}
+.multi-step .step-footer .previous {
+  float: left;
+}
+
+.multi-step .step-footer, .multi-step .step-breadcrumbs {
+  box-shadow: 0 0 10px 0 rgba(100,100,100,.1);
+}
