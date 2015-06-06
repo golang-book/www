@@ -1,0 +1,208 @@
+<div class="container book body">
+  <h1>Variables</h1>
+  <p>
+    A variable is a storage location for a value. Here's a version of
+    <q>Hello World</q> that uses a variable:
+  </p>
+  <pre data-language="go">package main
+
+import "fmt"
+
+func main() {
+  var x string
+  x = "Hello World"
+  fmt.Println(x)
+}</pre>
+  <p>
+    <code>var x string</code> is an example of a <q>variable declaration</q>. It
+    creates a new variable with a name (<code>x</code>) and a type
+    (<code>string</code>). We then assign a value to that variable
+    (<code>Hello World</code>) and then retrieve the
+    value when we send it to <code>fmt.Println</code>.
+  </p>
+  <p>
+    A variable is like a box:
+  </p>
+  <img class="autoscale" src="{{public_link "img/web/variable-box.png"}}">
+  <p>
+    The assignment statement <code>x = "Hello World"</code> is how we put a
+    value in the box and when we want to retrieve the value out of the box, we
+    just use its name.
+  </p>
+  <p>
+    There are many different ways to create variables in go. The grammar states:
+  </p>
+
+  <blockquote>
+    <pre>VarDecl = "var" ( VarSpec | "(" { VarSpec ";" } ")" ) .
+VarSpec = IdentifierList ( Type [ "=" ExpressionList ] | "=" ExpressionList ) .
+    </pre>
+    <footer>
+      <cite>
+        <a href="https://golang.org/ref/spec#Variable_declarations">The Go
+          Programming Language Specification / Variable Declarations</a>
+      </cite>
+    </footer>
+  </blockquote>
+
+  <p>
+    And many examples are provided:
+  </p>
+
+  <pre>var i int
+var U, V, W float64
+var k = 0
+var x, y float32 = -1, -2
+var (
+	i       int
+	u, v, s = 2.0, 3.0, "bar"
+)
+var re, im = complexSqrt(-1)
+var _, found = entries[name]  // map lookup; only interested in "found"</pre>
+
+  <p>
+    The last example uses a special variable named <code>_</code> (underscore)
+    which is known as a <q>blank identifier</q>:
+  </p>
+
+  <blockquote>
+    <p>
+      The blank identifier may be used like any other identifier in a declaration,
+      but it does not introduce a binding and thus is not declared.
+    </p>
+    <footer>
+      <cite>
+        <a href="https://golang.org/ref/spec#Declarations_and_scope">The Go
+          Programming Language Specification / Declarations and scope</a>
+      </cite>
+    </footer>
+  </blockquote>
+
+  <p>
+    Basically a blank identifier is like a box where you can put things if you
+    don't need them.
+  </p>
+
+  <h2>Short Variable Declarations</h2>
+  <p>
+    Go has a shorthand for variable declarations using <code>:=</code> instead
+    of <code>=</code>:
+  </p>
+  <pre>x := "Hello World"</pre>
+  <p>
+    This is equivalent to:
+  </p>
+  <pre>var x = "Hello World"</pre>
+  <p>
+    This shorthand is only allowed to be used within functions.
+  </p>
+
+  <h2>Assignment</h2>
+  <p>
+    Variables, as their name would imply, can change their value throughout
+    the lifetime of a program. For example we can write a program like this:
+  </p>
+  <pre>package main
+
+import "fmt"
+
+func main() {
+  x := 1
+  fmt.Println(x)
+  x = 2
+  fmt.Println(x)
+}</pre>
+  <p>
+    Therefore it's important not to read <code>=</code> as <q>equals</q> but
+    rather <q>takes</q>: "x takes 1" or "x is assigned the value 1", rather than
+    "x equals 1".
+  </p>
+  <p>
+    Also notice that you can't do this:
+  </p>
+  <pre>x := 1
+x := 2</pre>
+  <p>
+    <code>x := 1</code> both creates a new variable and assigns it a value. But
+    the Go compiler (in general) won't let you create a new variable with the
+    same name. Either give it a new name or use plain <code>=</code>. (The
+    reason it doesn't let you do this is it's almost certainly a mistake to do
+    so)
+  </p>
+  <h3>Order</h3>
+  <p>
+    Assignment follows a strict order. If we break down an assignment statement
+    into its components there are the things on the left side of the equals
+    and the things on the right side: <code>LEFT = RIGHT</code>. The right side
+    is evaluated and then assigned to the left side. This means nothing prevents
+    us from using a variable on the right side that we then assign on the left
+    side:
+  </p>
+  <pre>x = x + 1</pre>
+  <p>
+    This is, in fact, a quite common operation in programming. So common that
+    there is a shorthand syntax:
+  </p>
+  <pre>x += 1</pre>
+  <p>
+    In general you can do this for all the mathematical operations.
+  </p>
+
+  <h3>Zero Value</h3>
+  <p>
+    So now we know how to assign values to a variable and retrieve them but an
+    obvious question would be: "What is the initial state of a variable?".
+    What does this program do:
+  </p>
+  <pre>package main
+
+import "fmt"
+
+func main() {
+  var x int
+  fmt.Println(x)
+}</pre>
+  <p>
+    It turns out that in Go this case is well defined:
+  </p>
+  <blockquote>
+    <p>
+      When storage is allocated for a variable, either through a declaration or
+      a call of new, or when a new value is created, either through a composite
+      literal or a call of make, and no explicit initialization is provided, the
+      variable or value is given a default value. Each element of such a
+      variable or value is set to the zero value for its type: false for
+      booleans, 0 for integers, 0.0 for floats, "" for strings, and nil for
+      pointers, functions, interfaces, slices, channels, and maps. This
+      initialization is done recursively, so for instance each element of an
+      array of structs will have its fields zeroed if no value is specified.
+    </p>
+    <footer>
+      <cite>
+        <a href="https://golang.org/ref/spec#The_zero_value">The Go
+          Programming Language Specification / The Zero Value</a>
+      </cite>
+    </footer>
+  </blockquote>
+  <p>
+    Since <code>x</code> is an integer it's default (<q>zero</q>) value is
+    <code>0</code>.
+  </p>
+
+  <h2>Scope</h2>
+
+
+  <table class="paging">
+    <tr>
+      <td class="prev">
+        <a href="/books/web/01-01">&larr; Previous</a>
+      </td>
+      <td>
+        <a href="/books/web">Index</a>
+      </td>
+      <td class="next">
+        <a href="/books/web/01-03">Next &rarr;</a>
+      </td>
+    </tr>
+  </table>
+</div>

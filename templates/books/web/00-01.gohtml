@@ -28,210 +28,24 @@
     projects as you are much more likely to truly learn the material by using
     it.
   </p>
-  <h2>Getting Started</h2>
   <p>
-    Before diving into the material you need to setup your machine so that it is
-    ready for development. First choose your operating system:
+    Before diving into Go there are some steps you need to take to setup your
+    machine so that it is ready for development. If you haven't already done
+    so take a look at the <a href="/guides/machine_setup">Machine Setup</a>
+    guide.
   </p>
-  <ul>
-    <li><a href="#windows">Windows</a></li>
-    <li><a href="#osx">OSX</a></li>
-    <li><a href="#other">Other</a></li>
-  </ul>
 
-  <!-- OSX -->
-  <div class="multi-step" data-for="osx">
-    <h2 id="osx">OSX Setup</h2>
-    <h3 id="osx-finder">Finder</h3>
-    <h3 id="osx-terminal">The Terminal</h3>
-    <p>
-      Throughout this book we will be using various tools to build
-      applications. Most of those tools are used from a terminal. If you are
-      not familiar with a terminal, it's a textual interface to the computer.
-    </p>
-    <p>
-      Commands are typed and then executed by your computer when you hit
-      enter. Although modern operating systems rarely surface the terminal
-      interface, it's still available for your use. In OSX you can bring up
-      the terminal by hitting CMD-Space (to bring up spotlight), typing
-      <q>Terminal</q> and hitting enter. It should look something like this:
-    </p>
-    <p>
-
-    </p>
-    <h3 id="osx-homebrew">Homebrew</h3>
-    <p>
-      Homebrew is a package manager for OSX which makes it easier to install
-      additional software. To install homebrew, open a terminal and enter the
-      following:
-    </p>
-    <pre data-language="bash">ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</pre>
-    <h3 id="osx-git">Git</h3>
-    <h3 id="osx-atom">Atom</h3>
-      <p>
-        GitHub's Atom is a robust text editor which has good support for Go via
-        a plugin. Although it's certainly possible to write Go code using the
-        text editor that comes with OSX, editors like Atom come with a lot of
-        features that making programming easier.
-      </p>
-    <h3 id="osx-go">Go</h3>
-    <h3 id="osx-app-engine">App Engine</h3>
-    <h3 id="osx-environment-variables">Environment Variables</h3>
-    <h3 id="osx-finished">Finished</h3>
-    <p>
-      You should now have everything you need to create web applications with
-      Go and Google App Engine.
-    </p>
-  </div>
-
-  <!-- WINDOWS -->
-  <div class="multi-step" data-for="windows">
-    <h2 id="windows">Windows Setup</h2>
-    <h3 id="windows-explorer">Windows Explorer</h3>
-    <p>
-      Windows explorer is a program that allows you to browse the files and
-      folders on your computer. You can open it by right-clicking on the
-      Start button and selecting <q>Open Windows Explorer</q>.
-    </p>
-    <img class="autoscale" src="{{public_link "img/web/windows-explorer.png"}}">
-    <p>
-      Folders appear on the left-hand side and form a hierarchical tree rooted
-      by a drive letter (for example <code>C:</code>). You can use Windows
-      Explorer to create, copy, rename and delete files and folders.
-    </p>
-
-    <h3 id="windows-git">Git</h3>
-    <p>
-      Git is a version control system. We need it for two reasons: (1) many
-      components of Go are distributed via Git and (2) the Windows installer
-      includes a terminal that makes it behave more like Unix operating
-      systems (like OSX or Linux).
-    </p>
-    <p>
-      Download and install msysgit from
-      <a href="https://msysgit.github.io/">msysgit.github.io</a>.
-      When the installer asks make sure to select "Use Git from the Windows
-      Command Prompt".
-    </p>
-    <img class="autoscale" src="{{public_link "img/web/msysgit.png"}}">
-
-    <h3 id="windows-terminal">The Terminal</h3>
-    <p>
-      Windows comes with a terminal called <code>cmd.exe</code>. You can start
-      it by click Start and typing <q>cmd</q> and then selecting it:
-    </p>
-    <img class="autoscale" src="{{public_link "img/web/windows-cmd.png"}}">
-    <p>
-      Go ahead and close it as we will be using a different terminal that
-      comes bundled with msysgit. Click Start -> All Programs -> Git ->
-      Git Bash.
-    </p>
-    <img class="autoscale" src="{{public_link "img/web/windows-bash.png"}}">
-    <p>
-      Terminals are a text-driven interface to your computer. You can enter
-      commands by typing the command and hitting enter. Your computer will
-      then execute the command and display any results.
-    </p>
-    <p>
-      Terminals also allow you manipulate files and folders on your computer.
-      You terminal starts in a <q>working directory</q> where you can list
-      the folder contents with <code>ls</code>, change directories using
-      <code>cd</code>, make directories using <code>mkdir</code> and remove
-      files using <code>rm</code>. There are many, many unix commands and its
-      beyond the scope of this book to explain all of them, but a basic
-      familiarity with some of them will make parts of this book easier to
-      understand.
-    </p>
-
-    <h3 id="windows-atom">Atom</h3>
-    <p>
-      GitHub's Atom is powerful text editor which we will use it to create Go
-      source code files. Download and install it from <a href="https://atom.io/">atom.io</a>.
-    </p>
-    <img class="autoscale" src="{{public_link "img/web/windows-atom-install.png"}}">
-    <p>
-      We also need to install a more robust Go plugin. In Atom go to File ->
-      Settings. Then select Install, and type <q>go-plus</q> into the search
-      box. Install the plugin named <q>go-plus</q>:
-    </p>
-    <img class="autoscale" src="{{public_link "img/web/windows-atom-go-plus.png"}}">
-    <p>
-      Once that is complete, go ahead and close Atom.
-    </p>
-
-    <h3 id="windows-go">Go</h3>
-    <p>
-      Go is a compiled programming language so we need to install the Go
-      toolset. Download and run the installer from here:
-      <a href="https://golang.org/dl/">golang.org/dl</a>. Choose
-      windows-amd64.msi for 64 bit or windows-386.msi for 32 bit. (you
-      probably want the 64 bit version)
-    </p>
-    <p>
-      Confirm that it worked by opening a new terminal and typing:
-    </p>
-    <pre>go version</pre>
-    <p>
-      You should see the go version you installed.
-    </p>
-
-    <h3 id="windows-app-engine">App Engine</h3>
-    <p>
-      Google's App Engine is a managed platform for web applications. Download
-      the <q>Google App Engine SDK for Go</q> from:
-      <a href="https://cloud.google.com/appengine/downloads">cloud.google.com/appengine/downloads</a>.
-    </p>
-    <p>
-      Open a bash terminal and unzip the downloaded zip file to your home
-      directory:
-    </p>
-    <pre>cd ~
-unzip ~/Downloads/go_appengine_sdk_windows*.zip</pre>
-    <p>
-      This should create a <code>go_appengine</code> folder in your home
-      directory. The App Engine SDK is self-contained and requires no
-      installation. If you want to remove it just delete the folder.
-    </p>
-
-    <h3 id="windows-environment-variables">Environment Variables</h3>
-    <p>
-      Environment variables are key-value pairs that any program you execute
-      has access to. They are used as form of configuration that makes
-      programs more flexible.
-    </p>
-    <p>
-      We need to configure two environment variables: <code>PATH</code> is
-      used by the operating system to locate executables. It's what makes it
-      possible to execute <code>go version</code> instead of
-      <code>/c/Go/bin/go version</code>. <code>GOPATH</code> is used by the
-      Go compiler to find go source code.
-    </p>
-    <p>
-      Open a bash terminal and run the following:
-    </p>
-    <pre>GOPATH=$HOME go get github.com/badgerodon/penv/...</pre>
-    <p>
-      This installs an executable named <code>penv.exe</code> we can use to
-      set environment variables. To update the <code>PATH</code> run this:
-    </p>
-    <pre>$HOME/bin/penv append PATH $HOME/bin
-$HOME/bin/penv append PATH $HOME/go_appengine</pre>
-    <p>
-      To update the <code>GOPATH</code> run this:
-    </p>
-    <pre>$HOME/bin/penv set GOPATH $HOME</pre>
-    <p>
-      Close the terminal.
-    </p>
-    <h3 id="windows-finished">Finished</h3>
-    <p>
-      You should now have everything you need to create Go programs. To confirm
-      this run the following in a new bash terminal:
-    </p>
-    <pre>go get github.com/k0kubun/tetris ; tetris</pre>
-    <img class="autoscale" src="{{public_link "img/web/windows-tetris.png"}}">
-    <p>
-      A tetris game should start. Type q to exit.
-    </p>
-  </div>
+  <table class="paging">
+    <tr>
+      <td class="prev">
+        <a href="/books/web">&larr; Previous</a>
+      </td>
+      <td>
+        <a href="/books/web">Index</a>
+      </td>
+      <td class="next">
+        <a href="/books/web/01-01">Next &rarr;</a>
+      </td>
+    </tr>
+  </table>
 </div>

@@ -13,7 +13,7 @@
     Go is a <strong>compiled</strong> programming language. The Go compiler
     takes source code and translates it into the native language the computer
     speaks (machine code). Go programs are broken up into <q>packages</q>, with
-    a package called <q>main</q> being the entry point for our program. In turn
+    a package called <q>main</q> being the entry point for a program. In turn
     each package can be broken up into multiples files.
   </p>
   <p>
@@ -108,8 +108,16 @@ format_test.go          tick.go         zoneinfo_test.go
 genzabbrs.go            tick_test.go    zoneinfo_unix.go
 internal_test.go        time.go         zoneinfo_windows.go
 sleep.go                time_test.go    zoneinfo_windows_test.go</pre>
+      <p>
+        Those definitely look like time-related files.
+      </p>
     </li>
   </ol>
+  <p>
+    So the <code>time</code> package's files can be found (on my computer) in
+    the <code>$GOROOT/src/time</code> folder. For the code write we need to put
+    files in <code>$GOPATH/src</code>.
+  </p>
   <h3>Hello World</h3>
   <p>
     Based on this folder structure, we can now create our first Go program.
@@ -147,7 +155,7 @@ func main() {
       </p>
       <pre>$GOPATH/bin/hello</pre>
       <p>
-        Or if <code>GOPATH/bin</code> has been added to <code>PATH</code>:
+        Or if <code>$GOPATH/bin</code> has been added to <code>PATH</code>, just:
       </p>
       <pre>hello</pre>
     </li>
@@ -178,7 +186,7 @@ PackageName   = identifier .</pre>
     </footer>
   </blockquote>
   <p>
-    There are two types of packages. <code>main</code> packages which have
+    There are two types of packages: <code>main</code> packages which have
     <code>package main</code> as their package clause, or all other packages
     which should have a package name which matches their folder. For example
     the files that make up the <code>fmt</code> package contain
@@ -213,7 +221,7 @@ import (
   <pre>import "fmt"</pre>
   <p>
     The Go compiler sees this, compiles all the code in <code>fmt</code> to a
-    temporary file in <code>GOROOT/pkg/OS_ARCH/fmt.a</code>, and then links that
+    temporary file in <code>$GOROOT/pkg/OS_ARCH/fmt.a</code>, and then links that
     with everything defined in the main package.
   </p>
   <p>
@@ -383,6 +391,12 @@ func main() {
     sentence and each expression is word or phrase.
   </p>
   <p>
+    Our computer reads this book and does everything it says to do. Most
+    statements are commands ("add these numbers", "print this to the screen",
+    etc..) and most paragraphs include references to other paragraphs -
+    even paragraphs from other chapters.
+  </p>
+  <p>
     Go is a <strong>procedural</strong> programming language because procedures
     (functions) are stitched together to form a program. It is an
     <strong>imperative</strong> programming language because functions are built
@@ -398,4 +412,18 @@ func main() {
       <img class="autoscale" src="{{public_link "img/web/hello-name.png"}}">
     </li>
   </ol>
+
+  <table class="paging">
+    <tr>
+      <td class="prev">
+        <a href="/books/web/00-01">&larr; Previous</a>
+      </td>
+      <td>
+        <a href="/books/web">Index</a>
+      </td>
+      <td class="next">
+        <a href="/books/web/01-02">Next &rarr;</a>
+      </td>
+    </tr>
+  </table>
 </div>
