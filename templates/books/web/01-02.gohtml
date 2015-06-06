@@ -190,6 +190,296 @@ func main() {
   </p>
 
   <h2>Scope</h2>
+  <p>
+    So far we've only declared variables inside of our <code>main</code>
+    function. We can also declare them at the top level:
+  </p>
+  <pre>package main
+
+import "fmt"
+
+var x int
+
+func main() {
+    fmt.Println(x)
+}</pre>
+  <p>
+    What this allows us to do is use this variable from other functions:
+  </p>
+  <pre>var x input
+
+func f1() {
+  fmt.Println(x)
+}
+func f2() {
+  fmt.Println(x)
+}</pre>
+  <p>
+    Whereas this would be invalid:
+  </p>
+<pre>
+func f1() {
+  var x input
+  fmt.Println(x)
+}
+func f2() {
+  fmt.Println(x)
+}</pre>
+  <p>
+    <code>f2</code> does not have access to the variable defined in
+    <code>f1</code>. The valid places a variable can be referenced is known as
+    the variable's <strong>scope</strong>.
+  </p>
+  <p>
+    The Go Language specification lays out the scoping rules in precise detail:
+  </p>
+  <blockquote>
+    <p>
+      The scope of a declared identifier is the extent of source text in which
+      the identifier denotes the specified constant, type, variable, function,
+      label, or package.
+    </p>
+    <p>
+      Go is lexically scoped using blocks:
+    </p>
+    <ol>
+      <li>
+        <p>
+          The scope of a predeclared identifier is the universe block.
+        </p>
+      </li>
+      <li>
+        <p>
+          The scope of an identifier denoting a constant, type, variable, or
+          function (but not method) declared at top level (outside any function)
+          is the package block.
+        </p>
+      </li>
+      <li>
+        <p>
+          The scope of the package name of an imported package is the file
+          block of the file containing the import declaration.
+        </p>
+      </li>
+      <li>
+        <p>
+          The scope of an identifier denoting a method receiver, function
+          parameter, or result variable is the function body.
+        </p>
+      </li>
+      <li>
+        <p>
+          The scope of a constant or variable identifier declared inside a
+          function begins at the end of the ConstSpec or VarSpec (ShortVarDecl
+          for short variable declarations) and ends at the end of the innermost
+          containing block.
+        </p>
+      </li>
+      <li>
+        <p>
+          The scope of a type identifier declared inside a function begins at
+          the identifier in the TypeSpec and ends at the end of the innermost
+          containing block.
+        </p>
+      </li>
+    </ol>
+    <p>
+      An identifier declared in a block may be redeclared in an inner block.
+      While the identifier of the inner declaration is in scope, it denotes the
+      entity declared by the inner declaration.
+    </p>
+    <footer>
+      <cite>
+        <a href="https://golang.org/ref/spec#Declarations_and_scope">The Go
+          Programming Language Specification / Declarations and scope</a>
+      </cite>
+    </footer>
+  </blockquote>
+  <p>
+    Let's walk through each of these with some examples.
+  </p>
+  <p>
+    First notice that in this definition scope refers to more than just
+    variables: identifiers also refer to functions and packages (which we've
+    seen), constants (which we'll see in a sec) and types and labels (which
+    we'll see later).
+  </p>
+  <blockquote>
+    The scope of a predeclared identifier is the universe block.
+  </blockquote>
+  <p>
+    Several identifiers are built into the language:
+  </p>
+  <blockquote>
+    <dl>
+      <dt>Types:</dt>
+      <dd><pre>bool byte complex64 complex128 error float32 float64 int int8 int16 int32 int64 rune string uint uint8 uint16 uint32 uint64 uintptr</pre></dd>
+
+      <dt>Constants:</dt>
+      <dd><pre>true false iota</pre></dd>
+
+      <dt>Zero value:</dt>
+      <dd><pre>nil</pre>
+
+      <dt>Functions:</dt>
+      <dd><pre>append cap close complex copy delete imag len make new panic print println real recover</pre></dd>
+    </dl>
+    <footer>
+      <cite>
+        <a href="https://golang.org/ref/spec#Predeclared_identifiers">The Go
+          Programming Language Specification / Predeclared Identifiers</a>
+      </cite>
+    </footer>
+  </blockquote>
+  <p>
+    All of these identifiers are in the universe block, which means they are
+    available anywhere in a Go program. Blocks can be explicit (created with
+    <code>{</code> and <code>}</code>) or implicit. They are nested within
+    one another:
+  </p>
+  <img class="autoscale" src="{{public_link "img/web/scopes.png"}}">
+  <p>
+    Things defined in the <q>function</q> scope have access to anything above
+    them (<q>file</q>, <q>package</q>, <q>universe</q>), but the reverse is
+    not true. A variable defined in a function is only accessible within that
+    function or blocks defined inside of it.
+  </p>
+  <blockquote>
+    The scope of an identifier denoting a constant, type, variable, or
+    function (but not method) declared at top level (outside any function)
+    is the package block.
+  </blockquote>
+  <p>
+    When you declare a variable at the top level:
+  </p>
+  <pre>// f1.go
+package main
+var x int</pre>
+  <p>
+    That variable is accessible to the entire package, not just the file it's
+    defined in. If we create another file in the same folder we can
+    access <code>x</code> even though it was defined in another file:
+  </p>
+  <pre>// f2.go
+package main
+
+import "fmt"
+
+func f() {
+  fmt.Println(x)
+}</pre>
+  <blockquote>
+    The scope of the package name of an imported package is the file
+    block of the file containing the import declaration.
+  </blockquote>
+  <p>
+    This behavior is the reverse of what we just saw. When you import a package
+    that package name is only accessible in the current file. This would be
+    invalid:
+  </p>
+  <pre>// f1.go
+package main
+
+import "fmt"</pre>
+  <pre>// f2.go
+package main
+
+func f() {
+  fmt.Println("Hello World")
+}</pre>
+  <p>
+    <code>f2.go</code> needs to import <code>fmt</code> to use it. It's not
+    enough that another file in the same package imports it, because imports
+    have a file-level scope.
+  </p>
+  <blockquote>
+    The scope of an identifier denoting a method receiver, function parameter,
+    or result variable is the function body.
+  </blockquote>
+  <p>
+    This will be covered later.
+  </p>
+  <blockquote>
+    The scope of a constant or variable identifier declared inside a function
+    begins at the end of the ConstSpec or VarSpec (ShortVarDecl for short
+    variable declarations) and ends at the end of the innermost containing
+    block.
+  </blockquote>
+  <p>
+    We don't just have to define variables at the top of a function:
+  </p>
+  <pre>func main() {
+  fmt.Println("Hello World")
+  x := 5
+  fmt.Println(x)
+}</pre>
+  <p>
+    In this example we've declared a variable (<code>x</code>) as the second
+    statement in the function body. The above rule states that the scope of
+    that variable is from that point to the end of the block it was declared in
+    - which means we can't access it before it was declared. This is invalid:
+  </p>
+  <pre>func main() {
+  fmt.Println(x)
+  x := 5
+}</pre>
+  <p>
+    Which seems obvious, but believe it or not some programming languages don't
+    behave this way. We can also nest blocks:
+  </p>
+  <pre>func main() {
+    fmt.Println("Hello World")  // x is out of scope
+    {                           // x is out of scope
+        x := 5                  // x is in scope
+        fmt.Println(x)          // x is in scope
+    }                           // x is out of scope again
+}</pre>
+  <p>
+    So the variable we declared (<code>x</code>) only lasts till the block it
+    was defined in is closed. This is invalid:
+  </p>
+  <pre>func main() {
+    {
+        x := 5
+    }
+    fmt.Println(x)
+}</pre>
+  <blockquote>
+      The scope of a type identifier declared inside a function begins at
+      the identifier in the TypeSpec and ends at the end of the innermost
+      containing block.
+  </blockquote>
+  <p>
+    We will cover types later. Just know that there scope rules are basically
+    the same as variables.
+  </p>
+  <p>
+    Finally:
+  </p>
+  <blockquote>
+    An identifier declared in a block may be redeclared in an inner block.
+    While the identifier of the inner declaration is in scope, it denotes the
+    entity declared by the inner declaration.
+  </blockquote>
+  <p>
+    Consider this example:
+  </p>
+  <pre>package main
+
+var x input
+
+func main() {
+    var x int
+    x = 5     // which x?
+}</pre>
+  <p>
+    This rule tells us which <code>x</code> we are accessing inside of
+    <code>main</code>. It's always the closest one in terms of scope - in this
+    case the one defined in the function. This is known as <q>shadowing</q> a
+    variable and should generally be avoided since there is now no way to reach
+    the outer <code>x</code>.
+  </p>
+
 
 
   <table class="paging">
