@@ -204,7 +204,7 @@ func main() {
     fmt.Println(x)
 }</pre>
   <p>
-    What this allows us to do is use this variable from other functions:
+    What this allows us to do is use the variable in other functions:
   </p>
   <pre>var x input
 
@@ -333,7 +333,10 @@ func f2() {
   </blockquote>
   <p>
     All of these identifiers are in the universe block, which means they are
-    available anywhere in a Go program. Blocks can be explicit (created with
+    available anywhere in a Go program. So what's the universe block?
+  </p>
+  <p>
+    Blocks can be explicit (created with
     <code>{</code> and <code>}</code>) or implicit. They are nested within
     one another:
   </p>
@@ -352,16 +355,14 @@ func f2() {
   <p>
     When you declare a variable at the top level:
   </p>
-  <pre>// f1.go
-package main
+  <pre>package main // f1.go
 var x int</pre>
   <p>
     That variable is accessible to the entire package, not just the file it's
     defined in. If we create another file in the same folder we can
     access <code>x</code> even though it was defined in another file:
   </p>
-  <pre>// f2.go
-package main
+  <pre>package main // f2.go
 
 import "fmt"
 
@@ -466,7 +467,7 @@ func f() {
   </p>
   <pre>package main
 
-var x input
+var x int
 
 func main() {
     var x int
@@ -480,6 +481,58 @@ func main() {
     the outer <code>x</code>.
   </p>
 
+  <h2>Constants</h2>
+  <p>
+    Constants are like variables except they're not allowed to change. They are
+    declared with the <code>const</code> keyword:
+  </p>
+  <pre>package main
+
+const (
+  x = 1
+  y = 2
+)</pre>
+  <p>
+    Because they're not allowed to change this is invalid:
+  </p>
+  <pre>func main() {
+    const x = 1
+    x = 2
+}</pre>
+  <p>
+    One consequence of this is that constants must be declared with an initial
+    value. This is invalid:
+  </p>
+  <pre>func main() {
+    const x int
+}</pre>
+  <p>
+    However there is a special exception to this rule, and that's with the use
+    of <code>iota</code>. <code>iota</code> is a keyword that allows you to
+    generate constants:
+  </p>
+  <pre>const (
+    a = iota
+    b = iota
+    c = iota
+    d = iota
+)</pre>
+  <p>
+    <code>iota</code> starts at <code>0</code> and is incremented for each
+    subsequent constant. In this example <code>a=0</code>, <code>b=1</code>,
+    <code>c=2</code> and <code>d=3</code>. Go allows a shorthand for constants
+    when using iota:
+  </p>
+  <pre>const (
+    a = iota
+    b
+    c
+    d
+)</pre>
+  <p>
+    This code is equivalent to the first example. When we use <code>iota</code>
+    with the first constant we can skip it for all the rest.
+  </p>  
 
 
   <table class="paging">

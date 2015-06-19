@@ -2,6 +2,25 @@
 
   <h2>Table of Contents</h2>
   <ol class="toc">
+    {{range .Parts}}
+    <li>
+      <a href="/books/web/{{.Link}}">{{.Title}}</a>
+      <ol>
+        {{range .Chapters}}
+        <li>
+          <a href="/books/web/{{.Link}}">{{.Title}}</a>
+          <ol>
+            {{range .Sections}}
+            <li>
+              <a href="/books/web/{{.Link}}">{{.Title}}</a>
+            </li>
+            {{end}}
+          </ol>
+        </li>
+        {{end}}
+      </ol>
+    </li>
+    {{end}}
     <li><a href="/books/web/00-01">Introduction</a>
     </li>
     <li><a href="/books/web/01-01">Go Basics</a>
