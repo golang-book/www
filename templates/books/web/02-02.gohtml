@@ -1,0 +1,122 @@
+<div class="container book body">
+  <h1>The HTTP Package</h1>
+
+  <h2>Handlers</h2>
+  <div class="problems">
+    <h3>Problems</h3>
+    <ol>
+      <li>
+        <p>
+          Create a <code>Hello World</code> server using the
+          <code>net/http</code> package.
+        </p>
+      </li>
+    </ol>
+  </div>
+
+  <h2>Routing</h2>
+  <div class="problems">
+    <h3>Problems</h3>
+    <ol>
+      <li>
+        <p>
+          Create an HTTP server that returns <code>Hello A</code> when
+          <code>/a</code> is visited and <code>Hello B</code> when
+          <code>/b</code> is visited.
+        </p>
+      </li>
+      <li>
+        <p>
+          Create an HTTP server that returns <code>even</code> when an
+          even-numbered path is visited (<code>/0</code>, <code>/2</code>,
+          <code>/4</code>, ...) and <code>odd</code> when an odd-numbered
+          path is visited (<code>/1</code>, <code>/3</code>, <code>/5</code>,
+          ...).
+        </p>
+      </li>
+    </ol>
+  </div>
+
+  <h2>Forms</h2>
+  <div class="problems">
+    <h3>Problems</h3>
+    <ol>
+      <li>
+        <p>
+          Create an HTTP server that returns whatever is passed in as a query
+          string parameter named data. For example when <code>/?data=test</code>
+          is visited it would return <code>test</code>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Modify the previous server so that it also supports a form POST
+          parameter.
+        </p>
+      </li>
+      <li>
+        <p>
+          Create an HTTP server that implements a basic calculator which
+          supports addition, multiplication, subtraction and division using
+          some combination of paths, query string parameters or form values. For
+          example: <code>/add?x=1&amp;y=2</code> for <code>1 + 2</code>,
+          returning <code>3</code>.
+        </p>
+      </li>
+    </ol>
+  </div>
+
+  <h2>Headers</h2>
+  <div class="problems">
+    <h3>Problems</h3>
+    <ol>
+      <li>
+        <p>
+          Create an HTTP server that redirects clients to another URL.
+        </p>
+      </li>
+      <li>
+        <p>
+          Create an HTTP server that requires
+          <a href="https://en.wikipedia.org/wiki/Basic_access_authentication">
+            basic access authentication
+          </a>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Most HTTP clients support optional GZIP compression of responses via
+          the <code>Accept-Encoding</code> header. Create an HTTP server that
+          returns a GZIP-encoded response when this header is used.
+        </p>
+      </li>
+    </ol>
+  </div>
+
+  <h2>Cookies</h2>
+  <div class="problems">
+    <ol>
+      <li>
+        Create an HTTP server that uses a cookie to store a counter that is
+        incremented each time a client visits the server and returns the current
+        value of the counter. For example the 1st visit should display
+        <code>1</code>, the 2nd <code>2</code> and so on. (Assuming the client
+        supports cookies)
+      </li>
+    </ol>
+  </div>
+
+  <table class="paging">
+    <tr>
+      <td class="prev">
+        <a href="/books/web/02-01">&larr; Previous</a>
+      </td>
+      <td>
+        <a href="/books/web">Index</a>
+      </td>
+      <td class="next">
+        <a href="/books/web/02-03">Next &rarr;</a>
+      </td>
+    </tr>
+  </table>
+</div>

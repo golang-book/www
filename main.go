@@ -136,6 +136,13 @@ func main() {
 	register("/books/web/01-03", webTemplate{Template: FileTemplate("books/web/01-03.gohtml")})
 	register("/books/web/01-04", webTemplate{Template: FileTemplate("books/web/01-04.gohtml")})
 
+	for i := 1; i < 10; i++ {
+		register(
+			fmt.Sprintf("/books/web/02-%02d", i),
+			webTemplate{Template: FileTemplate(fmt.Sprintf("books/web/02-%02d.gohtml", i))},
+		)
+	}
+
 	public := http.FileServer(http.Dir("public"))
 	router.GET("/public/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
 		path := params.ByName("path")
