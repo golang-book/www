@@ -1,2 +1,39 @@
-@import url(https://fonts.googleapis.com/css?family=Fira+Mono:400,700);
-@import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,700);
+@font-face {
+  font-family: 'Fira Mono';
+  src: url('/public/fonts/FiraMono-Regular.eot');
+  src: url('/public/fonts/FiraMono-Regular.eot') format('embedded-opentype'),
+       url('/public/fonts/FiraMono-Regular.woff') format('woff'),
+       url('/public/fonts/FiraMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  src: url('/public/fonts/FiraMono-Bold.eot');
+  src: url('/public/fonts/FiraMono-Bold.eot') format('embedded-opentype'),
+       url('/public/fonts/FiraMono-Bold.woff') format('woff'),
+       url('/public/fonts/FiraMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  src: url('/public/fonts/FiraSans-Regular.eot');
+  src: url('/public/fonts/FiraSans-Regular.eot') format('embedded-opentype'),
+       url('/public/fonts/FiraSans-Regular.woff') format('woff'),
+       url('/public/fonts/FiraSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  src: url('/public/fonts/FiraSans-Bold.eot');
+  src: url('/public/fonts/FiraSans-Bold.eot') format('embedded-opentype'),
+       url('/public/fonts/FiraSans-Bold.woff') format('woff'),
+       url('/public/fonts/FiraSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
