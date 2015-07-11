@@ -90,6 +90,7 @@ func main() {
 	router = httprouter.New()
 	register("/", PageTemplate{FileTemplate("index.gohtml"), ""})
 	register("/guides/machine_setup", guideTemplate{FileTemplate("guides/01_machine_setup.gohtml"), "Machine Setup"})
+	register("/guides/bootcamp", guideTemplate{FileTemplate("guides/02_bootcamp.gohtml"), "Bootcamp"})
 	register("/books/intro", introTemplate{Template: FileTemplate("books/intro/front.gohtml")})
 	sections := []string{
 		"Getting Started",
