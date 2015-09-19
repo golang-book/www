@@ -1,0 +1,140 @@
+<div class="breadcrumbs">
+  <a href="/">Go Resources</a>
+  / <a href="/guides/bootcamp">Bootcamp</a>
+  / <a href="/guides/bootcamp/week-1/day-2">Week 1, Day 2</a>
+</div>
+<div class="body container">
+  <h1>Week 1, Day 2</h1>
+
+  <h2>Videos</h2>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/sjwNNocro8w?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW" frameborder="0" allowfullscreen></iframe>
+  <ol>
+    <li><a href="https://youtu.be/sjwNNocro8w?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 1: Review (variables, types)</a></li>
+    <li><a href="https://youtu.be/va0LKnPscNU?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 2: Review (types, control structures)</a></li>
+    <li><a href="https://youtu.be/QK5sZgH7cfo?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 3: Review (control structures, continue/break)</a></li>
+    <li><a href="https://youtu.be/fxgSAr4OZ1o?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 4: Strings Revisited</a></li>
+    <li><a href="https://youtu.be/w6HE1ebQc4o?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 5: Miles to Kilometers</a></li>
+    <li><a href="https://youtu.be/d-hVFQ2p2h0?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 6: Distance Converter</a></li>
+    <li><a href="https://youtu.be/bwId7l7aPeg?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 7: Arrays, Slices, Maps</a></li>
+    <li><a href="https://youtu.be/FAvhwGT3cv4?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 8: Maps</a></li>
+    <li><a href="https://youtu.be/ZRugTVzZlqE?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 9: Slice and Map Problems</a></li>
+    <li><a href="https://youtu.be/0VVTDcL26YQ?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 10: Functions</a></li>
+    <li><a href="https://youtu.be/Z9CO-yNqi5k?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 11: Functions</a></li>
+    <li><a href="https://youtu.be/rc-ZfLYJtOs?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 12: Functions</a></li>
+    <li><a href="https://youtu.be/EyVTSpggjsg?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 13: Closure, Defer, Recursion</a></li>
+    <li><a href="https://youtu.be/vz-FNdBqbzs?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 14: Recursion</a></li>
+    <li><a href="https://youtu.be/qClL3L2p7jM?list=PLH0INGR--ZGT1QcMy1TC8_bs2-h4y2blW">Part 15: Recursion</a></li>
+  </ol>
+
+  <h2>Outline</h2>
+  <ol>
+    <li>
+      <h3>Strings Revisited</h3>
+      <ul>
+        <li>Immutability</li>
+        <li><code>strings</code></li>
+        <li><code>strconv</code></li>
+        <li>Command line arguments</li>
+      </ul>
+      <h4>Problems</h4>
+      <ol>
+        <li>Modify our miles to kilometers program to display in the following format:
+<pre>
++-------------------------+
+| Miles: 50               |
++-------------------------+
+| Kilometers: 80.47       |
++-------------------------+
+</pre>
+        Miles will be input by the user, and kilometers should be formatted to 2 decimal places.</li>
+        <li>Modify the above program so that it generates HTML instead of text. For example:
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+	&lt;head&gt;&lt;/head&gt;
+	&lt;body&gt;
+		Miles: 50&lt;br&gt;
+		Kilometers: 80.47
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+        Feel free to use any HTML tags and CSS you may know.</li>
+        <li>Create a program which parses a query to do distance conversions. For example, from a terminal:</li>
+<pre>$ distance_converter 50mi km</pre>
+        Should produce:
+        <pre>80.47km</pre>
+        It should support miles (mi), kilometers (km), feet (ft) and meters (m).</li>
+        <li>One classic method for composing secret messages is called a square code.  The spaces are removed from the english text and the characters are written into a square (or rectangle).  For example, the sentence "If man was meant to stay on the ground god would have given us roots" is 54 characters long, so it is written into a rectangle with 7 rows and 8 columns.
+        <pre>
+ifmanwas
+meanttos
+tayonthe
+groundgo
+dwouldha
+vegivenu
+sroots</pre>
+        The coded message is obtained by reading down the columns going left to right.   For example, the message above is coded as:
+        <pre>imtgdvs fearwer mayoogo anouuio ntnnlvt wttddes aohghn sseoau</pre>
+        In your program, have the user enter a message in english with no spaces between the words.  Have the maximum message length be 81 characters.  Display the encoded message. (Watch out that no "garbage" characters are printed.)    Here are some more examples:
+        <pre>
+Input                                 Output
+haveaniceday                          hae and via ecy
+feedthedog                            fto ehg ee  dd
+chillout                              clu hlt io</pre>
+        </li>
+      </ol>
+    </li>
+    <li>
+      <h3>Arrays, Slices and Maps</h3>
+      <ul>
+        <li>Arrays</li>
+        <li>Slices</li>
+        <li>Maps</li>
+      </ul>
+      <h4>Problems</h4>
+      <ol>
+        <li>How do you access the 4th element of an array or slice?</li>
+        <li>What is the length of a slice created using: <code>make([]int, 3, 9)</code>?</li>
+        <li>Given the array:
+          <pre>x := [6]string{"a","b","c","d","e","f"}</pre>
+          what would <code>x[2:5]</code> give you?
+        </li>
+        <li>Write a program that finds the smallest number in this list:
+          <pre>x := []int{
+	48,96,86,68,
+	57,82,63,70,
+	37,34,83,27,
+	19,97, 9,17,
+}</pre>
+        </li>
+        <li>Write a program that takes in a state code and returns the state’s name. (eg CA -> California)</li>
+      </ol>
+    </li>
+    <li>
+      <h3>Functions</h3>
+      <ul>
+        <li>Functions</li>
+        <li>Multiple Return Values</li>
+        <li>Variadic Functions</li>
+        <li>Closure</li>
+        <li>Recursion</li>
+        <li>Panic &amp; Recover</li>
+      </ul>
+      <h4>Problems</h4>
+      <ol>
+        <li><code>sum</code> is a function which takes a slice of numbers and adds them together. What would its function signature look like in Go?</li>
+        <li>Implement the <code>sum</code> function</li>
+        <li>Write a function which takes an integer and halves it and returns true if it was even or false if it was odd. For example <code>half(1)</code> should return <code>(0, false)</code> and <code>half(2)</code> should return <code>(1, true)</code>.</li>
+        <li>Write a function with one variadic parameter that finds the greatest number in a list of numbers.</li>
+        <li>Using <code>makeEvenGenerator</code> as an example, write a <code>makeOddGenerator</code> function that generates odd numbers.</li>
+        <li>The Fibonacci sequence is defined as:
+          <pre>fib(0) = 0, fib(1) = 1, fib(n) = fib(n-1) + fib(n-2)</pre>.
+          Write a recursive function which can find <code>fib(n)</code>.</li>
+        <li>What are <code>defer</code>, <code>panic</code> and <code>recover</code>? How do you recover from a run-time panic?</li>
+        <li>Create a function which reverses a list of integers:
+          <pre>reverse([]int{1,2,3}) → []int{3,2,1}</pre>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</div>
