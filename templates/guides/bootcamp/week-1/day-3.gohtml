@@ -14,18 +14,103 @@
     <li><a href="https://youtu.be/y-NTgV9cd54?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 3: Gravatar Profiles cont'd, Go Tour, Word Count</a></li>
     <li><a href="https://youtu.be/5IKdrRwp_GI?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 4: Word Count solution</a></li>
     <li><a href="https://youtu.be/xIaSnyzP1uk?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 5: Count Clumps</a></li>
-    <li><a href="https://youtu.be/11HW6VFR7BU?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 6</a></li>
-    <li><a href="https://youtu.be/FNy0psDeyZI?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 7</a></li>
-    <li><a href="https://youtu.be/O6hG-3AHCwA?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 8</a></li>
-    <li><a href="https://youtu.be/g8pdspCW3Ig?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 9</a></li>
-    <li><a href="https://youtu.be/nlt3CBWrH00?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 10</a></li>
-    <li><a href="https://youtu.be/dHH2NL8Lj-I?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 11</a></li>
-    <li><a href="https://youtu.be/GcvIhBCi-2c?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 12</a></li>
-    <li><a href="https://youtu.be/xlcuZD0bsz4?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 13</a></li>
+    <li><a href="https://youtu.be/11HW6VFR7BU?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 6: Count Clumps cont'd</a></li>
+    <li><a href="https://youtu.be/FNy0psDeyZI?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 7: Pointers</a></li>
+    <li><a href="https://youtu.be/O6hG-3AHCwA?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 8: Pointers cont'd</a></li>
+    <li><a href="https://youtu.be/g8pdspCW3Ig?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 9: Swap, Rotate,</a></li>
+    <li><a href="https://youtu.be/nlt3CBWrH00?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 10: Structs</a></li>
+    <li><a href="https://youtu.be/dHH2NL8Lj-I?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 11: Structs cont'd</a></li>
+    <li><a href="https://youtu.be/GcvIhBCi-2c?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 12: Embedded Types, Interfaces</a></li>
+    <li><a href="https://youtu.be/xlcuZD0bsz4?list=PLH0INGR--ZGSW368L_e2g_qawRNGPWgR1">Part 13: Interfaces cont'd</a></li>
   </ol>
 
   <h2>Outline</h2>
   <ol>
-
+    <li>
+      <h3>Review</h3>
+      <ul>
+        <li>Create Javascript Cheat Sheet: <a href="http://is.gd/XaJQal">is.gd/XaJQal</a>.</li>
+        <li>Pair-program on problems</li>
+      </ul>
+      <h4>Problems</h4>
+      <ol>
+        <li>Create a program which reads user information (at least name and
+          email) and creates a profile page in HTML. Also use or generate a
+          profile image from gravatar.com.</li>
+        <li>Implement WordCount. It should return a map of the counts of each
+          “word” in a string. (You might find <code>strings.Fields</code>
+          helpful.) <code>WordCount("test test")</code> →
+          <code>map[string]int{ "test": 2 }</code></li>
+        <li>Implement a <code>centeredAverage</code> function that computes the
+          average of a list of numbers, but removes the largest and smallest
+          values. <code>centeredAverage([]float64{1, 2, 3, 4, 100})</code> →
+          <code>3</code></li>
+        <li>Given a non-empty list, return true if there is a place to split the
+          list so that the sum of the numbers on one side is equal to the sum of
+          the numbers on the other side.<br>
+          <code>canBalance([]int{1, 1, 1, 2, 1})</code> → <code>true</code><br>
+          <code>canBalance([]int{2, 1, 1, 2, 1})</code> → <code>false</code><br>
+          <code>canBalance([]int{10, 10})</code> → <code>true</code></li>
+        <li>Say that a "clump" in a list is a series of 2 or more adjacent
+          elements of the same value. Return the number of clumps in the given
+          list.<br>
+          <code>countClumps([]int{1, 2, 2, 3, 4, 4})</code> → <code>2</code><br>
+          <code>countClumps([]int{1, 1, 2, 1, 1})</code> → <code>2</code><br>
+          <code>countClumps([]int{1, 1, 1, 1, 1})</code> → <code>1</code></li>
+      </ol>
+    </li>
+    <li>
+      <h3>Pointers</h3>
+      <ul>
+        <li><code>*</code> and <code>&amp;</code></li>
+        <li><code>new</code></li>
+        <li>Scan</li>
+      </ul>
+      <h4>Problems</h4>
+      <ol>
+        <li>How do you get the memory address of a variable?</li>
+        <li>How do you assign a value to a pointer?</li>
+        <li>How do you create a new pointer?</li>
+        <li>What is the value of x after running this program:
+<pre>
+func square(x *float64) {
+	*x = *x * *x
+}
+func main() {
+	x := 1.5
+	square(&amp;x)
+}
+</pre>
+        </li>
+        <li>Write a program that can swap two integers (
+          <code>x := 1; y := 2;</code> <code>swap(&amp;x, &amp;y)</code> should
+          give you <code>x==2</code> and <code>y==1</code>).</li>
+        <li>Generalize swap into a rotate function so that it works with any
+          number of variables: <code>rotate(&amp;x, &amp;y, &amp;z)</code>, with
+          <code>x=1</code>, <code>y=2</code>, <code>y=3</code>, yields
+          <code>x=2</code>, <code>y=3</code>, <code>z=1</code>.</li>
+        <li>Create a rotateRight function which does the same thing as rotate
+          but in the other direction.</li>
+      </ol>
+    </li>
+    <li>
+      <h3>Structs and Interfaces</h3>
+      <ul>
+        <li>Structs</li>
+        <li>Initialization</li>
+        <li>Fields</li>
+        <li>Methods</li>
+        <li>Embedded Types</li>
+      </ul>
+      <h4>Problems</h4>
+      <ol>
+        <li>What's the difference between a method and a function?</li>
+        <li>Why would you use an embedded anonymous field instead of a normal
+          named field?</li>
+        <li>Add a new method to the Shape interface called perimeter which
+          calculates the perimeter of a shape. Implement the method for Circle
+          and Rectangle.</li>
+      </ol>
+    </li>
   </ol>
 </div>
