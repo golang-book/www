@@ -59,6 +59,20 @@ func renderIntro(filename string, data interface{}) (string, error) {
 	})
 }
 
+func renderDistributedSystems(filename string, data interface{}) (string, error) {
+	body, err := render(filename, data)
+	if err != nil {
+		return "", err
+	}
+	return renderMain("books/intro/layout.gohtml", struct {
+		Body template.HTML
+		Page string
+	}{
+		Body: template.HTML(body),
+		Page: filename,
+	})
+}
+
 var router *httprouter.Router
 
 func register(path string, tpl Template) {
@@ -154,6 +168,8 @@ func init() {
 			webTemplate{Template: FileTemplate(fmt.Sprintf("books/web/02-%02d.gohtml", i))},
 		)
 	}
+
+	register("/books/distributed-systems", distributedSystemsTemplate{Template: FileTemplate("books/distributed-systems/front.gohtml")})
 
 	public := http.FileServer(http.Dir("public"))
 	router.GET("/public/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {

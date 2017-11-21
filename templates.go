@@ -91,6 +91,31 @@ func (wt webTemplate) Render(data interface{}) (string, error) {
 	})
 }
 
+type distributedSystemsTemplate struct {
+	Template
+	Subtitle string
+}
+
+func (dst distributedSystemsTemplate) Render(data interface{}) (string, error) {
+	body, err := dst.Template.Render(data)
+	if err != nil {
+		return "", err
+	}
+	title := "An Exploration of Distributed Systems with Go"
+	return PageTemplate{
+		Template: FileTemplate("books/distributed-systems/layout.gohtml"),
+		Title:    title,
+	}.Render(struct {
+		Body     template.HTML
+		Title    string
+		Subtitle string
+	}{
+		Body:     template.HTML(body),
+		Title:    title,
+		Subtitle: dst.Subtitle,
+	})
+}
+
 type guideTemplate struct {
 	Template
 	Title string

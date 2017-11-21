@@ -1,0 +1,16 @@
+<div class="breadcrumbs">
+  <a href="/">Go Resources</a>
+  {{if .Title}}
+  / <a href="/books/distributed-systems">{{.Title}}</a>
+  {{end}}
+  {{if .Subtitle}}
+  / <a href="">{{.Subtitle}}</a>
+  {{end}}
+</div>
+{{.Body}}
+<div class="footer">
+  &copy; {{year}} Caleb Doxsey. <br><br>
+  The contents of this book are available under a
+  <a href="https://creativecommons.org/licenses/by-sa/4.0/">Create Commons
+  Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) License</a>.
+</div>

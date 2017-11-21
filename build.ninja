@@ -2,10 +2,10 @@ rule css
   command = cleancss --source-map --source-map-inline-sources -o $out $in
 
 rule js
-  command = uglifyjs --compress --mangle --source-map-url /$out.map --source-map $out.map --output $out -- $in
+  command = uglifyjs --compress --mangle --source-map-url /$out.map --source-map --output $out -- $in
 
 rule gocompile
-  command = go build -o $out
+  command = go build -i -o $out
 
 build tmp/golang-book-www: gocompile | main.go templates.go util.go http.go
 
