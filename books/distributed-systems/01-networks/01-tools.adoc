@@ -1,0 +1,78 @@
+= Tools of the Trade
+Developers use many tools to assist with the development and operation of distributed systems.
+In the following chapters many of the examples will make use of these tools, so before getting
+started we should familiarize ourselves with them, and, where necessary, install them.
+
+If you are already familiar with these tools you can skip this section.
+
+=== Telnet
+
+Telnet is a client-side application used to interact with TCP applications over a
+network. Originally designed to provide terminal access to remote machines, telnet
+has been largely supersceded by SSH, but is still useful for interacting with
+line-oriented, text-based applications.
+
+The `telnet` command is nearly universally available and can be run from the terminal
+like this:
+
+[shell]
+....
+† telnet time.nist.gov 13
+Trying 132.163.97.1...
+Connected to ntp1.glb.nist.gov.
+Escape character is '^]'.
+
+58078 17-11-21 13:49:22 00 0 0 395.0 UTC(NIST) *
+Connection closed by foreign host.
+....
+
+The first argument to `telnet` is the server you'd like to connect to, either an
+IP address or a DNS name. The second argument is the port number. In this example
+we connect to `time.nist.gov`, a server provided by the NIST government agency to
+synchronize clocks. It listens on port 13, response with the current time and then
+immediately disconnects.
+
+`telnet` can also be used in an interactive, line-oriented way:
+
+[shell]
+....
+† telnet whois.iana.org 43
+Trying 192.0.32.59...
+Connected to ianawhois.vip.icann.org.
+Escape character is '^]'.
+....
+
+Port 43 is used for `whois` lookups, which are a component of the domain name system
+and can tell you who the owner is for a domain name. IANA is the organization responsible
+for maintaining the top-level domain name assignments, so we can query this service
+to see who owns any top-level domain. (A top-level domain is the `.com` part of `google.com`)
+
+Let's see who owns `.aq`, the top-level domain for Antarctica. You can enter a command
+by typing the command and then hitting enter: (this service disconnects idle connections
+quickly, so you may need to re-run the telnet command above if you were disconnected)
+
+[shell]
+....
+aq
+....
+
+You will see a bunch of information displayed:
+
+....
+% IANA WHOIS server
+% for more information on IANA, visit http://www.iana.org
+% This query returned 1 object
+
+domain:       AQ
+
+organisation: Antarctica Network Information Centre Limited
+address:      10 Paine Brown Way
+address:      RD 1
+address:      Russell 0272
+address:      New Zealand
+....
+
+`telnet` is useful for operating with text-based protocols, but it is not suitable
+for binary protocols or the more advanced protocols commonly used on the internet.
+
+=== Netcat
