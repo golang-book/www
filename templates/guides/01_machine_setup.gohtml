@@ -217,20 +217,14 @@ $HOME/bin/penv append PATH $HOME/go_appengine</pre>
       If you aren't interested in installing App Engine you can skip this step.
     </p>
     <p>
-      Download the <q>Google App Engine SDK for Go</q> from:
-      <a href="https://cloud.google.com/appengine/downloads">cloud.google.com/appengine/downloads</a>.
+      Install the <q>Google Cloud Tools</q> from:
+      <a href="https://cloud.google.com/sdk/docs/#windows">https://cloud.google.com/sdk/docs/#windows</a>.
     </p>
     <p>
-      Open a bash terminal and unzip the downloaded zip file to your home
-      directory:
+      After installation, open a bash terminal and install the app engine component:
     </p>
-    <pre>cd ~
-unzip ~/Downloads/go_appengine_sdk_windows*.zip</pre>
-    <p>
-      This should create a <code>go_appengine</code> folder in your home
-      directory. The App Engine SDK is self-contained and requires no
-      installation. If you want to remove it just delete the folder.
-    </p>
+    <pre>
+gcloud components install app-engine-go</pre>
 
     <h3 id="windows-python">Python</h3>
     <p>

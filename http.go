@@ -68,7 +68,7 @@ func register(path string, tpl Template) {
 			http.Error(res, err.Error(), 500)
 			return
 		}
-		res.Header().Set("Content-Type", "text-html; charset=utf-8")
+		res.Header().Set("Content-Type", "text/html; charset=utf-8")
 		io.WriteString(res, str)
 	}
 	router.GET(path, f)
