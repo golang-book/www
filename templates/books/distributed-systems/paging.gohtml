@@ -1,0 +1,17 @@
+<table class="paging">
+    <tr>
+        {{ if .Previous }}
+        <td class="prev">
+            <a href="/books/distributed-systems/{{.Previous}}">&larr; Previous</a>
+        </td>
+        {{ end }}
+        <td>
+            <a href="/books/distributed-systems">Index</a>
+        </td>
+        {{ if .Next }}
+        <td class="next">
+            <a href="/books/distributed-systems/{{.Next}}">Next &rarr;</a>
+        </td>
+        {{ end }}
+    </tr>
+</table>

@@ -97,11 +97,26 @@ type distributedSystemsTemplate struct {
 }
 
 func (dst distributedSystemsTemplate) Render(data interface{}) (string, error) {
-	body, err := dst.Template.Render(data)
+	paging, err := FileTemplate("books/distributed-systems/paging.gohtml").Render(struct {
+		Previous, Next string
+	}{
+		Previous: "???",
+		Next:     "???",
+	})
 	if err != nil {
 		return "", err
 	}
-	title := "An Exploration of Distributed Systems with Go"
+
+	body, err := dst.Template.Render(struct {
+		Paging template.HTML
+	}{
+		Paging: template.HTML(paging),
+	})
+	if err != nil {
+		return "", err
+	}
+
+	title := "An Introduction to Distributed Systems in Go"
 	return PageTemplate{
 		Template: FileTemplate("books/distributed-systems/layout.gohtml"),
 		Title:    title,

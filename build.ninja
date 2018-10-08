@@ -5,9 +5,9 @@ rule js
   command = uglifyjs --compress --mangle --source-map-url /$out.map --source-map --output $out -- $in
 
 rule gocompile
-  command = go build -i -o $out
+  command = env GO111MODULE=on go build -v -i -o $out
 
-build tmp/golang-book-www: gocompile | main.go templates.go util.go http.go
+build bin/golang-book-www: gocompile | main.go templates.go util.go http.go
 
 build public/golang-book.css: css $
   app/css/normalize.css $

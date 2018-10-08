@@ -170,6 +170,7 @@ func init() {
 	}
 
 	register("/books/distributed-systems", distributedSystemsTemplate{Template: FileTemplate("books/distributed-systems/front.gohtml")})
+	register("/books/distributed-systems/01-concurrency", distributedSystemsTemplate{Template: FileTemplate("books/distributed-systems/01-concurrency.gohtml")})
 
 	public := http.FileServer(http.Dir("public"))
 	router.GET("/public/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {

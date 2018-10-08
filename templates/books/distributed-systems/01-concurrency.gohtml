@@ -1,0 +1,38 @@
+<div class="container book body">
+  <h1>Concurrency</h1>
+  <p>
+    Concurrency refers to doing more than one thing at a time. In this book we will explore topics in distributed systems, that is programs which utilize more than one machine to solve a problem. Distributed systems programming is a kind of concurrent programming, but there also at least 3 other types of concurrency commonly found in programming:
+  </p>
+  <ul>
+    <li>Multi-process concurrency in an operating system</li>
+    <li>Multi-thread concurrency in a single process</li>
+    <li>Data parallelism, which can be found with GPU programming, or vector instructions in CPUs</li>
+  </ul>
+  <p>
+    To better understand distributed systems we are first going to focus on concurrent programming within a single process.
+  </p>
+
+  <h2>Concurrency Models</h2>
+
+  <h2>Go Concurrency Primitives</h2>
+  <p>
+    Go has native support for concurrency via several primitives:
+  </p>
+  <dl>
+    <dt>Goroutines</dt>
+    <dd>
+    A goroutine is a separate thread of execution implemented as a concurrently execution function.
+    </dd>
+
+    <dt>Channels</dt>
+    <dd>
+    A channel is a mechanism for communication between goroutines. Channels can be thought of as a conduit or pipe for sending and receive messages, or alternatively, as a rendesvous point for synchronization. Channels support 3 operations: <code>send</code>, <code>receive</code> and <code>close</code>.
+    </dd>
+
+    <dt>Select</dt>
+    <dd>
+    Selection is used to choose between a set of <code>send</code> and <code>receive</code> operations and is implemented using a <code>select</code> statement which is similar to a <code>switch</code> statement.
+    </dd>
+  </dl>
+  {{.Paging}}
+</div>

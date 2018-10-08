@@ -1,0 +1,4 @@
+github.com/NYTimes/gziphandler v1.0.0 h1:OswZCvpiFsNRCbeapdJxDuikAqVXTgV7XAht8S9olZo=
+github.com/NYTimes/gziphandler v1.0.0/go.mod h1:3wb06e3pkSAbeQ52E9H9iFoQsEEwGN64994WTCIhntQ=
+github.com/julienschmidt/httprouter v0.0.0-20150421170007-8c199fb6259f h1:uUls/Yg9JMVDQiD1vHplcHRNqz5wv6qylEXYM7JtLUY=
+github.com/julienschmidt/httprouter v0.0.0-20150421170007-8c199fb6259f/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
