@@ -115,6 +115,7 @@ func (dst distributedSystemsTemplate) Render(data interface{}) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	body = SyntaxHighlightHTML(body)
 
 	title := "An Introduction to Distributed Systems in Go"
 	return PageTemplate{

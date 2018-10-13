@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
 }
@@ -9,9 +8,9 @@ html, body {
 }
 body {
   background: #E0EBF5 url("/public/img/pattern-1ask.png") repeat;
-  font-family: "Fira Sans", serif;
-  font-size: 15px;
-  color: #333;
+  font-family: 'Source Sans Pro', 'source-sans-pro', sans-serif;
+  font-size: 16px;
+  color: #111;
 }
 a, a:active, a:visited, a:link, a:hover {
   color: #375EAB;
@@ -27,13 +26,13 @@ h1 {
   text-align: center;
 }
 
-p {
+p, dd, li {
   line-height: 24px;
 }
 
 pre, code, .code {
-  font-family: "Fira Mono", monospace;
-  font-size: 13px;
+  font-family: 'Mononoki', 'mononoki-regular', monospace;
+  font-size: 14px;
 }
 pre, code {
   background: #F3F3F3;
@@ -102,10 +101,10 @@ h2 {
   font-size: 28px;
 }
 h3 {
-  font-size: 18px;
+  font-size: 24px;
 }
 h4, h5 {
-  font-size: 15px;
+  font-size: 20px;
 }
 h2, h3, h4, h5 {
   color: #000;
@@ -120,4 +119,9 @@ h2, h3, h4, h5 {
 }
 .clearfix:after {
   clear: both;
+}
+
+
+.chroma .s {
+  color: #a31515;
 }

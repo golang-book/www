@@ -7,7 +7,7 @@ rule js
 rule gocompile
   command = env GO111MODULE=on go build -v -i -o $out
 
-build bin/golang-book-www: gocompile | main.go templates.go util.go http.go
+build bin/golang-book-www: gocompile | style.go main.go templates.go util.go http.go
 
 build public/golang-book.css: css $
   app/css/normalize.css $

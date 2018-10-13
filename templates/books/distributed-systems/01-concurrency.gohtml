@@ -26,7 +26,7 @@
 
     <dt>Channels</dt>
     <dd>
-    A channel is a mechanism for communication between goroutines. Channels can be thought of as a conduit or pipe for sending and receive messages, or alternatively, as a rendesvous point for synchronization. Channels support 3 operations: <code>send</code>, <code>receive</code> and <code>close</code>.
+    A channel is a mechanism for communication between goroutines. Channels can be thought of as a conduit or pipe for sending and receive messages, or alternatively, as a rendezvous point for synchronization. Channels support 3 operations: <code>send</code>, <code>receive</code> and <code>close</code>.
     </dd>
 
     <dt>Select</dt>
@@ -36,12 +36,174 @@
   </dl>
 
   <h3>Goroutines</h3>
-  
+  <p>
+    A goroutine is a lightweight thread of execution. Every Go program is made up of one or more goroutines with each goroutine being a concurrently executing function.
+  </p>
 
-  <h3>Channels</h3>
+  <h4><code>go</code> statement</h4>
+  <p>
+    Goroutines are started with the <code>go</code> keyword:
+  </p>
+
+<blockcode language="go">
+package main
+
+import "fmt"
+
+func f() {
+	fmt.Println("in f")
+}
+
+func main() {
+	go f()
+	fmt.Println("in main")
+}
+</blockcode> 
+<p>
+  This program starts a goroutine which begins at the beginning of the <code>f</code> function and is executed concurrently with the main function.
+</p>
+<p>
+  The <code>go</code> statement uses the <code>go</code> keyword, followed by a function invocation. That function can take arguments:
+</p>
+<blockcode language="go">
+func f(x int) {
+	fmt.Println("in f", x)
+}
+func main() {
+	go f(123)
+}
+</blockcode> 
+<p>
+  It can also return a value, but that value will simply be discarded:  
+</p>
+<blockcode language="go">
+func add(x, y int) int {
+	return x + y
+}
+func main() {
+	go add(1, 2)
+}
+</blockcode>
+<p>
+  Arguments are executed immediately in the current goroutine. When you see this:
+</p>
+<blockcode language="go">
+func main() {
+	go somefunc("hello world")
+}
+</blockcode>
+<p>
+  Think of it like this:
+</p>
+<blockcode language="go">
+func main() {
+    tmp := "hello world"
+    go somefunc(tmp)
+}
+</blockcode>
+<p>
+Also remember that functions can be defined with an expression in Go, so a very common pattern with the <code>go</code> statement is to create a function and immediately execute it:
+</p>
+<blockcode language="go">
+func main() {
+    tmp := "hello world"
+    go func(str string) {
+        fmt.Println(str)
+    }(tmp)
+}
+</blockcode>
+<p>
+Which is basically:
+</p>
+<blockcode language="go">
+func main() {
+    tmp1 := "hello world"
+    tmp2 := func(str string) {
+        fmt.Println(str)
+    }
+    go tmp2(tmp1)
+}
+</blockcode>
+
+<h4>Execution</h4>
+<p>
+  Goroutines are independent tasks and the precise order they are executed is not defined. Rather it is left up to a sophisticated runtime scheduler. Goroutines can be executed serially, interleaved, or in parallel. Imagine a program:
+</p>
+<blockcode language="go">
+func f1() {
+  fmt.Println("1-1")
+  fmt.Println("1-2")
+  fmt.Println("1-3")
+}
+func f2() {
+  fmt.Println("2-1")
+  fmt.Println("2-2")
+  fmt.Println("2-3")
+}
+func main() {
+  go f1()
+  go f2()
+}
+</blockcode>
+<p>
+Serially the program might execute like this:
+</p>
+<table>
+  <tr>
+    <td>1-1</td><td>1-2</td><td>1-3</td>
+    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    <td>2-1</td><td>2-2</td><td>2-3</td>
+  </tr>
+</table>
+<p>
+Interleaved:
+</p>
+<table>
+  <tr>
+    <td>1-1</td><td>&nbsp;</td>
+    <td>1-2</td><td>&nbsp;</td>
+    <td>1-3</td><td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td><td>2-1</td>
+    <td>&nbsp;</td><td>2-2</td>
+    <td>&nbsp;</td><td>2-3</td>
+  </tr>
+</table>
+<p>
+And in parallel:
+</p>
+<table>
+  <tr>
+    <td>1-1</td>
+    <td>1-2</td>
+    <td>1-3</td>
+  </tr>
+  <tr>
+    <td>2-1</td>
+    <td>2-2</td>
+    <td>2-3</td>
+  </tr>
+</table>
+<p>
+All of these (and many more) are possible orderings of the Goroutines. The Go scheduler is free to choose the strategy which makes the most sense in a given situation. Although we can assume that statements within a single goroutine will execute sequentially <sup><a href="#footnote-1">1</a></sup>, we can't make any assumptions about the execution order of separate goroutines. If we need our program to execute in a certain order, we need to use the synchronization mechanism Go provides for this: <a href="#channels">channels</a>.
+</p>
+<p>
+ It's also important to remember that the interleaving and parallelization of instructions is done at the CPU instruction level, not the Go statement level, and most Go statements will result in several CPU instructions, so interleaving may occur in the middle of a single statement. This is particularly important when modifying memory, a topic we will look at later.
+</p>
+
+
+  <h3><a name="channels"></a>Channels</h3>
 
   <h3>Selection</h3>
 
+  <h2>Footnotes</h2>
+  <ol>
+  <li><a name="footnote-1"></a>Technically processors are allowed to execute instructions out of order, but not in such a way that they change the resulting behavior of the program</li>
+  </ol>
 
   {{.Paging}}
 </div>
