@@ -158,6 +158,9 @@ func init() {
 	public := http.FileServer(http.Dir("public"))
 	router.GET("/public/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
 		path := params.ByName("path")
+		if strings.HasPrefix(path, "/") {
+			path = path[1:]
+		}
 		maxAge := "3600"
 		parts := strings.SplitN(path, ".", 3)
 		if len(parts) == 3 {

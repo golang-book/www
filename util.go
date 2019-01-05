@@ -1,14 +1,7 @@
 package main
 
-import (
-	"os"
-	"strconv"
-)
+import "fmt"
 
 func getVersion(name string) string {
-	fi, err := os.Stat(name)
-	if err != nil {
-		return ""
-	}
-	return strconv.FormatInt(fi.ModTime().Unix(), 36)
+	return fmt.Sprint(fileVersions[name])
 }

@@ -1,5 +1,7 @@
 // +build !appengine
 
+//go:generate go run scripts/fileversions/main.go
+
 package main
 
 import (
