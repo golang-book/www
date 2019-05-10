@@ -1,5 +1,3 @@
-// +build !appengine
-
 //go:generate go run scripts/fileversions/main.go
 
 package main
@@ -7,11 +5,17 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
-	log.Println("starting server on 127.0.0.1:8002")
-	err := http.ListenAndServe("127.0.0.1:8002", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8002"
+	}
+
+	log.Println("starting server on :" + port)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
