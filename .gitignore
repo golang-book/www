@@ -25,3 +25,5 @@ _testmain.go
 .ninja_deps
 .ninja_log
 tmp/
+
+build
