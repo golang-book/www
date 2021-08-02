@@ -1,13 +1,8 @@
 rule css
-  command = cleancss --source-map --source-map-inline-sources -o $out $in
+  command = npx clean-css-cli --source-map --source-map-inline-sources -o $out $in
 
 rule js
-  command = uglifyjs --compress --mangle --source-map --output $out -- $in
-
-rule gocompile
-  command = go build -o $out
-
-build tmp/golang-book-www: gocompile | main.go templates.go util.go http.go
+  command = npx uglify-js --compress --mangle --source-map --output $out -- $in
 
 build public/golang-book.css: css $
   app/css/normalize.css $
