@@ -12,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/NYTimes/gziphandler"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -303,36 +302,6 @@ func build() error {
 	if err != nil {
 		return err
 	}
-
-	return nil
-
-	public := http.FileServer(http.Dir("public"))
-	router.GET("/public/*path", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
-		path := params.ByName("path")
-		if strings.HasPrefix(path, "/") {
-			path = path[1:]
-		}
-		maxAge := "3600"
-		parts := strings.SplitN(path, ".", 3)
-		if len(parts) == 3 {
-			p := parts[0] + "." + parts[2]
-			if parts[1] == getVersion("public/"+p) {
-				path = p
-				maxAge = "31556926"
-			}
-		}
-		req.URL.Path = "/" + path
-		res.Header().Set("Cache-Control", "max-age="+maxAge+", public")
-		public.ServeHTTP(res, req)
-	})
-
-	router.GET("/health", func(res http.ResponseWriter, req *http.Request, params httprouter.Params) {
-		io.WriteString(res, "OK")
-	})
-
-	handler := gziphandler.GzipHandler(router)
-
-	http.Handle("/", handler)
 
 	return nil
 }
