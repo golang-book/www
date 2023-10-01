@@ -33,7 +33,7 @@ func main() {
 func main() {
   xPtr := new(int)
   one(xPtr)
-  fmt.Println(*xPtr) // x is 1
+  fmt.Println(*xPtr) // *xPtr is 1
 }</pre><p><code>new</code> takes a type as an argument, allocates enough memory to fit a value of that type and returns a pointer to it.</p>
 <p>In some programming languages there is a significant difference between using <code>new</code> and <code>&amp;</code>, with great care being needed to eventually delete anything created with <code>new</code>. Go is not like this, it&#39;s a garbage collected programming language which means memory is cleaned up automatically when nothing refers to it anymore.</p>
 <p>Pointers are rarely used with Go&#39;s built-in types, but as we will see in the next chapter, they are extremely useful when paired with structs.</p>
